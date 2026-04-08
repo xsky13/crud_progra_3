@@ -1,1 +1,76 @@
 @import "tailwindcss";
+
+@theme {
+    --color-primary: #3852B4;
+    --color-primary-light: #5E7AC4;
+
+    --color-secondary: #F08D39;
+    --color-secondary-light: #F3BE7A;
+
+    --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: "Anonymous Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+html,
+body {
+    font-family: var(--font-sans);
+}
+
+h1 {
+    @apply text-5xl font-mono;
+}
+
+h2 {
+    @apply text-4xl font-mono;
+}
+
+h3 {
+    @apply text-3xl font-mono;
+}
+
+h4 {
+    @apply text-2xl font-mono;
+}
+
+h5 {
+    @apply text-xl font-mono;
+}
+
+
+/*
+* BUTTONS
+*/
+
+.btn {
+    letter-spacing: .015rem;
+    @apply px-3 py-1.5 shadow-sm rounded-md font-bold text-sm transition cursor-pointer;
+}
+
+.btn-primary {
+    @apply bg-primary text-white hover:bg-primary-light;
+}
+
+.btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-light;
+}
+
+
+
+/* 
+* FORMS 
+*/
+
+.text-field-container {
+    @apply my-3;
+}
+
+.text-field-label {
+    letter-spacing: .03rem;
+    font-weight: 800;
+    @apply block text-sm;
+}
+
+.text-field {
+    @apply px-3.5 py-2 rounded-sm border border-gray-300 text-sm outline-none w-100 focus:border focus:border-primary focus:ring focus:ring-primary;
+}
