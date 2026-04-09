@@ -3,6 +3,7 @@ import './index.css'
 import Home from './routes/Home.tsx'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+import React from 'react';
 
 const router = createBrowserRouter([
 	{
@@ -12,5 +13,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-	<RouterProvider router={router} />
-)
+	React.createElement(RouterProvider, { router })
+);
