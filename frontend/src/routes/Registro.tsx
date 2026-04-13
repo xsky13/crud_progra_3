@@ -1,6 +1,8 @@
+import { AppLink } from "@/components/AppLink";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { ArrowLeft } from "lucide-react";
 
 export default function Registro() {
     return (
@@ -33,6 +35,16 @@ export default function Registro() {
                         </Field>
                         <Button className="w-full">Crear cuenta</Button>
                     </FieldGroup>
+                </div>
+                <div className="flex justify-between">
+                    <Button variant="link" asChild className="mx-0!">
+                        <AppLink to="/">
+                            <ArrowLeft /> Volver
+                        </AppLink>
+                    </Button>
+                    <Button variant="link" className="mx-0!">
+                        Ya tengo una cuenta
+                    </Button>
                 </div>
             </div>
         </div>
