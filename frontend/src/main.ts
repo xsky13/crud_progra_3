@@ -5,6 +5,7 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import React from "react";
 import Registro from "./routes/Registro.tsx";
+import register from "./services/register.ts";
 
 const router = createBrowserRouter([
     {
@@ -14,12 +15,7 @@ const router = createBrowserRouter([
     {
         path: "/registro",
         Component: Registro,
-        action: async ({ request }: { request: Request }) => {
-            const formData = await request.formData();
-            await fetch("https://jsonplaceholder.typicode.com/todos/1").then(
-                (response) => response.json(),
-            );
-        },
+        action: register,
     },
 ]);
 
