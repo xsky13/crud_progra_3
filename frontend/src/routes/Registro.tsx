@@ -6,14 +6,10 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import type register from "@/services/register";
 import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
 import { useFetcher } from "react-router";
 
 export default function Registro() {
     const fetcher = useFetcher<typeof register>();
-    const actionData = fetcher.data;
-
-    useEffect(() => console.log(actionData), [actionData]);
 
     return (
         <div className="flex justify-center items-center h-screen">
@@ -21,23 +17,56 @@ export default function Registro() {
                 <h1>Registrarse</h1>
                 <fetcher.Form method="POST" className="my-5">
                     <FieldGroup>
-                        <Field>
+                        <Field
+                            data-invalid={
+                                fetcher.data?.error?.field == "nombre"
+                            }
+                        >
                             <FieldLabel htmlFor="nombre">Su nombre</FieldLabel>
-                            <Input id="nombre" name="nombre" />
+                            <Input
+                                id="nombre"
+                                name="nombre"
+                                aria-invalid={
+                                    fetcher.data?.error?.field == "nombre"
+                                }
+                            />
                         </Field>
-                        <Field>
+                        <Field
+                            data-invalid={
+                                fetcher.data?.error?.field == "apellido"
+                            }
+                        >
                             <FieldLabel htmlFor="apellido">
                                 Su apellido
                             </FieldLabel>
-                            <Input id="apellido" name="apellido" />
+                            <Input
+                                id="apellido"
+                                name="apellido"
+                                aria-invalid={
+                                    fetcher.data?.error?.field == "apellido"
+                                }
+                            />
                         </Field>
-                        <Field>
+                        <Field
+                            data-invalid={fetcher.data?.error?.field == "email"}
+                        >
                             <FieldLabel htmlFor="email">
                                 Su correo electronico
                             </FieldLabel>
-                            <Input id="email" type="email" name="email" />
+                            <Input
+                                id="email"
+                                type="email"
+                                name="email"
+                                aria-invalid={
+                                    fetcher.data?.error?.field == "email"
+                                }
+                            />
                         </Field>
-                        <Field>
+                        <Field
+                            data-invalid={
+                                fetcher.data?.error?.field == "contrasena"
+                            }
+                        >
                             <FieldLabel htmlFor="contrasena">
                                 Su contraseña
                             </FieldLabel>
@@ -45,6 +74,9 @@ export default function Registro() {
                                 id="contrasena"
                                 type="password"
                                 name="contrasena"
+                                aria-invalid={
+                                    fetcher.data?.error?.field == "contrasena"
+                                }
                             />
                         </Field>
                         <SubmitButton
@@ -54,8 +86,11 @@ export default function Registro() {
                             Crear cuenta
                         </SubmitButton>
                     </FieldGroup>
-                    {actionData?.error && (
-                        <ErrorItem className="mt-5" error={actionData.error} />
+                    {fetcher.data?.error && (
+                        <ErrorItem
+                            className="mt-5"
+                            error={fetcher.data?.error?.msg}
+                        />
                     )}
                 </fetcher.Form>
                 <div className="flex justify-between">
@@ -65,7 +100,7 @@ export default function Registro() {
                         </AppLink>
                     </Button>
                     <Button type="submit" variant="link" className="mx-0!">
-                        Ya tengo una cuenta
+                        <AppLink to="/login">Ya tengo una cuenta</AppLink>
                     </Button>
                 </div>
             </div>
