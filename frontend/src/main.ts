@@ -14,6 +14,12 @@ const router = createBrowserRouter([
     {
         path: "/registro",
         Component: Registro,
+        action: async ({ request }: { request: Request }) => {
+            const formData = await request.formData();
+            await fetch("https://jsonplaceholder.typicode.com/todos/1").then(
+                (response) => response.json(),
+            );
+        },
     },
 ]);
 
