@@ -33,17 +33,18 @@ export default async function register({
     ) {
         return { error: { msg: "Su email no es valido", field: "email" } };
     } else if (data.contrasena.length < 6) {
+        console.log("Password bad", data.contrasena.length, data.contrasena);
         return {
             error: {
                 msg: "Su contrasena debe tener por lo menos 6 caracteres",
                 field: "contrasena",
             },
         };
+    } else {
+        const response = await fetch(
+            "https://jsonplaceholder.typicode.com/todos/1",
+        ).then((res) => res.json());
+
+        return { token: "mi-token" };
     }
-
-    const repsonse = await fetch(
-        "https://jsonplaceholder.typicode.com/todos/1",
-    ).then((response) => response.json());
-
-    return { token: "mi-token" };
 }

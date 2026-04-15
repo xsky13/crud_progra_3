@@ -6,16 +6,22 @@ import { RouterProvider } from "react-router/dom";
 import React from "react";
 import Registro from "./routes/Registro.tsx";
 import register from "./services/register.ts";
+import Layout from "./routes/Layout.tsx";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        Component: Home,
-    },
-    {
-        path: "/registro",
-        Component: Registro,
-        action: register,
+        Component: Layout,
+        children: [
+            {
+                index: true,
+                Component: Home,
+            },
+            {
+                path: "registro",
+                Component: Registro,
+                action: register,
+            },
+        ],
     },
 ]);
 
