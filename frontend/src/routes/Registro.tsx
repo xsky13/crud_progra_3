@@ -3,26 +3,29 @@ import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import errorToast from "@/lib/errorToast";
 import type register from "@/services/register";
 import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router";
 import { toast } from "sonner";
 
 export default function Registro() {
     const fetcher = useFetcher<typeof register>();
+    const toastId = useRef<string | number>(0);
 
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
-            toast.error("Error", {
-                description: fetcher.data?.error?.msg,
-                classNames: {
-                    toast: "!bg-red-200 !text-red-800 !border-none !shadow-red-500/50",
-                    description: "!text-red-800",
-                },
-            });
+            toastId.current = errorToast(fetcher.data.error?.msg);
         }
     }, [fetcher.data]);
+
+    const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        toast.dismiss(toastId.current);
+        fetcher.submit(e.currentTarget, { method: "POST" });
+    };
 
     return (
         <div className="flex justify-center items-center h-screen">
@@ -34,7 +37,7 @@ export default function Registro() {
                     </div>
                     <div className="mt-3.5 w-32 border border-primary"></div>
                 </div>
-                <fetcher.Form method="POST" className="my-5">
+                <fetcher.Form onSubmit={onSubmit} className="my-5">
                     <FieldGroup>
                         <Field
                             data-invalid={
