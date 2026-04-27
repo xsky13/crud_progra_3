@@ -16,8 +16,6 @@ export default function Registro() {
     const toastId = useRef<string | number>(0);
     const user = useUser();
 
-    useEffect(() => console.log(user), [user]);
-
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
             toastId.current = errorToast(fetcher.data.error?.msg);

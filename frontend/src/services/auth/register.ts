@@ -1,6 +1,7 @@
 import { userContext } from "@/context/userContext";
 import { UserRole } from "@/types/User";
 import type { LoaderFunctionArgs } from "react-router";
+import { redirect } from "react-router";
 
 type RegisterFormData = {
     nombre: string;
@@ -12,10 +13,9 @@ type RegisterFormData = {
 export default async function register({
     request,
     context,
-}: LoaderFunctionArgs): Promise<{
-    error?: { msg: string; field: string };
-    token?: string;
-}> {
+}: LoaderFunctionArgs): Promise<
+    { error?: { msg: string; field: string } } | Response
+> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as RegisterFormData;
 
@@ -49,6 +49,7 @@ export default async function register({
         // hacer post request a backend
         await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
+        // usar el usuario retornado para setear la data
         context.set(userContext, {
             nombre: data.nombre,
             apellido: data.apellido,
@@ -59,6 +60,7 @@ export default async function register({
         });
 
         // hacer algo con el token (cookies o localstorage)
-        return { token: "mi-token" };
+
+        return redirect("/");
     }
 }
