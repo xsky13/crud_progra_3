@@ -1,13 +1,12 @@
-import useUser from "@/hooks/useUser";
 import { Button } from "../components/ui/button";
+import { AppLink } from "@/components/AppLink";
 
 export default function Home() {
-    const user = useUser();
-    return user ? (
-        <h1>{user.nombre}</h1>
-    ) : (
+    return (
         <div>
             <h1>Fuap</h1>
+            <AppLink to={"/registro"}>Registrarse</AppLink>
+            <br />
             <Button>fuap</Button>
         </div>
     );
