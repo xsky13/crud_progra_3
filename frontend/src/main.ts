@@ -5,12 +5,16 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import React from "react";
 import Registro from "./routes/Registro.tsx";
-import register from "./services/register.ts";
+import register from "./services/auth/register.ts";
 import Layout from "./routes/Layout.tsx";
+import loadUser from "./services/auth/loadUser.ts";
 
 const router = createBrowserRouter([
     {
+        id: "root",
+        path: "/",
         Component: Layout,
+        loader: loadUser,
         children: [
             {
                 index: true,

@@ -3,8 +3,9 @@ import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import useUser from "@/hooks/useUser";
 import errorToast from "@/lib/errorToast";
-import type register from "@/services/register";
+import type register from "@/services/auth/register";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router";
@@ -13,6 +14,9 @@ import { toast } from "sonner";
 export default function Registro() {
     const fetcher = useFetcher<typeof register>();
     const toastId = useRef<string | number>(0);
+    const user = useUser();
+
+    useEffect(() => console.log(user), [user]);
 
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
@@ -27,7 +31,9 @@ export default function Registro() {
         fetcher.submit(e.currentTarget, { method: "POST" });
     };
 
-    return (
+    return user ? (
+        <h1>Logged in</h1>
+    ) : (
         <div className="flex justify-center items-center h-screen">
             <div className="w-96 h-fit">
                 <div className="my-4">
