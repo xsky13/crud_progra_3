@@ -7,7 +7,7 @@ import React from "react";
 import Registro from "./routes/Registro.tsx";
 import register from "./services/auth/register.ts";
 import Login from "./routes/Login.tsx";
-import login from "./services/login.ts";
+import login from "./services/auth/login.ts";
 
 import Layout from "./routes/Layout.tsx";
 import loadUser from "./services/auth/loadUser.ts";
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
                 path: "login",
                 Component: Login,
                 action: login,
-            }
+            },
         ],
     },
 ]);

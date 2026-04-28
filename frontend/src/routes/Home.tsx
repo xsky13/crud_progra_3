@@ -1,8 +1,20 @@
 import { AppLink } from "@/components/AppLink";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, ChefHat, ShieldCheck, Star, Trophy, MessageSquare, Plus, BarChart3, GraduationCap } from "lucide-react";
-import { useState } from "react";
+import useUser from "@/hooks/useUser";
+import {
+    ArrowRight,
+    ChefHat,
+    ShieldCheck,
+    Star,
+    Trophy,
+    MessageSquare,
+    Plus,
+    BarChart3,
+    GraduationCap,
+    Divide,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const faqs = [
@@ -34,11 +46,46 @@ const faqs = [
 
 // ── Podium mock data ──────────────────────────────────────────────────────────
 const podiumItems = [
-    { pos: 1, emoji: "🥩", name: "Milanesa napolitana", cat: "Plato principal", score: "4.9", votes: 142 },
-    { pos: 2, emoji: "🍮", name: "Flan casero",         cat: "Postre",          score: "4.8", votes: 87  },
-    { pos: 3, emoji: "🥤", name: "Jugo de naranja",     cat: "Bebida",          score: "4.7", votes: 74  },
-    { pos: 4, emoji: "🍝", name: "Fideos con tuco",     cat: "Plato principal", score: "4.5", votes: 98  },
-    { pos: 5, emoji: "🥗", name: "Ensalada mixta",      cat: "Entrada",         score: "4.3", votes: 61  },
+    {
+        pos: 1,
+        emoji: "🥩",
+        name: "Milanesa napolitana",
+        cat: "Plato principal",
+        score: "4.9",
+        votes: 142,
+    },
+    {
+        pos: 2,
+        emoji: "🍮",
+        name: "Flan casero",
+        cat: "Postre",
+        score: "4.8",
+        votes: 87,
+    },
+    {
+        pos: 3,
+        emoji: "🥤",
+        name: "Jugo de naranja",
+        cat: "Bebida",
+        score: "4.7",
+        votes: 74,
+    },
+    {
+        pos: 4,
+        emoji: "🍝",
+        name: "Fideos con tuco",
+        cat: "Plato principal",
+        score: "4.5",
+        votes: 98,
+    },
+    {
+        pos: 5,
+        emoji: "🥗",
+        name: "Ensalada mixta",
+        cat: "Entrada",
+        score: "4.3",
+        votes: 61,
+    },
 ];
 
 // ── FAQ item component ────────────────────────────────────────────────────────
@@ -60,7 +107,10 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             </button>
             <div
                 className="overflow-hidden text-sm text-muted-foreground leading-relaxed transition-all duration-300"
-                style={{ maxHeight: open ? "200px" : "0", paddingBottom: open ? "16px" : "0" }}
+                style={{
+                    maxHeight: open ? "200px" : "0",
+                    paddingBottom: open ? "16px" : "0",
+                }}
             >
                 {a}
             </div>
@@ -70,9 +120,18 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Home() {
-    return (
-        <div className="min-h-screen bg-background text-foreground">
+    const user = useUser();
 
+    useEffect(() => console.log(user), [user]);
+
+    return user ? (
+        <div>
+            <h1>
+                Bienvenido {user.nombre} {user.apellido}
+            </h1>
+        </div>
+    ) : (
+        <div className="min-h-screen bg-background text-foreground">
             {/* ── NAVBAR ── */}
             <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
                 <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-6">
@@ -80,17 +139,31 @@ export default function Home() {
                         <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
                             <ChefHat className="size-4" />
                         </div>
-                        <span className="text-sm font-semibold tracking-tight">Comedor UAP</span>
+                        <span className="text-sm font-semibold tracking-tight">
+                            Comedor UAP
+                        </span>
                     </div>
 
                     <nav className="hidden items-center gap-1 md:flex">
-                        {["#como-funciona", "#funcionalidades", "#roles", "#faq"].map((href, i) => (
+                        {[
+                            "#como-funciona",
+                            "#funcionalidades",
+                            "#roles",
+                            "#faq",
+                        ].map((href, i) => (
                             <a
                                 key={href}
                                 href={href}
                                 className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             >
-                                {["Cómo funciona", "Funcionalidades", "Roles", "FAQ"][i]}
+                                {
+                                    [
+                                        "Cómo funciona",
+                                        "Funcionalidades",
+                                        "Roles",
+                                        "FAQ",
+                                    ][i]
+                                }
                             </a>
                         ))}
                     </nav>
@@ -115,7 +188,9 @@ export default function Home() {
 
                 <h1 className="mx-auto max-w-2xl text-5xl font-extrabold tracking-tight text-balance">
                     Calificá la comida{" "}
-                    <span className="text-muted-foreground">del comedor UAP.</span>
+                    <span className="text-muted-foreground">
+                        del comedor UAP.
+                    </span>
                 </h1>
 
                 <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
@@ -152,18 +227,49 @@ export default function Home() {
                     {/* cards */}
                     <div className="grid grid-cols-3 gap-3 bg-background p-4">
                         {[
-                            { emoji: "🥩", name: "Milanesa napolitana", stars: 5, pct: 94, votes: "142 votos" },
-                            { emoji: "🍝", name: "Fideos con tuco",     stars: 4, pct: 78, votes: "98 votos"  },
-                            { emoji: "🍮", name: "Flan casero",         stars: 5, pct: 91, votes: "87 votos"  },
+                            {
+                                emoji: "🥩",
+                                name: "Milanesa napolitana",
+                                stars: 5,
+                                pct: 94,
+                                votes: "142 votos",
+                            },
+                            {
+                                emoji: "🍝",
+                                name: "Fideos con tuco",
+                                stars: 4,
+                                pct: 78,
+                                votes: "98 votos",
+                            },
+                            {
+                                emoji: "🍮",
+                                name: "Flan casero",
+                                stars: 5,
+                                pct: 91,
+                                votes: "87 votos",
+                            },
                         ].map((item) => (
-                            <div key={item.name} className="flex flex-col gap-2 rounded-lg border border-border p-3">
+                            <div
+                                key={item.name}
+                                className="flex flex-col gap-2 rounded-lg border border-border p-3"
+                            >
                                 <span className="text-2xl">{item.emoji}</span>
-                                <p className="text-xs font-semibold leading-tight">{item.name}</p>
-                                <p className="text-xs text-primary">{"★".repeat(item.stars)}{"☆".repeat(5 - item.stars)}</p>
+                                <p className="text-xs font-semibold leading-tight">
+                                    {item.name}
+                                </p>
+                                <p className="text-xs text-primary">
+                                    {"★".repeat(item.stars)}
+                                    {"☆".repeat(5 - item.stars)}
+                                </p>
                                 <div className="h-1 w-full overflow-hidden rounded-full bg-muted">
-                                    <div className="h-full rounded-full bg-primary" style={{ width: `${item.pct}%` }} />
+                                    <div
+                                        className="h-full rounded-full bg-primary"
+                                        style={{ width: `${item.pct}%` }}
+                                    />
                                 </div>
-                                <p className="font-mono text-[10px] text-muted-foreground">{item.votes}</p>
+                                <p className="font-mono text-[10px] text-muted-foreground">
+                                    {item.votes}
+                                </p>
                             </div>
                         ))}
                     </div>
@@ -173,11 +279,17 @@ export default function Home() {
             <Separator />
 
             {/* ── CÓMO FUNCIONA ── */}
-            <section id="como-funciona" className="mx-auto max-w-5xl px-6 py-20">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Cómo funciona</p>
+            <section
+                id="como-funciona"
+                className="mx-auto max-w-5xl px-6 py-20"
+            >
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    Cómo funciona
+                </p>
                 <h2 className="mb-3 max-w-sm">Simple desde el primer día</h2>
                 <p className="mb-12 max-w-md text-base text-muted-foreground">
-                    Solo necesitás tu cuenta de la universidad para empezar a opinar.
+                    Solo necesitás tu cuenta de la universidad para empezar a
+                    opinar.
                 </p>
 
                 <div
@@ -185,18 +297,45 @@ export default function Home() {
                     style={{ gap: "1px", background: "var(--color-border)" }}
                 >
                     {[
-                        { num: "01", icon: <GraduationCap className="size-4" />, title: "Registrate con tu cuenta UAP", desc: "Usá tu correo institucional y número de alumno. Solo estudiantes y personal de la UAP pueden acceder." },
-                        { num: "02", icon: <Star className="size-4" />, title: "Explorá el catálogo de comidas",  desc: "Navegá por platos, bebidas, postres y más. Encontrá lo que comiste hoy o buscá un favorito."         },
-                        { num: "03", icon: <MessageSquare className="size-4" />, title: "Puntuá y comentá",   desc: "Dale de 1 a 5 estrellas a cada comida y dejá tu opinión para ayudar a mejorar el menú."            },
-                        { num: "04", icon: <Trophy className="size-4" />, title: "Seguí los podios",          desc: "Mirá el ranking semanal y general de los platos más queridos de toda la comunidad."               },
+                        {
+                            num: "01",
+                            icon: <GraduationCap className="size-4" />,
+                            title: "Registrate con tu cuenta UAP",
+                            desc: "Usá tu correo institucional y número de alumno. Solo estudiantes y personal de la UAP pueden acceder.",
+                        },
+                        {
+                            num: "02",
+                            icon: <Star className="size-4" />,
+                            title: "Explorá el catálogo de comidas",
+                            desc: "Navegá por platos, bebidas, postres y más. Encontrá lo que comiste hoy o buscá un favorito.",
+                        },
+                        {
+                            num: "03",
+                            icon: <MessageSquare className="size-4" />,
+                            title: "Puntuá y comentá",
+                            desc: "Dale de 1 a 5 estrellas a cada comida y dejá tu opinión para ayudar a mejorar el menú.",
+                        },
+                        {
+                            num: "04",
+                            icon: <Trophy className="size-4" />,
+                            title: "Seguí los podios",
+                            desc: "Mirá el ranking semanal y general de los platos más queridos de toda la comunidad.",
+                        },
                     ].map((step) => (
-                        <div key={step.num} className="flex flex-col gap-3 bg-background p-6">
-                            <span className="font-mono text-[11px] text-muted-foreground">{step.num}</span>
+                        <div
+                            key={step.num}
+                            className="flex flex-col gap-3 bg-background p-6"
+                        >
+                            <span className="font-mono text-[11px] text-muted-foreground">
+                                {step.num}
+                            </span>
                             <div className="flex size-8 items-center justify-center rounded-md border border-border bg-muted text-foreground">
                                 {step.icon}
                             </div>
                             <h5 className="font-semibold">{step.title}</h5>
-                            <p className="text-sm text-muted-foreground">{step.desc}</p>
+                            <p className="text-sm text-muted-foreground">
+                                {step.desc}
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -207,30 +346,67 @@ export default function Home() {
             {/* ── FUNCIONALIDADES ── */}
             <section id="funcionalidades" className="bg-muted/40 py-20">
                 <div className="mx-auto max-w-5xl px-6">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Funcionalidades</p>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                        Funcionalidades
+                    </p>
                     <h2 className="mb-3 max-w-sm">Todo en un solo lugar</h2>
                     <p className="mb-12 max-w-md text-base text-muted-foreground">
-                        Un espacio diseñado para que cada voz de la comunidad UAP cuente.
+                        Un espacio diseñado para que cada voz de la comunidad
+                        UAP cuente.
                     </p>
 
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {[
-                            { icon: <Star className="size-5" />, bg: "bg-amber-100 text-amber-700",    title: "Calificaciones con estrellas",      desc: "Puntuá cada plato, bebida o postre del 1 al 5. Tu voto contribuye al puntaje promedio visible para todos."       },
-                            { icon: <MessageSquare className="size-5" />, bg: "bg-blue-100 text-blue-700",     title: "Comentarios de retroalimentación", desc: "Dejá reseñas escritas sobre lo que más o menos te gustó. La cocina las lee para mejorar."                         },
-                            { icon: <Trophy className="size-5" />, bg: "bg-green-100 text-green-700",   title: "Podio semanal y general",           desc: "Rankings actualizados con las comidas más valoradas de la semana y de todos los tiempos."                           },
-                            { icon: <Plus className="size-5" />, bg: "bg-orange-100 text-orange-700", title: "Sugerencia de comidas",             desc: "Si no encontrás un plato en el catálogo, podés sugerirlo. El administrador lo revisa y lo aprueba si corresponde." },
-                            { icon: <BarChart3 className="size-5" />, bg: "bg-purple-100 text-purple-700", title: "Panel de análisis para cocineros", desc: "Estadísticas de satisfacción por plato: promedios, tendencias y comentarios destacados."                            },
-                            { icon: <ShieldCheck className="size-5" />, bg: "bg-rose-100 text-rose-700",    title: "Acceso exclusivo UAP",             desc: "Registro solo con email institucional y número de alumno. La comunidad califica, la comunidad decide."              },
+                            {
+                                icon: <Star className="size-5" />,
+                                bg: "bg-amber-100 text-amber-700",
+                                title: "Calificaciones con estrellas",
+                                desc: "Puntuá cada plato, bebida o postre del 1 al 5. Tu voto contribuye al puntaje promedio visible para todos.",
+                            },
+                            {
+                                icon: <MessageSquare className="size-5" />,
+                                bg: "bg-blue-100 text-blue-700",
+                                title: "Comentarios de retroalimentación",
+                                desc: "Dejá reseñas escritas sobre lo que más o menos te gustó. La cocina las lee para mejorar.",
+                            },
+                            {
+                                icon: <Trophy className="size-5" />,
+                                bg: "bg-green-100 text-green-700",
+                                title: "Podio semanal y general",
+                                desc: "Rankings actualizados con las comidas más valoradas de la semana y de todos los tiempos.",
+                            },
+                            {
+                                icon: <Plus className="size-5" />,
+                                bg: "bg-orange-100 text-orange-700",
+                                title: "Sugerencia de comidas",
+                                desc: "Si no encontrás un plato en el catálogo, podés sugerirlo. El administrador lo revisa y lo aprueba si corresponde.",
+                            },
+                            {
+                                icon: <BarChart3 className="size-5" />,
+                                bg: "bg-purple-100 text-purple-700",
+                                title: "Panel de análisis para cocineros",
+                                desc: "Estadísticas de satisfacción por plato: promedios, tendencias y comentarios destacados.",
+                            },
+                            {
+                                icon: <ShieldCheck className="size-5" />,
+                                bg: "bg-rose-100 text-rose-700",
+                                title: "Acceso exclusivo UAP",
+                                desc: "Registro solo con email institucional y número de alumno. La comunidad califica, la comunidad decide.",
+                            },
                         ].map((f) => (
                             <div
                                 key={f.title}
                                 className="flex flex-col gap-3 rounded-xl border border-border bg-background p-5 transition-shadow hover:shadow-md"
                             >
-                                <div className={`flex size-9 items-center justify-center rounded-lg ${f.bg}`}>
+                                <div
+                                    className={`flex size-9 items-center justify-center rounded-lg ${f.bg}`}
+                                >
                                     {f.icon}
                                 </div>
                                 <h5 className="font-semibold">{f.title}</h5>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    {f.desc}
+                                </p>
                             </div>
                         ))}
                     </div>
@@ -243,18 +419,25 @@ export default function Home() {
             <section className="mx-auto max-w-5xl px-6 py-20">
                 <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
                     <div className="lg:flex-1">
-                        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Podio semanal</p>
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                            Podio semanal
+                        </p>
                         <h2 className="mb-4">Los más votados de la semana</h2>
                         <p className="text-base text-muted-foreground leading-relaxed">
-                            Cada lunes se renueva el ranking. ¿Qué platos van a liderar esta semana?
-                            Entrá, calificá y hacé que tu favorito llegue al primer puesto.
+                            Cada lunes se renueva el ranking. ¿Qué platos van a
+                            liderar esta semana? Entrá, calificá y hacé que tu
+                            favorito llegue al primer puesto.
                         </p>
                     </div>
                     <div className="w-full lg:flex-1">
                         <div className="overflow-hidden rounded-xl border border-border">
                             <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">
-                                <span className="text-sm font-semibold">🏆 Top comidas — esta semana</span>
-                                <span className="rounded-full bg-border px-2 py-0.5 font-mono text-[11px] text-muted-foreground">en vivo</span>
+                                <span className="text-sm font-semibold">
+                                    🏆 Top comidas — esta semana
+                                </span>
+                                <span className="rounded-full bg-border px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+                                    en vivo
+                                </span>
                             </div>
                             <div>
                                 {podiumItems.map((item) => (
@@ -264,23 +447,34 @@ export default function Home() {
                                     >
                                         <span
                                             className={`w-5 shrink-0 text-center font-mono text-sm font-semibold ${
-                                                item.pos === 1 ? "text-amber-500" :
-                                                item.pos === 2 ? "text-slate-400" :
-                                                item.pos === 3 ? "text-amber-700" :
-                                                "text-muted-foreground"
+                                                item.pos === 1
+                                                    ? "text-amber-500"
+                                                    : item.pos === 2
+                                                      ? "text-slate-400"
+                                                      : item.pos === 3
+                                                        ? "text-amber-700"
+                                                        : "text-muted-foreground"
                                             }`}
                                         >
                                             {String(item.pos).padStart(2, "0")}
                                         </span>
-                                        <span className="text-xl">{item.emoji}</span>
+                                        <span className="text-xl">
+                                            {item.emoji}
+                                        </span>
                                         <div className="flex-1 min-w-0">
-                                            <p className="truncate text-sm font-medium">{item.name}</p>
-                                            <p className="text-xs text-muted-foreground">{item.cat}</p>
+                                            <p className="truncate text-sm font-medium">
+                                                {item.name}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                {item.cat}
+                                            </p>
                                         </div>
                                         <div className="flex items-center gap-1 text-sm font-semibold">
                                             <Star className="size-3 fill-primary text-primary" />
                                             {item.score}
-                                            <span className="font-mono text-[11px] text-muted-foreground ml-1">{item.votes}</span>
+                                            <span className="font-mono text-[11px] text-muted-foreground ml-1">
+                                                {item.votes}
+                                            </span>
                                         </div>
                                     </div>
                                 ))}
@@ -295,10 +489,13 @@ export default function Home() {
             {/* ── ROLES ── */}
             <section id="roles" className="bg-muted/40 py-20">
                 <div className="mx-auto max-w-5xl px-6">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Roles</p>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                        Roles
+                    </p>
                     <h2 className="mb-3">Una plataforma para todos</h2>
                     <p className="mb-12 max-w-md text-base text-muted-foreground">
-                        Cada usuario tiene su propio espacio según su rol dentro de la comunidad.
+                        Cada usuario tiene su propio espacio según su rol dentro
+                        de la comunidad.
                     </p>
 
                     <div className="grid gap-4 sm:grid-cols-3">
@@ -338,20 +535,32 @@ export default function Home() {
                                 ],
                             },
                         ].map((role) => (
-                            <div key={role.title} className="flex flex-col gap-4 rounded-xl border border-border bg-background p-6">
+                            <div
+                                key={role.title}
+                                className="flex flex-col gap-4 rounded-xl border border-border bg-background p-6"
+                            >
                                 <div className="flex items-center gap-3">
                                     <div className="flex size-10 items-center justify-center rounded-lg border border-border bg-muted">
                                         {role.icon}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-semibold">{role.title}</p>
-                                        <p className="text-xs text-muted-foreground">{role.sub}</p>
+                                        <p className="text-sm font-semibold">
+                                            {role.title}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {role.sub}
+                                        </p>
                                     </div>
                                 </div>
                                 <ul className="flex flex-col gap-2">
                                     {role.items.map((item) => (
-                                        <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                            <span className="mt-0.5 shrink-0 text-muted-foreground/50">–</span>
+                                        <li
+                                            key={item}
+                                            className="flex items-start gap-2 text-sm text-muted-foreground"
+                                        >
+                                            <span className="mt-0.5 shrink-0 text-muted-foreground/50">
+                                                –
+                                            </span>
                                             {item}
                                         </li>
                                     ))}
@@ -370,7 +579,8 @@ export default function Home() {
                     <div>
                         <h3 className="mb-1.5">¿Sos alumno de la UAP?</h3>
                         <p className="text-sm text-muted-foreground">
-                            Registrate con tu email institucional y número de alumno para empezar a calificar.
+                            Registrate con tu email institucional y número de
+                            alumno para empezar a calificar.
                         </p>
                     </div>
                     <div className="flex shrink-0 gap-3">
@@ -389,7 +599,9 @@ export default function Home() {
             {/* ── FAQ ── */}
             <section id="faq" className="mx-auto max-w-5xl px-6 py-20">
                 <div className="mx-auto max-w-xl">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Preguntas frecuentes</p>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                        Preguntas frecuentes
+                    </p>
                     <h2 className="mb-8">¿Tenés dudas?</h2>
                     <div>
                         {faqs.map((f) => (
@@ -406,10 +618,13 @@ export default function Home() {
                         <div className="flex size-5 items-center justify-center rounded bg-primary text-primary-foreground">
                             <ChefHat className="size-3" />
                         </div>
-                        <span className="text-sm font-semibold">Comedor UAP</span>
+                        <span className="text-sm font-semibold">
+                            Comedor UAP
+                        </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                        © 2025 Universidad Adventista del Plata · Todos los derechos reservados.
+                        © 2025 Universidad Adventista del Plata · Todos los
+                        derechos reservados.
                     </p>
                 </div>
             </footer>

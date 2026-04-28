@@ -36,7 +36,9 @@ export default async function login({
     let loggedInUser: User;
 
     // cuando haya db reemplazar con llamada y retornar respuesta simplemente
-    if (data.email != userNormal.email || data.email != userAdmin.email) {
+    await fetch("https://jsonplaceholder.typicode.com/todos/1");
+
+    if (data.email != userNormal.email && data.email != userAdmin.email) {
         return {
             error: { msg: "No hay un usuario con ese email", field: "email" },
         };
@@ -51,7 +53,8 @@ export default async function login({
         };
     }
 
-    context.set(userContext, loggedInUser);
+    //guardar el token retornado en session storage
+    sessionStorage.setItem("user", JSON.stringify(loggedInUser));
 
     return redirect("/");
 }

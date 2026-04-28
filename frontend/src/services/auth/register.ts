@@ -49,17 +49,15 @@ export default async function register({
         // hacer post request a backend
         await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-        // usar el usuario retornado para setear la data
-        context.set(userContext, {
+        // usar el usuario retornado para setear la data (token en realidad)
+        sessionStorage.setItem("user", JSON.stringify({
             nombre: data.nombre,
             apellido: data.apellido,
             email: data.email,
             contrasena: data.contrasena,
             rol: UserRole.Usuario,
             loggedIn: true,
-        });
-
-        // hacer algo con el token (cookies o localstorage)
+        }));
 
         return redirect("/");
     }

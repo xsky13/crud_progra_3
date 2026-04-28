@@ -4,29 +4,31 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import errorToast from "@/lib/errorToast";
-import type login from "@/services/login";
+import type login from "@/services/auth/login";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import { useFetcher } from "react-router";
 import { toast } from "sonner";
- 
+
 export default function Login() {
     const fetcher = useFetcher<typeof login>();
     const toastId = useRef<string | number>(0);
- 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
             toastId.current = errorToast(fetcher.data.error?.msg);
         }
     }, [fetcher.data]);
- 
+
     const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
- 
+
         toast.dismiss(toastId.current);
         fetcher.submit(e.currentTarget, { method: "POST" });
     };
- 
+
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="w-96 h-fit">
@@ -40,9 +42,7 @@ export default function Login() {
                 <fetcher.Form onSubmit={onSubmit} className="my-5">
                     <FieldGroup>
                         <Field
-                            data-invalid={
-                                fetcher.data?.error?.field == "email"
-                            }
+                            data-invalid={fetcher.data?.error?.field == "email"}
                         >
                             <FieldLabel htmlFor="email">
                                 Su correo electronico
@@ -95,4 +95,3 @@ export default function Login() {
         </div>
     );
 }
- 
