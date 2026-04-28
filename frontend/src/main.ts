@@ -11,6 +11,7 @@ import login from "./services/auth/login.ts";
 
 import Layout from "./routes/Layout.tsx";
 import loadUser from "./services/auth/loadUser.ts";
+import authCheckLoader from "./services/auth/authCheckLoader.ts";
 
 const router = createBrowserRouter([
     {
@@ -27,11 +28,13 @@ const router = createBrowserRouter([
                 path: "registro",
                 Component: Registro,
                 action: register,
+                loader: authCheckLoader
             },
             {
                 path: "login",
                 Component: Login,
                 action: login,
+                loader: authCheckLoader
             },
         ],
     },

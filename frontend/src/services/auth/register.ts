@@ -1,6 +1,6 @@
 import { userContext } from "@/context/userContext";
 import { UserRole } from "@/types/User";
-import type { LoaderFunctionArgs } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 
 type RegisterFormData = {
@@ -12,8 +12,7 @@ type RegisterFormData = {
 
 export default async function register({
     request,
-    context,
-}: LoaderFunctionArgs): Promise<
+}: ActionFunctionArgs): Promise<
     { error?: { msg: string; field: string } } | Response
 > {
     const formData = await request.formData();

@@ -26,7 +26,6 @@ const userAdmin: User = {
 
 export default async function login({
     request,
-    context,
 }: ActionFunctionArgs): Promise<
     { error?: { msg: string; field: string } } | Response
 > {
