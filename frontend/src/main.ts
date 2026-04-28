@@ -5,14 +5,22 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import React from "react";
 import Registro from "./routes/Registro.tsx";
+<<<<<<< HEAD
 import register from "./services/register.ts";
 import Login from "./routes/Login.tsx";
 import login from "./services/login.ts";
+=======
+import register from "./services/auth/register.ts";
+>>>>>>> 6889794de1522ce322339534718617e692c8c012
 import Layout from "./routes/Layout.tsx";
+import loadUser from "./services/auth/loadUser.ts";
 
 const router = createBrowserRouter([
     {
+        id: "root",
+        path: "/",
         Component: Layout,
+        loader: loadUser,
         children: [
             {
                 index: true,

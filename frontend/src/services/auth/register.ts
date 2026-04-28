@@ -1,3 +1,8 @@
+import { userContext } from "@/context/userContext";
+import { UserRole } from "@/types/User";
+import type { LoaderFunctionArgs } from "react-router";
+import { redirect } from "react-router";
+
 type RegisterFormData = {
     nombre: string;
     apellido: string;
@@ -7,9 +12,10 @@ type RegisterFormData = {
 
 export default async function register({
     request,
-}: {
-    request: Request;
-}): Promise<{ error?: { msg: string; field: string }; token?: string }> {
+    context,
+}: LoaderFunctionArgs): Promise<
+    { error?: { msg: string; field: string } } | Response
+> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as RegisterFormData;
 
@@ -33,7 +39,6 @@ export default async function register({
     ) {
         return { error: { msg: "Su email no es valido", field: "email" } };
     } else if (data.contrasena.length < 6) {
-        console.log("Password bad", data.contrasena.length, data.contrasena);
         return {
             error: {
                 msg: "Su contrasena debe tener por lo menos 6 caracteres",
@@ -41,10 +46,21 @@ export default async function register({
             },
         };
     } else {
-        const response = await fetch(
-            "https://jsonplaceholder.typicode.com/todos/1",
-        ).then((res) => res.json());
+        // hacer post request a backend
+        await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-        return { token: "mi-token" };
+        // usar el usuario retornado para setear la data
+        context.set(userContext, {
+            nombre: data.nombre,
+            apellido: data.apellido,
+            email: data.email,
+            contrasena: data.contrasena,
+            rol: UserRole.Usuario,
+            loggedIn: true,
+        });
+
+        // hacer algo con el token (cookies o localstorage)
+
+        return redirect("/");
     }
 }

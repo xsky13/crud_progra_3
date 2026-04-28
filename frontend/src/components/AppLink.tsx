@@ -16,12 +16,12 @@ export function AppLink({ to, children, ...props }: AppNavLinkProps) {
     return (
         <NavLink to={to} {...props}>
             {(renderProps) => (
-                <>
+                <div className="inline-flex items-center gap-1">
                     {renderProps.isPending && <Spinner />}
                     {typeof children === "function"
                         ? children(renderProps)
                         : children}
-                </>
+                </div>
             )}
         </NavLink>
     );

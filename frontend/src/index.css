@@ -193,6 +193,10 @@ ul {
     }
 }
 
+#nprogress .bar {
+    background: var(--sidebar-primary) !important;
+}
+
 button {
     cursor: pointer;
 }
