@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { AppLink } from "@/components/AppLink";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -414,18 +413,20 @@ export default function Home() {
                     </p>
                 </div>
             </footer>
-=======
-import { Button } from "../components/ui/button";
-import { AppLink } from "@/components/AppLink";
-
-export default function Home() {
-    return (
-        <div>
-            <h1>Fuap</h1>
-            <AppLink to={"/registro"}>Registrarse</AppLink>
-            <br />
-            <Button>fuap</Button>
->>>>>>> 6889794de1522ce322339534718617e692c8c012
         </div>
     );
 }
+// import { Button } from "../components/ui/button";
+// import { AppLink } from "@/components/AppLink";
+
+// export default function Home() {
+//     return (
+//         <div>
+//             <h1>Fuap</h1>
+//             <AppLink to={"/registro"}>Registrarse</AppLink>
+//             <br />
+//             <Button>fuap</Button>
+
+//         </div>
+//     );
+// }
