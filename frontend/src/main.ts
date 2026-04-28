@@ -6,6 +6,9 @@ import { RouterProvider } from "react-router/dom";
 import React from "react";
 import Registro from "./routes/Registro.tsx";
 import register from "./services/auth/register.ts";
+import Login from "./routes/Login.tsx";
+import login from "./services/login.ts";
+
 import Layout from "./routes/Layout.tsx";
 import loadUser from "./services/auth/loadUser.ts";
 
@@ -25,6 +28,11 @@ const router = createBrowserRouter([
                 Component: Registro,
                 action: register,
             },
+            {
+                path: "login",
+                Component: Login,
+                action: login,
+            }
         ],
     },
 ]);
