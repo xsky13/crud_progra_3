@@ -12,9 +12,9 @@ import {
     Plus,
     BarChart3,
     GraduationCap,
-    Divide,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Form } from "react-router";
 
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const faqs = [
@@ -122,13 +122,14 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function Home() {
     const user = useUser();
 
-    useEffect(() => console.log(user), [user]);
-
     return user ? (
-        <div>
+        <div className="flex w-full justify-between items-center">
             <h1>
                 Bienvenido {user.nombre} {user.apellido}
             </h1>
+            <Form action="/logout" method="post">
+                <Button type="submit">Log out</Button>
+            </Form>
         </div>
     ) : (
         <div className="min-h-screen bg-background text-foreground">

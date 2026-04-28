@@ -12,6 +12,7 @@ import login from "./services/auth/login.ts";
 import Layout from "./routes/Layout.tsx";
 import loadUser from "./services/auth/loadUser.ts";
 import authCheckLoader from "./services/auth/authCheckLoader.ts";
+import logout from "./services/auth/logout.ts";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "logout",
+        action: logout
+    }
 ]);
 
 createRoot(document.getElementById("root")!).render(

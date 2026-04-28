@@ -1,4 +1,3 @@
-import { userContext } from "@/context/userContext";
 import { UserRole, type User } from "@/types/User";
 import type { ActionFunctionArgs } from "react-router";
 import { redirect } from "react-router";

@@ -1,6 +1,5 @@
-import { userContext } from "@/context/userContext";
 import { UserRole } from "@/types/User";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 
 type RegisterFormData = {
