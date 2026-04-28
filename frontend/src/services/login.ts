@@ -1,37 +1,57 @@
+import { userContext } from "@/context/userContext";
+import { UserRole, type User } from "@/types/User";
+import type { ActionFunctionArgs } from "react-router";
+import { redirect } from "react-router";
+
 type LoginFormData = {
     email: string;
     contrasena: string;
 };
- 
+
+const userNormal: User = {
+    nombre: "Test",
+    apellido: "Test",
+    email: "test@gmail.com",
+    contrasena: "123456",
+    rol: UserRole.Usuario,
+};
+
+const userAdmin: User = {
+    nombre: "Admin",
+    apellido: "Admin",
+    email: "admin@gmail.com",
+    contrasena: "123456",
+    rol: UserRole.Admin,
+};
+
 export default async function login({
     request,
-}: {
-    request: Request;
-}): Promise<{ error?: { msg: string; field: string }; token?: string }> {
+    context,
+}: ActionFunctionArgs): Promise<
+    { error?: { msg: string; field: string } } | Response
+> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as LoginFormData;
- 
-    if (
-        !data.email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[ ^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            )
-    ) {
-        return { error: { msg: "Su email no es valido", field: "email" } };
-    } else if (data.contrasena.length < 6) {
+
+    let loggedInUser: User;
+
+    // cuando haya db reemplazar con llamada y retornar respuesta simplemente
+    if (data.email != userNormal.email || data.email != userAdmin.email) {
         return {
-            error: {
-                msg: "Su contrasena debe tener por lo menos 6 caracteres",
-                field: "contrasena",
-            },
+            error: { msg: "No hay un usuario con ese email", field: "email" },
         };
-    } else {
-        // TODO: reemplazar con el endpoint real de login
-        const response = await fetch(
-            "https://jsonplaceholder.typicode.com/todos/1",
-        ).then((res) => res.json());
- 
-        return { token: "mi-token" };
     }
+
+    loggedInUser = [userNormal, userAdmin].filter(
+        (u) => u.email == data.email,
+    )[0];
+    if (data.contrasena != loggedInUser.contrasena) {
+        return {
+            error: { msg: "Contraseña incorrecta", field: "contrasena" },
+        };
+    }
+
+    context.set(userContext, loggedInUser);
+
+    return redirect("/");
 }
