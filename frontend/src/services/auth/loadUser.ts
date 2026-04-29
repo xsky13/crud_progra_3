@@ -1,18 +1,12 @@
-import { userContext } from "@/context/userContext";
 import type { User } from "@/types/User";
-import type { LoaderFunctionArgs } from "react-router";
 
-export default async function loadUser({
-    context,
-}: LoaderFunctionArgs): Promise<{ user: User }> {
-    if (context.get(userContext)) {
-        return { user: context.get(userContext) };
-    }
-
+export default async function loadUser(): Promise<{ user: User } | null> {
     // obtener token
+    const storedUser = sessionStorage.getItem("user") 
+    if (!storedUser) return null; // usuario no existe
+    
     // hacer llamada a backend
     // retornar usuario
-
-    // usuario no exite, retornar null
-    return null;
+    const user = JSON.parse(storedUser) as User;
+    return { user };
 }
