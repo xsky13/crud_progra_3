@@ -1,6 +1,8 @@
 import { AppLink } from "@/components/AppLink";
+import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import AdminHomeView from "@/components/Views/AdminHomeView";
 import useUser from "@/hooks/useUser";
 import {
     ArrowRight,
@@ -123,14 +125,12 @@ export default function Home() {
     const user = useUser();
 
     return user ? (
-        <div className="flex w-full justify-between items-center">
-            <h1>
-                Bienvenido {user.nombre} {user.apellido}
-            </h1>
-            <Form action="/logout" method="post">
-                <Button type="submit">Log out</Button>
-            </Form>
-        </div>
+        <>
+            <Header user={user} />
+            <div className="py-28">
+                <AdminHomeView />
+            </div>
+        </>
     ) : (
         <div className="min-h-screen bg-background text-foreground">
             {/* ── NAVBAR ── */}
