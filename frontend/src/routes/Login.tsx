@@ -1,5 +1,5 @@
-import { AppLink } from "@/components/AppLink";
-import SubmitButton from "@/components/SubmitButton";
+import { AppLink } from "@/components/Helpers/AppLink";
+import SubmitButton from "@/components/Helpers/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";

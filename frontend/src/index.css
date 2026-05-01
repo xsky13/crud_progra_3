@@ -42,6 +42,10 @@ ul {
     @apply list-disc [&>li]:mt-2;
 }
 
+.subtitle {
+    @apply text-muted-foreground  tracking-wide! uppercase font-bold! text-lg!;
+}
+
 .small {
     @apply text-sm leading-none;
 }

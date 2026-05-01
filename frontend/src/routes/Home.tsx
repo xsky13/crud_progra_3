@@ -1,4 +1,4 @@
-import { AppLink } from "@/components/AppLink";
+import { AppLink } from "@/components/Helpers/AppLink";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

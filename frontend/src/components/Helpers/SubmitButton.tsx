@@ -1,6 +1,6 @@
 import type React from "react";
-import { Button } from "./ui/button";
-import { Spinner } from "./ui/spinner";
+import { Button } from "../ui/button";
+import { Spinner } from "../ui/spinner";
 
 type SubmitButtonType = Omit<
     React.ComponentProps<typeof Button>,

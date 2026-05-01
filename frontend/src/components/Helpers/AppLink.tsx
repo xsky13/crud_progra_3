@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../ui/spinner";
 import type { NavLinkProps } from "react-router";
 
 type AppNavLinkProps = Omit<NavLinkProps, "children"> & {

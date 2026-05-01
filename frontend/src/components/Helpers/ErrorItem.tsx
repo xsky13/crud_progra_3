@@ -5,7 +5,7 @@ import {
     ItemDescription,
     ItemMedia,
     ItemTitle,
-} from "./ui/item";
+} from "../ui/item";
 
 export default function ErrorItem(props: {
     error: string;
