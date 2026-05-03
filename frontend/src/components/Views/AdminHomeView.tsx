@@ -1,22 +1,8 @@
 import type { Comida } from "@/types/Comida";
 import FoodCard from "../FoodCard";
 import { UserRole } from "@/types/User";
-import { useState } from "react";
 
-export default function AdminHomeView() {
-    const [comidas, setComidas] = useState<Comida[]>([
-        {
-            id: 1,
-            titulo: "Fideos",
-            img_url:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Fideos_n%C2%BA_0_%28squared%29.jpg/960px-Fideos_n%C2%BA_0_%28squared%29.jpg",
-            confirmada: true,
-            usuario_id: 1,
-        },
-    ]);
-    const deleteComida = (id: number) => {
-        setComidas(comidas.filter((c) => c.id != id));
-    };
+export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     return (
         <div className="block m-auto w-8/12">
             <div className="flex justify-center flex-col">
@@ -31,7 +17,7 @@ export default function AdminHomeView() {
                                 key={i}
                                 comida={comida}
                                 userRole={UserRole.Admin}
-                                remove={deleteComida}
+                                remove={() => {}}
                             />
                         ))}
                 </div>

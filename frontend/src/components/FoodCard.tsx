@@ -9,6 +9,14 @@ import {
 import type { Comida } from "@/types/Comida";
 import { UserRole } from "@/types/User";
 import { PencilIcon, TrashIcon } from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "./ui/dialog";
 
 export default function FoodCard({
     comida,
@@ -30,9 +38,23 @@ export default function FoodCard({
                 <CardTitle>{comida.titulo}</CardTitle>
                 {userRole == UserRole.Admin && (
                     <div className="flex gap-2">
-                        <Button variant="secondary">
-                            <PencilIcon />
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="secondary">
+                                    <PencilIcon />
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Editar comida</DialogTitle>
+                                    <DialogDescription>
+                                        This action cannot be undone. This will
+                                        permanently delete your account and
+                                        remove your data from our servers.
+                                    </DialogDescription>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
                         <Button
                             variant="destructive"
                             onClick={() => remove(comida.id)}

@@ -13,6 +13,7 @@ import Layout from "./routes/Layout.tsx";
 import loadUser from "./services/auth/loadUser.ts";
 import authCheckLoader from "./services/auth/authCheckLoader.ts";
 import logout from "./services/auth/logout.ts";
+import loadFood from "./services/food/loadFood.ts";
 
 const router = createBrowserRouter([
     {
@@ -24,25 +25,26 @@ const router = createBrowserRouter([
             {
                 index: true,
                 Component: Home,
+                loader: loadFood,
             },
             {
                 path: "registro",
                 Component: Registro,
                 action: register,
-                loader: authCheckLoader
+                loader: authCheckLoader,
             },
             {
                 path: "login",
                 Component: Login,
                 action: login,
-                loader: authCheckLoader
+                loader: authCheckLoader,
             },
         ],
     },
     {
         path: "logout",
-        action: logout
-    }
+        action: logout,
+    },
 ]);
 
 createRoot(document.getElementById("root")!).render(

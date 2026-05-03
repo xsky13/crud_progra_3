@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Form } from "react-router";
+import { useLoaderData } from "react-router";
+import type { Comida } from "@/types/Comida";
 
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const faqs = [
@@ -124,11 +126,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function Home() {
     const user = useUser();
 
+    const data = useLoaderData() as { comidas: Comida[] };
+
     return user ? (
         <>
             <Header user={user} />
             <div className="py-28">
-                <AdminHomeView />
+                <AdminHomeView comidas={data.comidas} />
             </div>
         </>
     ) : (
