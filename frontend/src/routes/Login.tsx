@@ -7,14 +7,12 @@ import errorToast from "@/lib/errorToast";
 import type login from "@/services/auth/login";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
 import { useFetcher } from "react-router";
 import { toast } from "sonner";
 
 export default function Login() {
     const fetcher = useFetcher<typeof login>();
     const toastId = useRef<string | number>(0);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
