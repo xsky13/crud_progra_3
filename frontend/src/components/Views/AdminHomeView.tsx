@@ -19,10 +19,12 @@ import { useEffect, useRef, useState } from "react";
 import errorToast from "@/lib/errorToast";
 import type createFood from "@/services/food/createFood";
 import { toast } from "sonner";
+import useUser from "@/hooks/useUser";
 
 export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     const fetcher = useFetcher<typeof createFood>();
     const toastId = useRef<string | number>(0);
+    const user = useUser();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -128,8 +130,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                                 <FoodCard
                                     key={i}
                                     comida={comida}
-                                    userRole={UserRole.Admin}
-                                    remove={() => {}}
+                                    userRole={user.rol}
                                 />
                             ))}
                         </div>

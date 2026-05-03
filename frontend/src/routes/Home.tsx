@@ -16,9 +16,10 @@ import {
     GraduationCap,
 } from "lucide-react";
 import { useState } from "react";
-import { Form } from "react-router";
 import { useLoaderData } from "react-router";
 import type { Comida } from "@/types/Comida";
+import { UserRole } from "@/types/User";
+import UserHomeView from "@/components/Views/UserHomeView";
 
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const faqs = [
@@ -130,9 +131,13 @@ export default function Home() {
 
     return user ? (
         <>
-            <Header user={user} />
+            <Header />
             <div className="py-28">
-                <AdminHomeView comidas={data.comidas} />
+                {user.rol == UserRole.Usuario ? (
+                    <UserHomeView comidas={data.comidas} />
+                ) : (
+                    <AdminHomeView comidas={data.comidas} />
+                )}
             </div>
         </>
     ) : (

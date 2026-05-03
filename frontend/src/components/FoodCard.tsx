@@ -9,23 +9,13 @@ import {
 import type { Comida } from "@/types/Comida";
 import { UserRole } from "@/types/User";
 import { PencilIcon, TrashIcon } from "lucide-react";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "./ui/dialog";
 
 export default function FoodCard({
     comida,
     userRole,
-    remove,
 }: {
     comida: Comida;
     userRole: UserRole;
-    remove: (id: number) => void;
 }) {
     return (
         <Card className=" w-full max-w-sm pt-0">
@@ -38,27 +28,10 @@ export default function FoodCard({
                 <CardTitle>{comida.titulo}</CardTitle>
                 {userRole == UserRole.Admin && (
                     <div className="flex gap-2">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="secondary">
-                                    <PencilIcon />
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Editar comida</DialogTitle>
-                                    <DialogDescription>
-                                        This action cannot be undone. This will
-                                        permanently delete your account and
-                                        remove your data from our servers.
-                                    </DialogDescription>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                        <Button
-                            variant="destructive"
-                            onClick={() => remove(comida.id)}
-                        >
+                        <Button variant="secondary">
+                            <PencilIcon />
+                        </Button>
+                        <Button variant="destructive">
                             <TrashIcon />
                         </Button>
                     </div>
