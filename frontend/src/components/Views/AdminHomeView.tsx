@@ -1,12 +1,10 @@
 import type { Comida } from "@/types/Comida";
 import FoodCard from "../FoodCard";
-import { UserRole } from "@/types/User";
 import { Button } from "../ui/button";
-import { PlusIcon } from "lucide-react";
+import { InfoIcon, PlusIcon } from "lucide-react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -20,6 +18,7 @@ import errorToast from "@/lib/errorToast";
 import type createFood from "@/services/food/createFood";
 import { toast } from "sonner";
 import useUser from "@/hooks/useUser";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     const fetcher = useFetcher<typeof createFood>();
@@ -53,8 +52,11 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                 <h1>Panel administracion</h1>
 
                 <div className="mt-5">
-                    <div className="flex justify-between items-center">
-                        <h3 className="subtitle mb-3">Comidas actuales</h3>
+                    <div className="mb-3 flex justify-between items-end">
+                        <div>
+                            <h3 className="subtitle">Comidas actuales</h3>
+                            <div className="w-32 border border-primary"></div>
+                        </div>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
                                 <Button>
@@ -125,8 +127,8 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                         </Dialog>
                     </div>
 
-                    {comidas.length != 0 && (
-                        <div className="flex gap-5">
+                    {comidas.length != 0 ? (
+                        <div className="grid grid-cols-3 gap-6">
                             {comidas.map((comida, i) => (
                                 <FoodCard
                                     key={i}
@@ -135,6 +137,14 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                                 />
                             ))}
                         </div>
+                    ) : (
+                        <Alert className="w-96 mt-5">
+                            <InfoIcon />
+                            <AlertTitle>No hay comidas</AlertTitle>
+                            <AlertDescription>
+                                Empiece a agregarlas!
+                            </AlertDescription>
+                        </Alert>
                     )}
                 </div>
             </div>

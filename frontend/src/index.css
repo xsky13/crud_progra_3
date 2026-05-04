@@ -43,7 +43,7 @@ ul {
 }
 
 .subtitle {
-    @apply text-muted-foreground  tracking-wide! uppercase font-bold! text-lg!;
+    @apply text-[#cf9c7a] tracking-wide! uppercase font-bold! text-lg!;
 }
 
 .small {
