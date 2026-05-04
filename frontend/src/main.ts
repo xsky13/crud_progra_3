@@ -15,6 +15,8 @@ import authCheckLoader from "./services/auth/authCheckLoader.ts";
 import logout from "./services/auth/logout.ts";
 import loadFood from "./services/food/loadFood.ts";
 import createFood from "./services/food/createFood.ts";
+import deleteFood from "./services/food/deleteFood.ts";
+import updateFood from "./services/food/updateFood.ts";
 
 const router = createBrowserRouter([
     {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
     {
         path: "/createFood",
         action: createFood,
+    },
+    {
+        path: "/deleteFood",
+        action: deleteFood,
+    },
+    {
+        path: "/updateFood",
+        action: updateFood,
     },
     {
         path: "logout",
