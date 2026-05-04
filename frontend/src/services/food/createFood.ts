@@ -25,8 +25,14 @@ export default async function createFood({
         };
     }
 
+    // temporary: get food with last id:
+    const biggestId = foods.reduce(
+        (acc, item) => (item.id > acc ? item.id : acc),
+        1,
+    );
+
     foods.push({
-        id: 1,
+        id: biggestId + 1,
         titulo: data.titulo,
         img_url: URL.createObjectURL(data.imagen),
         confirmada: true,

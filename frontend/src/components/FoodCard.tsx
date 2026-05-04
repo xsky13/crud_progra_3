@@ -52,10 +52,7 @@ export default function FoodCard({
 
     // Cerrar diálogo después de actualización exitosa
     useEffect(() => {
-        if (
-            fetcherUpdate.state === "idle" &&
-            fetcherUpdate.data?.ok
-        ) {
+        if (fetcherUpdate.state === "idle" && fetcherUpdate.data?.ok) {
             setOpenEdit(false);
         }
     }, [fetcherUpdate.state, fetcherUpdate.data]);
@@ -63,12 +60,18 @@ export default function FoodCard({
     const handleDelete = () => {
         const formData = new FormData();
         formData.append("id", comida.id.toString());
-        fetcherDelete.submit(formData, { method: "POST", action: "/deleteFood" });
+        fetcherDelete.submit(formData, {
+            method: "POST",
+            action: "/deleteFood",
+        });
     };
 
     const onSubmitEdit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        fetcherUpdate.submit(e.currentTarget, { method: "POST", action: "/updateFood" });
+        fetcherUpdate.submit(e.currentTarget, {
+            method: "POST",
+            action: "/updateFood",
+        });
     };
 
     return (
@@ -94,6 +97,7 @@ export default function FoodCard({
                                     <form
                                         onSubmit={onSubmitEdit}
                                         className="mt-3"
+                                        encType="multipart/form-data"
                                     >
                                         <input
                                             type="hidden"
@@ -116,8 +120,8 @@ export default function FoodCard({
                                                     type="file"
                                                     aria-invalid={
                                                         fetcherUpdate.data
-                                                            ?.error
-                                                            ?.field == "imagen"
+                                                            ?.error?.field ==
+                                                        "imagen"
                                                     }
                                                 />
                                             </Field>
@@ -136,8 +140,8 @@ export default function FoodCard({
                                                     defaultValue={comida.titulo}
                                                     aria-invalid={
                                                         fetcherUpdate.data
-                                                            ?.error
-                                                            ?.field == "titulo"
+                                                            ?.error?.field ==
+                                                        "titulo"
                                                     }
                                                 />
                                             </Field>

@@ -4,7 +4,7 @@ import { foods } from "./loadFood";
 type FormData = {
     id: string;
     titulo: string;
-    imagen: string;
+    imagen: File;
 };
 
 export default async function updateFood({
@@ -40,11 +40,16 @@ export default async function updateFood({
 
     const foodIndex = foods.findIndex((food) => food.id === foodId);
 
-    foods[foodIndex] = {
-        ...foods[foodIndex],
-        titulo: data.titulo,
-        img_url: data.imagen,
-    };
+    // rapido solo para las pruebas:
+    foods[foodIndex].titulo = data.titulo;
+    if (data.imagen.size != 0)
+        foods[foodIndex].img_url = URL.createObjectURL(data.imagen);
+
+    // foods[foodIndex] = {
+    //     ...foods[foodIndex],
+    //     titulo: data.titulo,
+    //     img_url: data.imagen,
+    // };
 
     return { ok: true };
 }
