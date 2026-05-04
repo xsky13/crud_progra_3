@@ -67,6 +67,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                                     <DialogTitle>Agregar comida</DialogTitle>
                                     <fetcher.Form
                                         method="POST"
+                                        encType="multipart/form-data"
                                         action="/createFood"
                                         className="mt-3"
                                         onSubmit={onSubmit}

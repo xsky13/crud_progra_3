@@ -3,7 +3,7 @@ import { foods } from "./loadFood";
 
 type FormData = {
     titulo: string;
-    imagen: string;
+    imagen: File;
 };
 
 export default async function createFood({
@@ -28,7 +28,7 @@ export default async function createFood({
     foods.push({
         id: 1,
         titulo: data.titulo,
-        img_url: data.imagen,
+        img_url: URL.createObjectURL(data.imagen),
         confirmada: true,
         usuario_id: 1,
     });
