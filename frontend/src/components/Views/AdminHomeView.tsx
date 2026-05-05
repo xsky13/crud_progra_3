@@ -17,13 +17,11 @@ import { useEffect, useRef, useState } from "react";
 import errorToast from "@/lib/errorToast";
 import type createFood from "@/services/food/createFood";
 import { toast } from "sonner";
-import useUser from "@/hooks/useUser";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     const fetcher = useFetcher<typeof createFood>();
     const toastId = useRef<string | number>(0);
-    const user = useUser();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -47,7 +45,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     };
 
     return (
-        <div className="block m-auto w-8/12">
+        <div className="block m-auto w-10/12">
             <div className="flex justify-center flex-col">
                 <h1>Panel de administracion</h1>
 
@@ -59,7 +57,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                         </div>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <Button>
+                                <Button size={"lg"} className="w-32">
                                     <PlusIcon />
                                     Crear
                                 </Button>

@@ -26,6 +26,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/Helpers/SubmitButton";
 import useUser from "@/hooks/useUser";
+import { toast } from "sonner";
 
 const PromedioEstrellas = ({
     promedio_estrellas,
@@ -82,6 +83,8 @@ export default function FoodCard({ comida }: { comida: Comida }) {
     const handleDelete = () => {
         const formData = new FormData();
         formData.append("id", comida.id.toString());
+
+        toast.dismiss(toastIdDelete.current);
         fetcherDelete.submit(formData, {
             method: "POST",
             action: "/deleteFood",
@@ -90,6 +93,8 @@ export default function FoodCard({ comida }: { comida: Comida }) {
 
     const onSubmitEdit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        toast.dismiss(toastIdUpdate.current);
         fetcherUpdate.submit(e.currentTarget, {
             method: "POST",
             action: "/updateFood",
@@ -97,14 +102,16 @@ export default function FoodCard({ comida }: { comida: Comida }) {
     };
 
     return (
-        <Card className="rounded-sm w-full max-w-sm pt-0">
+        <Card className="w-full max-w-sm pt-0">
             <img
                 src={comida.img_url}
                 alt="Event cover"
                 className="aspect-video w-full object-cover"
             />
             <CardHeader>
-                <CardTitle className="font-bold">{comida.titulo}</CardTitle>
+                <CardTitle className="font-bold border-black w-fit">
+                    {comida.titulo}
+                </CardTitle>
                 {currentUser.rol == UserRole.Admin ? (
                     <>
                         <CardAction>
@@ -240,7 +247,7 @@ export default function FoodCard({ comida }: { comida: Comida }) {
             {currentUser.rol == UserRole.Usuario && (
                 <>
                     <CardFooter>
-                        <Button className="w-full" variant="secondary">
+                        <Button className="w-full" variant="outline">
                             Ver comentarios
                         </Button>
                     </CardFooter>

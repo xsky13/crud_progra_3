@@ -16,6 +16,8 @@ export default async function updateFood({
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
+    console.log(data);
+
     const foodId = parseInt(data.id);
 
     if (isNaN(foodId)) {
@@ -42,7 +44,7 @@ export default async function updateFood({
 
     // rapido solo para las pruebas:
     foods[foodIndex].titulo = data.titulo;
-    if (data.imagen.size != 0)
+    if (data.imagen && data.imagen?.size != 0)
         foods[foodIndex].img_url = URL.createObjectURL(data.imagen);
 
     // foods[foodIndex] = {
