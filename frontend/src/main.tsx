@@ -3,7 +3,6 @@ import "./index.css";
 import Home from "./routes/Home.tsx";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import React from "react";
 import Registro from "./routes/Registro.tsx";
 import register from "./services/auth/register.ts";
 import Login from "./routes/Login.tsx";
@@ -24,11 +23,21 @@ const router = createBrowserRouter([
         path: "/",
         Component: Layout,
         loader: loadUser,
+        HydrateFallback: () => {
+            return (
+                <div className="h-screen flex items-center justify-center">
+                    <img src="/loading.svg" width={150} />
+                </div>
+            );
+        },
         children: [
             {
                 index: true,
                 Component: Home,
                 loader: loadFood,
+                HydrateFallback: () => {
+                    return <p>Loading...</p>;
+                },
             },
             {
                 path: "registro",
@@ -63,5 +72,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    React.createElement(RouterProvider, { router }),
+    <RouterProvider router={router} />,
 );
