@@ -25,27 +25,17 @@ import errorToast from "@/lib/errorToast";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/Helpers/SubmitButton";
+import useUser from "@/hooks/useUser";
 
-const PromedioEstrellas = () => {
-    return (
-        <div className="flex gap-1 items-center font-bold">
-            <StarIcon size={17} fill="#79716B" /> 1.5/5
-        </div>
-    );
-};
-
-export default function FoodCard({
-    comida,
-    userRole,
-}: {
-    comida: Comida;
-    userRole: UserRole;
-}) {
+export default function FoodCard({ comida }: { comida: Comida }) {
     const fetcherDelete = useFetcher<typeof deleteFood>();
     const fetcherUpdate = useFetcher<typeof updateFood>();
     const toastIdDelete = useRef<string | number>(0);
     const toastIdUpdate = useRef<string | number>(0);
     const [openEdit, setOpenEdit] = useState(false);
+
+    const currentUser = useUser();
+    if (!currentUser) return null;
 
     useEffect(() => {
         if (fetcherDelete.data?.error?.msg) {
@@ -92,7 +82,7 @@ export default function FoodCard({
             />
             <CardHeader>
                 <CardTitle>{comida.titulo}</CardTitle>
-                {userRole == UserRole.Admin ? (
+                {currentUser.rol == UserRole.Admin ? (
                     <>
                         <CardAction>
                             <div className="flex">
@@ -217,7 +207,7 @@ export default function FoodCard({
                     </>
                 )}
             </CardHeader>
-            {userRole == UserRole.Usuario && (
+            {currentUser.rol == UserRole.Usuario && (
                 <>
                     <CardFooter>
                         <Button className="w-full" variant="secondary">

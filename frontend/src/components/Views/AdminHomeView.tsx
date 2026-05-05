@@ -49,7 +49,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
     return (
         <div className="block m-auto w-8/12">
             <div className="flex justify-center flex-col">
-                <h1>Panel administracion</h1>
+                <h1>Panel de administracion</h1>
 
                 <div className="mt-5">
                     <div className="mb-3 flex justify-between items-end">
@@ -128,7 +128,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                     </div>
 
                     {comidas.length != 0 ? (
-                        <div className="grid grid-cols-3 gap-6">
+                        <div className="grid grid-cols-3 gap-10">
                             {comidas.map((comida, i) => (
                                 <FoodCard
                                     key={i}
