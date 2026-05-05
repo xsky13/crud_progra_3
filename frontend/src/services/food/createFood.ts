@@ -37,6 +37,8 @@ export default async function createFood({
         img_url: URL.createObjectURL(data.imagen),
         confirmada: true,
         usuario_id: 1,
+        cantidad_calificaciones: 0,
+        promedio_estrellas: 0,
     });
 
     return { ok: true };
