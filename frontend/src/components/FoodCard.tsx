@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
     Card,
+    CardAction,
     CardDescription,
     CardFooter,
     CardHeader,
@@ -15,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import type { Comida } from "@/types/Comida";
 import { UserRole } from "@/types/User";
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { PencilIcon, StarIcon, TrashIcon } from "lucide-react";
 import { useFetcher } from "react-router";
 import type deleteFood from "@/services/food/deleteFood";
 import type updateFood from "@/services/food/updateFood";
@@ -24,6 +25,14 @@ import errorToast from "@/lib/errorToast";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/Helpers/SubmitButton";
+
+const PromedioEstrellas = () => {
+    return (
+        <div className="flex gap-1 items-center font-bold">
+            <StarIcon size={17} fill="#79716B" /> 1.5/5
+        </div>
+    );
+};
 
 export default function FoodCard({
     comida,
@@ -81,99 +90,137 @@ export default function FoodCard({
                 alt="Event cover"
                 className="aspect-video w-full object-cover"
             />
-            <CardHeader className="flex justify-between items-center">
+            <CardHeader>
                 <CardTitle>{comida.titulo}</CardTitle>
-                {userRole == UserRole.Admin && (
-                    <div className="flex gap-2">
-                        <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-                            <DialogTrigger asChild>
-                                <Button variant="secondary">
-                                    <PencilIcon />
+                {userRole == UserRole.Admin ? (
+                    <>
+                        <CardAction>
+                            <div className="flex">
+                                <Dialog
+                                    open={openEdit}
+                                    onOpenChange={setOpenEdit}
+                                >
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost">
+                                            <PencilIcon />
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                Editar comida
+                                            </DialogTitle>
+                                            <form
+                                                onSubmit={onSubmitEdit}
+                                                className="mt-3"
+                                                encType="multipart/form-data"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value={comida.id}
+                                                />
+                                                <FieldGroup>
+                                                    <Field
+                                                        data-invalid={
+                                                            fetcherUpdate.data
+                                                                ?.error
+                                                                ?.field ==
+                                                            "imagen"
+                                                        }
+                                                    >
+                                                        <FieldLabel htmlFor="imagen">
+                                                            Imagen
+                                                        </FieldLabel>
+                                                        <Input
+                                                            id="imagen"
+                                                            name="imagen"
+                                                            type="file"
+                                                            aria-invalid={
+                                                                fetcherUpdate
+                                                                    .data?.error
+                                                                    ?.field ==
+                                                                "imagen"
+                                                            }
+                                                        />
+                                                    </Field>
+                                                    <Field
+                                                        data-invalid={
+                                                            fetcherUpdate.data
+                                                                ?.error
+                                                                ?.field ==
+                                                            "titulo"
+                                                        }
+                                                    >
+                                                        <FieldLabel htmlFor="titulo">
+                                                            Titulo de comida
+                                                        </FieldLabel>
+                                                        <Input
+                                                            id="titulo"
+                                                            name="titulo"
+                                                            defaultValue={
+                                                                comida.titulo
+                                                            }
+                                                            aria-invalid={
+                                                                fetcherUpdate
+                                                                    .data?.error
+                                                                    ?.field ==
+                                                                "titulo"
+                                                            }
+                                                        />
+                                                    </Field>
+                                                    <SubmitButton
+                                                        className="w-full"
+                                                        isSubmitting={
+                                                            fetcherUpdate.state !=
+                                                            "idle"
+                                                        }
+                                                    >
+                                                        Guardar cambios
+                                                    </SubmitButton>
+                                                </FieldGroup>
+                                            </form>
+                                        </DialogHeader>
+                                    </DialogContent>
+                                </Dialog>
+                                <Button
+                                    variant="ghost-destructive"
+                                    onClick={handleDelete}
+                                    disabled={fetcherDelete.state !== "idle"}
+                                >
+                                    <TrashIcon />
                                 </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Editar comida</DialogTitle>
-                                    <form
-                                        onSubmit={onSubmitEdit}
-                                        className="mt-3"
-                                        encType="multipart/form-data"
-                                    >
-                                        <input
-                                            type="hidden"
-                                            name="id"
-                                            value={comida.id}
-                                        />
-                                        <FieldGroup>
-                                            <Field
-                                                data-invalid={
-                                                    fetcherUpdate.data?.error
-                                                        ?.field == "imagen"
-                                                }
-                                            >
-                                                <FieldLabel htmlFor="imagen">
-                                                    Imagen
-                                                </FieldLabel>
-                                                <Input
-                                                    id="imagen"
-                                                    name="imagen"
-                                                    type="file"
-                                                    aria-invalid={
-                                                        fetcherUpdate.data
-                                                            ?.error?.field ==
-                                                        "imagen"
-                                                    }
-                                                />
-                                            </Field>
-                                            <Field
-                                                data-invalid={
-                                                    fetcherUpdate.data?.error
-                                                        ?.field == "titulo"
-                                                }
-                                            >
-                                                <FieldLabel htmlFor="titulo">
-                                                    Titulo de comida
-                                                </FieldLabel>
-                                                <Input
-                                                    id="titulo"
-                                                    name="titulo"
-                                                    defaultValue={comida.titulo}
-                                                    aria-invalid={
-                                                        fetcherUpdate.data
-                                                            ?.error?.field ==
-                                                        "titulo"
-                                                    }
-                                                />
-                                            </Field>
-                                            <SubmitButton
-                                                className="w-full"
-                                                isSubmitting={
-                                                    fetcherUpdate.state !=
-                                                    "idle"
-                                                }
-                                            >
-                                                Guardar cambios
-                                            </SubmitButton>
-                                        </FieldGroup>
-                                    </form>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                        <Button
-                            variant="destructive"
-                            onClick={handleDelete}
-                            disabled={fetcherDelete.state !== "idle"}
-                        >
-                            <TrashIcon />
-                        </Button>
-                    </div>
+                            </div>
+                        </CardAction>
+                        <CardDescription>
+                            <div className="flex gap-1 items-center font-bold">
+                                <StarIcon size={17} fill="#79716B" /> 1.5/5
+                            </div>
+                        </CardDescription>
+                    </>
+                ) : (
+                    <>
+                        <CardAction>
+                            <div className="flex gap-1 items-center font-bold">
+                                <StarIcon size={17} fill="black" /> 1.5/5
+                            </div>
+                        </CardAction>
+                        <CardDescription className="mt-2">
+                            <div className="flex gap-2 items-center text-amber-400">
+                                <StarIcon size={20} />
+                                <StarIcon size={20} />
+                                <StarIcon size={20} />
+                                <StarIcon size={20} />
+                                <StarIcon size={20} />
+                            </div>
+                        </CardDescription>
+                    </>
                 )}
             </CardHeader>
             {userRole == UserRole.Usuario && (
                 <>
-                    <CardDescription></CardDescription>
                     <CardFooter>
-                        <Button className="w-full" variant="outline">
+                        <Button className="w-full" variant="secondary">
                             Ver comentarios
                         </Button>
                     </CardFooter>
