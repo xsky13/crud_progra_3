@@ -27,6 +27,29 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/Helpers/SubmitButton";
 import useUser from "@/hooks/useUser";
 
+const PromedioEstrellas = ({
+    promedio_estrellas,
+    cantidad_calificaciones,
+    start,
+}: {
+    promedio_estrellas: number;
+    cantidad_calificaciones: number;
+    start?: boolean;
+}) => {
+    return (
+        <div
+            className={`inline-flex flex-col items-${start ? "start" : "end"}`}
+        >
+            <div className="flex gap-1 items-center font-bold text-black">
+                <StarIcon size={17} fill="black" /> {promedio_estrellas}/5
+            </div>
+            <div className="text-xs text-muted-foreground">
+                {cantidad_calificaciones} calificaciones
+            </div>
+        </div>
+    );
+};
+
 export default function FoodCard({ comida }: { comida: Comida }) {
     const fetcherDelete = useFetcher<typeof deleteFood>();
     const fetcherUpdate = useFetcher<typeof updateFood>();
@@ -81,7 +104,7 @@ export default function FoodCard({ comida }: { comida: Comida }) {
                 className="aspect-video w-full object-cover"
             />
             <CardHeader>
-                <CardTitle>{comida.titulo}</CardTitle>
+                <CardTitle className="font-bold">{comida.titulo}</CardTitle>
                 {currentUser.rol == UserRole.Admin ? (
                     <>
                         <CardAction>
@@ -182,18 +205,25 @@ export default function FoodCard({ comida }: { comida: Comida }) {
                                 </Button>
                             </div>
                         </CardAction>
-                        <CardDescription>
-                            <div className="flex gap-1 items-center font-bold">
-                                <StarIcon size={17} fill="#79716B" /> 1.5/5
-                            </div>
+                        <CardDescription className="my-2 w-full">
+                            <PromedioEstrellas
+                                start={true}
+                                cantidad_calificaciones={
+                                    comida.cantidad_calificaciones
+                                }
+                                promedio_estrellas={comida.promedio_estrellas}
+                            />
                         </CardDescription>
                     </>
                 ) : (
                     <>
                         <CardAction>
-                            <div className="flex gap-1 items-center font-bold">
-                                <StarIcon size={17} fill="black" /> 1.5/5
-                            </div>
+                            <PromedioEstrellas
+                                cantidad_calificaciones={
+                                    comida.cantidad_calificaciones
+                                }
+                                promedio_estrellas={comida.promedio_estrellas}
+                            />
                         </CardAction>
                         <CardDescription className="mt-2">
                             <div className="flex gap-2 items-center text-amber-400">
