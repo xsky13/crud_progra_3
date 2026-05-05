@@ -97,7 +97,7 @@ export default function FoodCard({ comida }: { comida: Comida }) {
     };
 
     return (
-        <Card className=" w-full max-w-sm pt-0">
+        <Card className="rounded-sm w-full max-w-sm pt-0">
             <img
                 src={comida.img_url}
                 alt="Event cover"

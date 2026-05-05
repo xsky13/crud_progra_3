@@ -130,11 +130,7 @@ export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
                     {comidas.length != 0 ? (
                         <div className="grid grid-cols-3 gap-10">
                             {comidas.map((comida, i) => (
-                                <FoodCard
-                                    key={i}
-                                    comida={comida}
-                                    userRole={user.rol}
-                                />
+                                <FoodCard key={i} comida={comida} />
                             ))}
                         </div>
                     ) : (
