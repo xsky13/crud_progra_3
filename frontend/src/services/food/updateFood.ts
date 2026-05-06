@@ -16,8 +16,6 @@ export default async function updateFood({
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
-    console.log(data);
-
     const foodId = parseInt(data.id);
 
     if (isNaN(foodId)) {

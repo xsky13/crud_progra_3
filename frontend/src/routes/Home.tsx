@@ -29,10 +29,12 @@ export default function Home() {
     ) : (
         <>
             <div className="text-center h-screen flex flex-col justify-center items-center -mt-10">
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs text-muted-foreground">
-                    <span className="size-1.5 shrink-0 rounded-full bg-green-500" />
-                    Universidad Adventista del Plata
-                </div>
+                <img
+                    src="/uap_logo.svg"
+                    className="mb-6"
+                    width={300}
+                    alt="logo uap"
+                />
 
                 <h1 className="mx-auto max-w-2xl text-5xl font-extrabold tracking-tight text-balance">
                     Calificá la comida{" "}
