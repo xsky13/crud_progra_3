@@ -14,6 +14,13 @@ export default function Login() {
     const fetcher = useFetcher<typeof login>();
     const toastId = useRef<string | number>(0);
 
+    // eliminar cada toast al desmontar el componente
+    useEffect(() => {
+        return () => {
+            toast.dismiss(toastId.current);
+        };
+    }, []);
+
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
             toastId.current = errorToast(fetcher.data.error?.msg);

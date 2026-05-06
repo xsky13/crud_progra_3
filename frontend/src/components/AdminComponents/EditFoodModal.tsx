@@ -22,6 +22,11 @@ export default function EditFoodModal({ comida }: { comida: Comida }) {
     const [openEdit, setOpenEdit] = useState(false);
     const fetcherUpdate = useFetcher<typeof updateFood>();
 
+    useEffect(() => {
+        toast.dismiss(toastIdUpdate.current);
+        fetcherUpdate.reset();
+    }, [openEdit]);
+
     // Cerrar diálogo después de actualización exitosa
     useEffect(() => {
         if (fetcherUpdate.state === "idle" && fetcherUpdate.data?.ok) {
