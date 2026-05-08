@@ -61,7 +61,7 @@ export default function DeleteFood({ comidaId }: { comidaId: number }) {
                     <form onSubmit={handleDelete}>
                         <Button
                             variant="destructive"
-                            className="w-full"
+                            className="w-full bg-red-700 text-white hover:bg-red-700/70"
                             disabled={fetcherDelete.state !== "idle"}
                         >
                             <TrashIcon />

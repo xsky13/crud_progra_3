@@ -41,6 +41,34 @@ export default function FoodCard({ comida }: { comida: Comida }) {
     const currentUser = useUser();
     if (!currentUser) return null;
 
+    const hoverStar = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        idx: number,
+    ) => {
+        const children = Array.from(
+            e.currentTarget.parentElement!.children,
+        ) as HTMLElement[];
+        children.forEach((child, i) =>
+            i <= idx
+                ? ((child.children[0] as SVGElement).style.fill = "#FFB900")
+                : null,
+        );
+    };
+
+    const unhoverStar = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        idx: number,
+    ) => {
+        const children = Array.from(
+            e.currentTarget.parentElement!.children,
+        ) as HTMLElement[];
+        children.forEach((child, i) =>
+            i <= idx
+                ? ((child.children[0] as SVGElement).style.fill = "transparent")
+                : null,
+        );
+    };
+
     return (
         <Card className="w-full max-w-sm pt-0">
             <img
@@ -48,10 +76,8 @@ export default function FoodCard({ comida }: { comida: Comida }) {
                 alt="Event cover"
                 className="aspect-video w-full object-cover"
             />
-            <CardHeader>
-                <CardTitle className="font-bold border-black w-fit">
-                    {comida.titulo}
-                </CardTitle>
+            <CardHeader className="items-center">
+                <CardTitle className="tracking-wide">{comida.titulo}</CardTitle>
                 {currentUser.rol == UserRole.Admin ? (
                     <>
                         <CardAction>
@@ -71,29 +97,34 @@ export default function FoodCard({ comida }: { comida: Comida }) {
                         </CardDescription>
                     </>
                 ) : (
-                    <>
-                        <CardAction>
-                            <PromedioEstrellas
-                                cantidad_calificaciones={
-                                    comida.cantidad_calificaciones
-                                }
-                                promedio_estrellas={comida.promedio_estrellas}
-                            />
-                        </CardAction>
-                        <CardDescription className="mt-2">
-                            <div className="flex gap-2 items-center text-amber-400">
-                                <StarIcon size={20} />
-                                <StarIcon size={20} />
-                                <StarIcon size={20} />
-                                <StarIcon size={20} />
-                                <StarIcon size={20} />
-                            </div>
-                        </CardDescription>
-                    </>
+                    <CardAction>
+                        <PromedioEstrellas
+                            cantidad_calificaciones={
+                                comida.cantidad_calificaciones
+                            }
+                            promedio_estrellas={comida.promedio_estrellas}
+                        />
+                    </CardAction>
                 )}
             </CardHeader>
             {currentUser.rol == UserRole.Usuario && (
                 <>
+                    <CardDescription className="">
+                        <div className="flex flex-col items-center justify-center py-7 rounded-md w-full bg-secondary/60 -mt-4">
+                            <div className="flex justify-center text-amber-400">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="px-1 first:pl-0"
+                                        onMouseOut={(e) => unhoverStar(e, i)}
+                                        onMouseOver={(e) => hoverStar(e, i)}
+                                    >
+                                        <StarIcon size={20} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </CardDescription>
                     <CardFooter>
                         <Button
                             className="w-full font-medium"
