@@ -110,7 +110,7 @@ export default function FoodCard({ comida }: { comida: Comida }) {
             {currentUser.rol == UserRole.Usuario && (
                 <>
                     <CardDescription className="">
-                        <div className="flex flex-col items-center justify-center py-7 rounded-md w-full bg-secondary/60 -mt-4">
+                        <div className="flex flex-col items-center justify-center py-7 rounded-md w-full -mt-4">
                             <div className="flex justify-center text-amber-400">
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <div
