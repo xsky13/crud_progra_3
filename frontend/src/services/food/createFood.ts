@@ -39,6 +39,7 @@ export default async function createFood({
         usuario_id: 1,
         cantidad_calificaciones: 0,
         promedio_estrellas: 0,
+        usuario_califica: false,
     });
 
     return { ok: true };

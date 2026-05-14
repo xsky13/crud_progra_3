@@ -16,6 +16,7 @@ import loadFood from "./services/food/loadFood.ts";
 import createFood from "./services/food/createFood.ts";
 import deleteFood from "./services/food/deleteFood.ts";
 import updateFood from "./services/food/updateFood.ts";
+import rateFood from "./services/food/rateFood.ts";
 
 const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
     {
         path: "/updateFood",
         action: updateFood,
+    },
+    {
+        path: "/rateFood/:id",
+        action: rateFood
     },
     {
         path: "logout",
