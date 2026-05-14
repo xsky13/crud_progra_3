@@ -1,4 +1,4 @@
-import type { Comida } from "@/types/Comida";
+import type { ComidaView } from "@/types/Comida";
 export const foods = [
     {
         id: 1,
@@ -9,8 +9,10 @@ export const foods = [
         cantidad_calificaciones: 6,
         confirmada: true,
         usuario_id: 1,
+        usuario_califica: true,
+        calificacion_usuario: 3,
     },
 ];
-export default async function loadFood(): Promise<{ comidas: Comida[] }> {
+export default async function loadFood(): Promise<{ comidas: ComidaView[] }> {
     return { comidas: foods };
 }

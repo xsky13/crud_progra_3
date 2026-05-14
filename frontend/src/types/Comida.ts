@@ -7,3 +7,8 @@ export type Comida = {
     confirmada: boolean;
     usuario_id: number;
 };
+
+export type ComidaView = Comida & {
+    usuario_califica: boolean;
+    calificacion_usuario?: number;
+};
