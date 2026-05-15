@@ -13,6 +13,7 @@ import { MessageSquareText, StarIcon } from "lucide-react";
 import useUser from "@/hooks/useUser";
 import EditFoodModal from "./AdminComponents/EditFoodModal";
 import DeleteFood from "./AdminComponents/DeleteFood";
+import { useFetcher } from "react-router";
 
 const PromedioEstrellas = ({
     promedio_estrellas,
@@ -39,6 +40,7 @@ const PromedioEstrellas = ({
 
 export default function FoodCard({ comida }: { comida: ComidaView }) {
     const currentUser = useUser();
+    const fetcher = useFetcher();
     if (!currentUser) return null;
 
     const hoverStar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
@@ -58,6 +60,15 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
             i <= idx ? ((child.children[0] as SVGElement).style.fill = "transparent") : null,
         );
     };
+
+    const rateFood = (rating: number) => {
+        if (comida.usuario_califica) return;
+        fetcher.submit({ rating }, {
+            method: "POST",
+            encType: "application/json",
+            action: `/rateFood/${comida.id}`
+        })
+    }
 
     return (
         <Card className="w-full max-w-sm pt-0">
@@ -96,7 +107,7 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
             {currentUser.rol == UserRole.Usuario && (
                 <>
                     <CardDescription className="">
-                        <div className="flex flex-col items-center justify-center py-7 rounded-md w-full -mt-4">
+                        <div className="flex flex-col items-center justify-center py-5 rounded-md w-full -mt-2">
                             <div className="flex justify-center text-amber-400">
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <div
@@ -111,6 +122,7 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                                                     ? "cursor-pointer"
                                                     : "cursor-default"
                                             }
+                                            onClick={() => rateFood(i + 1)}
                                             size={20}
                                             fill={
                                                 comida.usuario_califica &&
@@ -123,9 +135,9 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                                 ))}
                             </div>
                             {comida.calificacion_usuario && (
-                                <Button variant="ghost-destructive" className="mt-3">
+                                <span className="cursor-pointer mt-3 text-red-700 tracking-wide">
                                     Eliminar mi calificacion
-                                </Button>
+                                </span>
                             )}
                         </div>
                     </CardDescription>
