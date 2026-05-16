@@ -11,14 +11,13 @@ export default async function rateFood({ request, params }: ActionFunctionArgs):
     const comida = foods.filter(food => food.id == parseInt(params.id))[0];
     if (!comida) return { error: "La comida no existe." };
 
-    // formula para conseguir cantidad la cantidad de estrellas que genio que soy
-    // promedio = (n+n+n...)/cantidad -> n+n+n+... = promedio*cantidad, entonces al actualizar:
-    // como hay una nueva calificacion, agregarla al promedio y +1 a la cantidad de calificaciones
-    const totalRating = (data.rating + comida.promedio_estrellas) * (comida.cantidad_calificaciones + 1);
+    // La formula anterior no funciono por el retraso mental que manejo. Ahora sacamos la sumatoria de calificaciones despejando,
+    // y despues le agregamos la nueva calificacion, dividimos por la cantidad de calificaciones mas 1, y obtenemos el nuevo promedio.
+    const sumatoriaCalificacionesAnterior = comida.promedio_estrellas * comida.cantidad_calificaciones;
 
     comida.usuario_califica = true;
+    comida.promedio_estrellas = (sumatoriaCalificacionesAnterior + data.rating) / (comida.cantidad_calificaciones + 1);
     comida.cantidad_calificaciones += 1;
-    comida.promedio_estrellas = totalRating / comida.cantidad_calificaciones;
     comida.calificacion_usuario = data.rating;
 
     return { comida }
