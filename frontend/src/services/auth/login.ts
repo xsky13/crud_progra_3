@@ -31,8 +31,6 @@ export default async function login({
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as LoginFormData;
 
-    let loggedInUser: User;
-
     // cuando haya db reemplazar con llamada y retornar respuesta simplemente
     await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
@@ -42,7 +40,7 @@ export default async function login({
         };
     }
 
-    loggedInUser = [userNormal, userAdmin].filter(
+    const loggedInUser = [userNormal, userAdmin].filter(
         (u) => u.email == data.email,
     )[0];
     if (data.contrasena != loggedInUser.contrasena) {
