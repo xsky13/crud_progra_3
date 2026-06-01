@@ -20,6 +20,8 @@ import rateFood from "./services/food/rateFood.ts";
 import unrateFood from "./services/food/unrateFood.ts";
 import ErrorBoundary from "./components/Helpers/ErrorBoundary.tsx";
 import createProposal from "./services/proposals/createProposal.ts";
+import Propuestas from "./routes/Propuestas.tsx";
+import loadProposals from "./services/proposals/loadProposals.ts";
 
 const router = createBrowserRouter([
     {
@@ -40,9 +42,11 @@ const router = createBrowserRouter([
                 index: true,
                 Component: Home,
                 loader: loadFood,
-                HydrateFallback: () => {
-                    return <p>Loading...</p>;
-                },
+            },
+            {
+                path: "/propuestas",
+                Component: Propuestas,
+                loader: loadProposals,
             },
             {
                 path: "registro",

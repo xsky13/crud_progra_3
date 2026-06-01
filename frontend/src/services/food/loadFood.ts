@@ -11,7 +11,18 @@ export const foods: ComidaView[] = [
         usuario_califica: false,
         // calificacion_usuario: 3,
     },
+    {
+        id: 2,
+        titulo: "Porotos",
+        img_url: "https://upload.wikimedia.org/wikipedia/commons/7/70/Porotos_con_riendas_%28con_carne%29.jpg",
+        promedio_estrellas: 0,
+        cantidad_calificaciones: 0,
+        confirmada: false,
+        usuario_id: 1,
+        usuario_califica: false,
+        // calificacion_usuario: 3,
+    },
 ];
 export default async function loadFood(): Promise<{ comidas: ComidaView[] }> {
-    return { comidas: foods };
+    return { comidas: foods.filter(food => food.confirmada) };
 }

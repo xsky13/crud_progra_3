@@ -1,6 +1,6 @@
 import type { ComidaView } from "@/types/Comida";
-import FoodCard from "../FoodCard";
-import { Button } from "../ui/button";
+import FoodCard from "../../FoodCard";
+import { Button } from "../../ui/button";
 import { InfoIcon, PlusIcon } from "lucide-react";
 import {
     Dialog,
@@ -8,16 +8,16 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 import { useFetcher } from "react-router";
-import SubmitButton from "../Helpers/SubmitButton";
-import { Field, FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import SubmitButton from "../../Helpers/SubmitButton";
+import { Field, FieldGroup, FieldLabel } from "../../ui/field";
+import { Input } from "../../ui/input";
 import { useEffect, useRef, useState } from "react";
 import errorToast from "@/lib/errorToast";
 import type createFood from "@/services/food/createFood";
 import { toast } from "sonner";
-import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "../../ui/alert";
 
 export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
     const fetcher = useFetcher<typeof createFood>();

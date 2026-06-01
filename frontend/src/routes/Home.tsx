@@ -1,13 +1,13 @@
 import { AppLink } from "@/components/Helpers/AppLink";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import AdminHomeView from "@/components/Views/AdminHomeView";
+import AdminHomeView from "@/components/Views/Home/AdminHomeView";
 import useUser from "@/hooks/useUser";
 import { ArrowRight } from "lucide-react";
 import { useLoaderData } from "react-router";
 import type { ComidaView } from "@/types/Comida";
 import { UserRole } from "@/types/User";
-import UserHomeView from "@/components/Views/UserHomeView";
+import UserHomeView from "@/components/Views/Home/UserHomeView";
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Home() {

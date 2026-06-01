@@ -42,6 +42,7 @@ export default async function register({
 
         // usar el usuario retornado para setear la data (token en realidad)
         sessionStorage.setItem("user", JSON.stringify({
+            id: 1,
             nombre: data.nombre,
             email: data.email,
             contrasena: data.contrasena,

@@ -1,9 +1,9 @@
 import type { ComidaView } from "@/types/Comida";
-import FoodCard from "../FoodCard";
+import FoodCard from "../../FoodCard";
 import { InfoIcon } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription, AlertAction } from "../ui/alert";
-import { Button } from "../ui/button";
-import CreateProposal from "../Proposals/CreateProposal";
+import { Alert, AlertTitle, AlertDescription, AlertAction } from "../../ui/alert";
+import { Button } from "../../ui/button";
+import CreateProposal from "../../Proposals/CreateProposal";
 
 export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {
     return (

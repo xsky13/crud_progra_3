@@ -8,6 +8,7 @@ type LoginFormData = {
 };
 
 const userNormal: User = {
+    id: 1,
     nombre: "Test",
     email: "test@gmail.com",
     contrasena: "123456",
@@ -15,6 +16,7 @@ const userNormal: User = {
 };
 
 const userAdmin: User = {
+    id: 2,
     nombre: "Admin",
     email: "admin@gmail.com",
     contrasena: "123456",

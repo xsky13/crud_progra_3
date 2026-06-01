@@ -1,6 +1,7 @@
 import { Form } from "react-router";
 import { Button } from "./ui/button";
 import { LogOutIcon } from "lucide-react";
+import { AppLink } from "./Helpers/AppLink";
 
 export default function Header() {
     return (
@@ -9,12 +10,17 @@ export default function Header() {
                 <img src="/favicon.png" width={30} />
                 <h3>Comidas</h3>
             </div>
-            <Form action="/logout" method="post">
-                <Button type="submit" variant="secondary">
-                    <LogOutIcon />
-                    Log out
+            <div className="flex items-center gap-6">
+                <Button variant="ghost">
+                    <AppLink to="/propuestas">Mis propuestas</AppLink>
                 </Button>
-            </Form>
+                <Form action="/logout" method="post">
+                    <Button type="submit" variant="secondary">
+                        <LogOutIcon />
+                        Log out
+                    </Button>
+                </Form>
+            </div>
         </div>
     );
 }
