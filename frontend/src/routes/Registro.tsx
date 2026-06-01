@@ -44,29 +44,11 @@ export default function Registro() {
                                 fetcher.data?.error?.field == "nombre"
                             }
                         >
-                            <FieldLabel htmlFor="nombre">Su nombre</FieldLabel>
+                            <FieldLabel htmlFor="nombre">Nombre completo</FieldLabel>
                             <Input
                                 id="nombre"
                                 name="nombre"
-                                aria-invalid={
-                                    fetcher.data?.error?.field == "nombre"
-                                }
-                            />
-                        </Field>
-                        <Field
-                            data-invalid={
-                                fetcher.data?.error?.field == "apellido"
-                            }
-                        >
-                            <FieldLabel htmlFor="apellido">
-                                Su apellido
-                            </FieldLabel>
-                            <Input
-                                id="apellido"
-                                name="apellido"
-                                aria-invalid={
-                                    fetcher.data?.error?.field == "apellido"
-                                }
+                                aria-invalid={fetcher.data?.error?.field == "nombre"}
                             />
                         </Field>
                         <Field
@@ -79,9 +61,7 @@ export default function Registro() {
                                 id="email"
                                 type="email"
                                 name="email"
-                                aria-invalid={
-                                    fetcher.data?.error?.field == "email"
-                                }
+                                aria-invalid={fetcher.data?.error?.field == "email"}
                             />
                         </Field>
                         <Field
