@@ -5,7 +5,7 @@ import AdminHomeView from "@/components/Views/AdminHomeView";
 import useUser from "@/hooks/useUser";
 import { ArrowRight } from "lucide-react";
 import { useLoaderData } from "react-router";
-import type { Comida } from "@/types/Comida";
+import type { ComidaView } from "@/types/Comida";
 import { UserRole } from "@/types/User";
 import UserHomeView from "@/components/Views/UserHomeView";
 
@@ -13,7 +13,7 @@ import UserHomeView from "@/components/Views/UserHomeView";
 export default function Home() {
     const user = useUser();
 
-    const data = useLoaderData() as { comidas: Comida[] };
+    const data = useLoaderData() as { comidas: ComidaView[] };
 
     return user ? (
         <>

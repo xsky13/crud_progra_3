@@ -1,4 +1,4 @@
-import type { Comida } from "@/types/Comida";
+import type { ComidaView } from "@/types/Comida";
 import FoodCard from "../FoodCard";
 import { Button } from "../ui/button";
 import { InfoIcon, PlusIcon } from "lucide-react";
@@ -19,7 +19,7 @@ import type createFood from "@/services/food/createFood";
 import { toast } from "sonner";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
-export default function AdminHomeView({ comidas }: { comidas: Comida[] }) {
+export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
     const fetcher = useFetcher<typeof createFood>();
     const toastId = useRef<string | number>(0);
     const [open, setOpen] = useState(false);

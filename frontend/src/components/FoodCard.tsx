@@ -14,6 +14,7 @@ import useUser from "@/hooks/useUser";
 import EditFoodModal from "./AdminComponents/EditFoodModal";
 import DeleteFood from "./AdminComponents/DeleteFood";
 import { useFetcher } from "react-router";
+import { useRef } from "react";
 
 const PromedioEstrellas = ({
     promedio_estrellas,
@@ -41,6 +42,7 @@ const PromedioEstrellas = ({
 export default function FoodCard({ comida }: { comida: ComidaView }) {
     const currentUser = useUser();
     const fetcher = useFetcher();
+    const starsParentRef = useRef<HTMLDivElement | null>(null);
     if (!currentUser) return null;
 
     const hoverStar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
@@ -75,7 +77,15 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
             method: "POST",
             encType: "application/json",
             action: `/unrateFood/${comida.id}`
-        })
+        });
+
+        // hacer que las estrellas esten blancas
+        if (starsParentRef.current) {
+            console.log(starsParentRef.current.children)
+            Array.from(starsParentRef.current.children).forEach((child: HTMLDivElement) => {
+                (child.children[0] as SVGElement).style.fill = "#FFFFFF";
+            })
+        }
     }
 
     return (
@@ -116,7 +126,7 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                 <>
                     <CardDescription className="">
                         <div className="flex flex-col items-center justify-center py-5 rounded-md w-full -mt-2">
-                            <div className="flex justify-center text-amber-400">
+                            <div className="flex justify-center text-amber-400" ref={starsParentRef}>
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <div
                                         key={i}
@@ -143,7 +153,7 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                                 ))}
                             </div>
                             {comida.calificacion_usuario && (
-                                <span 
+                                <span
                                     className="cursor-pointer mt-3 text-red-700 tracking-wide hover:text-red-800"
                                     onClick={unrateFood}
                                 >

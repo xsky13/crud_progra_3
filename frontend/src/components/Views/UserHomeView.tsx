@@ -1,10 +1,10 @@
-import type { Comida } from "@/types/Comida";
+import type { ComidaView } from "@/types/Comida";
 import FoodCard from "../FoodCard";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription, AlertAction } from "../ui/alert";
 import { Button } from "../ui/button";
 
-export default function UserHomeView({ comidas }: { comidas: Comida[] }) {
+export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {
     return (
         <div className="flex gap-10 items-center flex-col">
             <div>
