@@ -21,13 +21,6 @@ export default async function register({
         return {
             error: { msg: "Su nombre no puede estar vacio", field: "nombre" },
         };
-    } else if (data.apellido.length == 0) {
-        return {
-            error: {
-                msg: "Su apellido no puede estar vacio",
-                field: "apellido",
-            },
-        };
     } else if (
         !data.email
             .toLowerCase()
@@ -50,7 +43,6 @@ export default async function register({
         // usar el usuario retornado para setear la data (token en realidad)
         sessionStorage.setItem("user", JSON.stringify({
             nombre: data.nombre,
-            apellido: data.apellido,
             email: data.email,
             contrasena: data.contrasena,
             rol: UserRole.Usuario,

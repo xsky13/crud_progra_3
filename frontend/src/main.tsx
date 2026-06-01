@@ -17,6 +17,7 @@ import createFood from "./services/food/createFood.ts";
 import deleteFood from "./services/food/deleteFood.ts";
 import updateFood from "./services/food/updateFood.ts";
 import rateFood from "./services/food/rateFood.ts";
+import ErrorBoundary from "./components/Helpers/ErrorBoundary.tsx";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
         path: "/",
         Component: Layout,
         loader: loadUser,
+        ErrorBoundary: ErrorBoundary,
         HydrateFallback: () => {
             return (
                 <div className="h-screen flex items-center justify-center">

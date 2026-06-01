@@ -9,7 +9,6 @@ type LoginFormData = {
 
 const userNormal: User = {
     nombre: "Test",
-    apellido: "Test",
     email: "test@gmail.com",
     contrasena: "123456",
     rol: UserRole.Usuario,
@@ -17,7 +16,6 @@ const userNormal: User = {
 
 const userAdmin: User = {
     nombre: "Admin",
-    apellido: "Admin",
     email: "admin@gmail.com",
     contrasena: "123456",
     rol: UserRole.Admin,
