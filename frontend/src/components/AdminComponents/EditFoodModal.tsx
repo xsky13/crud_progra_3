@@ -30,7 +30,7 @@ export default function EditFoodModal({ comida }: { comida: Comida }) {
     // Cerrar diálogo después de actualización exitosa
     useEffect(() => {
         if (fetcherUpdate.state === "idle" && fetcherUpdate.data?.ok) {
-            setOpenEdit(false);
+            setTimeout(() => setOpenEdit(false), 0); // de alguna forma suprime el error de react
         }
     }, [fetcherUpdate.state, fetcherUpdate.data]);
 

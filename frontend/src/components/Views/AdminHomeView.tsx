@@ -25,6 +25,11 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        toast.dismiss(toastId.current);
+        fetcher.reset();
+    }, [open]);
+
+    useEffect(() => {
         if (fetcher.data?.error?.msg) {
             toastId.current = errorToast(fetcher.data.error.msg);
         }
@@ -33,7 +38,7 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
     // cerrar el modal cuando no hay error al crear el coso
     useEffect(() => {
         if (fetcher.state === "idle" && fetcher.data?.ok) {
-            setOpen(false);
+            setTimeout(() => setOpen(false), 0); // de alguna forma suprime el error de react
         }
     }, [fetcher.state, fetcher.data]);
 

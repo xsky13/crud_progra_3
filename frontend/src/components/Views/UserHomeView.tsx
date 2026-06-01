@@ -3,6 +3,7 @@ import FoodCard from "../FoodCard";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription, AlertAction } from "../ui/alert";
 import { Button } from "../ui/button";
+import CreateProposal from "../Proposals/CreateProposal";
 
 export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {
     return (
@@ -23,6 +24,11 @@ export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {
                     </AlertAction>
                 </Alert>
             )}
+            <div className="fixed bottom-0 w-full flex justify-center">
+                <div className="text-center py-4 w-2/12 backdrop-blur-sm mb-2 rounded-xl">
+                    <CreateProposal />
+                </div>
+            </div>
         </div>
     );
 }
