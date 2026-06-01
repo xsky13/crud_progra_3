@@ -70,6 +70,14 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
         })
     }
 
+    const unrateFood = () => {
+        fetcher.submit({}, {
+            method: "POST",
+            encType: "application/json",
+            action: `/unrateFood/${comida.id}`
+        })
+    }
+
     return (
         <Card className="w-full max-w-sm pt-0">
             <img
@@ -135,7 +143,10 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                                 ))}
                             </div>
                             {comida.calificacion_usuario && (
-                                <span className="cursor-pointer mt-3 text-red-700 tracking-wide">
+                                <span 
+                                    className="cursor-pointer mt-3 text-red-700 tracking-wide hover:text-red-800"
+                                    onClick={unrateFood}
+                                >
                                     Eliminar mi calificacion
                                 </span>
                             )}
