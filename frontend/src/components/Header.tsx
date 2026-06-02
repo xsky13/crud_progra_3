@@ -8,7 +8,7 @@ export default function Header() {
         <div className="flex justify-around items-center py-3 fixed w-full bg-white">
             <div className="flex gap-2 items-center">
                 <img src="/favicon.png" width={30} />
-                <h3>Comidas</h3>
+                <h3><AppLink to={"/"}>Comidas</AppLink></h3>
             </div>
             <div className="flex items-center gap-6">
                 <Button variant="ghost">

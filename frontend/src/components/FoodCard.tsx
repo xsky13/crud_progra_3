@@ -15,6 +15,7 @@ import EditFoodModal from "./AdminComponents/EditFoodModal";
 import DeleteFood from "./AdminComponents/DeleteFood";
 import { useFetcher } from "react-router";
 import { useRef } from "react";
+import EditProposal from "./Proposals/EditProposal";
 
 const PromedioEstrellas = ({
     promedio_estrellas,
@@ -115,14 +116,22 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                     </>
                 ) : (
                     <CardAction>
-                        <PromedioEstrellas
-                            cantidad_calificaciones={comida.cantidad_calificaciones}
-                            promedio_estrellas={comida.promedio_estrellas}
-                        />
+                        {
+                            comida.confirmada ?
+                                <PromedioEstrellas
+                                    cantidad_calificaciones={comida.cantidad_calificaciones}
+                                    promedio_estrellas={comida.promedio_estrellas}
+                                />
+                                :
+                                <>
+                                    <EditProposal comidaId={comida.id} comidaTitle={comida.titulo} />
+                                    <DeleteFood comidaId={comida.id} />
+                                </>
+                        }
                     </CardAction>
                 )}
             </CardHeader>
-            {currentUser.rol == UserRole.Usuario && (
+            {(currentUser.rol == UserRole.Usuario && comida.confirmada) && (
                 <>
                     <CardDescription className="">
                         <div className="flex flex-col items-center justify-center py-5 rounded-md w-full -mt-2">
