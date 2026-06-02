@@ -4,19 +4,26 @@ import { LogOutIcon } from "lucide-react";
 import { AppLink } from "./Helpers/AppLink";
 import useUser from "@/hooks/useUser";
 import { UserRole } from "@/types/User";
+import { ModeToggle } from "./Helpers/ModeToggle";
 
 export default function Header() {
     const { rol: userRole } = useUser();
     return (
-        <div className="flex justify-around items-center py-3 fixed w-full bg-white">
-            <div className="flex gap-2 items-center">
-                <img src="/favicon.png" width={30} />
-                <h3><AppLink to={"/"}>Comidas</AppLink></h3>
+        <div className="flex justify-around items-center py-3 fixed w-full ">
+            <div className="flex items-center gap-6">
+                <div className="flex gap-2 items-center">
+                    <img src="/favicon.png" width={30} />
+                    <h3><AppLink to={"/"}>Comidas</AppLink></h3>
+                </div>
+                <AppLink to="/propuestas">
+                    <Button variant="ghost">{userRole == UserRole.Usuario ? "Mis propuestas" : "Revisar propuestas"}</Button>
+                </AppLink>
+                <AppLink to="/configuraciones">
+                    <Button variant="ghost">Mi cuenta</Button>
+                </AppLink>
             </div>
             <div className="flex items-center gap-6">
-                <Button variant="ghost">
-                    <AppLink to="/propuestas">{userRole == UserRole.Usuario ? "Mis propuestas" : "Revisar propuestas"}</AppLink>
-                </Button>
+                <ModeToggle />
                 <Form action="/logout" method="post">
                     <Button type="submit" variant="secondary">
                         <LogOutIcon />
