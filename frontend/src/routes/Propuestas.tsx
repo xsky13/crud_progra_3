@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import UserPropuestaView from "@/components/Views/Propuestas/UserPropuestaView";
 import useUser from "@/hooks/useUser"
 import type { ComidaView } from "@/types/Comida";
+import { UserRole } from "@/types/User";
 import { useLoaderData } from "react-router";
 import { Navigate } from "react-router";
 
@@ -13,12 +14,12 @@ export default function Propuestas() {
         <>
             <Header />
             <div className="py-28">
-                <UserPropuestaView propuestas={data.proposals} />
-                {/*{user.rol == UserRole.Usuario ? (
-                    <UserHomeView comidas={data.comidas} />
+                {user.rol == UserRole.Usuario ? (
+                    <UserPropuestaView propuestas={data.proposals} />
                 ) : (
-                    <AdminHomeView comidas={data.comidas} />
-                )}*/}
+                    // implementar vista de admin
+                    <></>
+                )}
             </div>
         </>
     ) : <Navigate to={"/"} />
