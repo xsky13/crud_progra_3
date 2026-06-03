@@ -1,6 +1,6 @@
 import { Form } from "react-router";
 import { Button } from "./ui/button";
-import { LogOutIcon } from "lucide-react";
+import { CogIcon, LogOutIcon } from "lucide-react";
 import { AppLink } from "./Helpers/AppLink";
 import useUser from "@/hooks/useUser";
 import { UserRole } from "@/types/User";
@@ -18,11 +18,15 @@ export default function Header() {
                 <AppLink to="/propuestas">
                     <Button variant="ghost">{userRole == UserRole.Usuario ? "Mis propuestas" : "Revisar propuestas"}</Button>
                 </AppLink>
-                <AppLink to="/configuraciones">
-                    <Button variant="ghost">Mi cuenta</Button>
+                <AppLink to="/podio">
+                    <Button variant="ghost">Podio</Button>
                 </AppLink>
             </div>
             <div className="flex items-center gap-6">
+                <AppLink to="/configuraciones">
+                    <Button variant="ghost">
+                        <CogIcon />Cuenta</Button>
+                </AppLink>
                 <ModeToggle />
                 <Form action="/logout" method="post">
                     <Button type="submit" variant="secondary">
