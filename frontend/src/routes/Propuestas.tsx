@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import UserPropuestaView from "@/components/Views/Propuestas/UserPropuestaView";
+import AdminPropuestaView from "@/components/Views/Propuestas/AdminPropuestaView";
 import useUser from "@/hooks/useUser"
 import type { ComidaView } from "@/types/Comida";
 import { UserRole } from "@/types/User";
@@ -17,8 +18,7 @@ export default function Propuestas() {
                 {user.rol == UserRole.Usuario ? (
                     <UserPropuestaView propuestas={data.proposals} />
                 ) : (
-                    // implementar vista de admin
-                    <></>
+                    <AdminPropuestaView propuestas={data.proposals} />
                 )}
             </div>
         </>
