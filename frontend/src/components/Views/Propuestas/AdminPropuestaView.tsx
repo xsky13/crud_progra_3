@@ -7,9 +7,9 @@ import DeleteProposal from "../../AdminComponents/DeleteProposal";
 
 export default function AdminPropuestaView({ propuestas }: { propuestas: ComidaView[] }) {
     return (
-        <div className="block m-auto w-8/12">
+        <div className="block m-auto w-10/12 md:w-8/12">
             <h1>Propuestas de comidas</h1>
-            <div className="mt-3 flex flex-wrap gap-4">
+            <div className="mt-3 grid justify-center md:grid-cols-2 xl:grid-cols-3 gap-x-4 min-[1798px]:gap-x-0 gap-y-5 min-[1798px]:gap-y-10">
                 {
                     propuestas.length ?
                         propuestas.map((propuesta, i) => (

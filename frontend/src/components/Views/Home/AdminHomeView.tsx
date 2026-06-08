@@ -131,7 +131,7 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
                     </div>
 
                     {comidas.length != 0 ? (
-                        <div className="grid grid-cols-3 gap-10">
+                        <div className="flex flex-wrap justify-center mt-5 md:flex-nowrap md:justify-start gap-7">
                             {comidas.map((comida, i) => (
                                 <FoodCard key={i} comida={comida} />
                             ))}

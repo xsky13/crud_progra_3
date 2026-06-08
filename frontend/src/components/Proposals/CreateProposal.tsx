@@ -30,6 +30,7 @@ export default function CreateProposal() {
     useEffect(() => {
         if (fetcher.state === "idle" && fetcher.data?.ok) {
             setTimeout(() => setOpen(false), 0); // de alguna forma suprime el error de react
+            toast.success("Su propuesta fue agregada. Puede acceder a ella desde la pagina de propuestas.")
         }
     }, [fetcher.state, fetcher.data]);
 
