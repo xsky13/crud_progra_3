@@ -7,7 +7,8 @@ import { UserRole } from "@/types/User";
 import { ModeToggle } from "./Helpers/ModeToggle";
 
 export default function Header() {
-    const { rol: userRole } = useUser();
+    const user = useUser();
+    const userRole = user?.rol;
     return (
         <div className="flex justify-around items-center py-3 fixed w-full ">
             <div className="flex items-center gap-6">

@@ -8,7 +8,8 @@ export default async function rateFood({ request, params }: ActionFunctionArgs):
 }> {
     const data = await request.json();
 
-    const comida = foods.filter(food => food.id == parseInt(params.id))[0];
+    const foodId = params.id ? parseInt(params.id, 10) : NaN;
+    const comida = foods.filter(food => food.id == foodId)[0];
     if (!comida) return { error: "La comida no existe." };
 
     // La formula anterior no funciono por el retraso mental que manejo. Ahora sacamos la sumatoria de calificaciones despejando,

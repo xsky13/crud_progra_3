@@ -5,9 +5,10 @@ import loadAdminProposals from "./loadAdminProposals";
 import { redirect } from "react-router";
 
 export default async function loadProposalsLoader() {
-    const user = JSON.parse(sessionStorage.getItem("user")) as User;
+    const storedUser = sessionStorage.getItem("user");
+    if (!storedUser) return redirect("/");
 
-    if (!user) return redirect("/");
+    const user = JSON.parse(storedUser) as User;
 
     if (user.rol === UserRole.Admin) {
         return loadAdminProposals();
