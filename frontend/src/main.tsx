@@ -25,6 +25,10 @@ import loadProposalsLoader from "./services/proposals/loadProposalsLoader.ts";
 import editProposal from "./services/proposals/editProposal.ts";
 import acceptProposal from "./services/proposals/acceptProposal.ts";
 import deleteProposal from "./services/proposals/deleteProposal.ts";
+import Configuraciones from "./routes/Configuraciones.tsx";
+import authProtectedLoader from "./services/auth/authProtectedLoader.ts";
+import updateAccount from "./services/auth/updateAccount.ts";
+import deleteAccount from "./services/auth/deleteAccount.ts";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +54,12 @@ const router = createBrowserRouter([
                 path: "/propuestas",
                 Component: Propuestas,
                 loader: loadProposalsLoader,
+            },
+            {
+                path: "configuraciones",
+                Component: Configuraciones,
+                loader: authProtectedLoader,
+                action: updateAccount,
             },
             {
                 path: "registro",
@@ -110,6 +120,10 @@ const router = createBrowserRouter([
     {
         path: "logout",
         action: logout,
+    },
+    {
+        path: "/deleteAccount",
+        action: deleteAccount,
     },
 ]);
 

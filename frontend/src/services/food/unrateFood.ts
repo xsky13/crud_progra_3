@@ -6,7 +6,8 @@ export default async function unrateFood({ params }: ActionFunctionArgs): Promis
     comida?: ComidaView,
     error?: string
 }> {
-    const comida = foods.filter(food => food.id == parseInt(params.id))[0];
+    const foodId = params.id ? parseInt(params.id, 10) : NaN;
+    const comida = foods.filter(food => food.id == foodId)[0];
     if (!comida) return { error: "La comida no existe." };
 
     // Si el usuario no ha calificado, retornar error
