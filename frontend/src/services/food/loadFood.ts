@@ -45,7 +45,7 @@ export const foods: ComidaView[] = [
     {
         id: 5,
         titulo: "Tacos",
-        img_url: "https://upload.wikimedia.org/wikipedia/commons/7/73/Taco_salad.jpg",
+        img_url: "https://upload.wikimedia.org/wikipedia/commons/4/4a/BBQ_Mahi-Mahi_Tacos.jpg", // la otra foto no existia
         promedio_estrellas: 0,
         cantidad_calificaciones: 0,
         confirmada: false,

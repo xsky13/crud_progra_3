@@ -59,7 +59,8 @@ export default function AcceptProposal({ proposalId }: { proposalId: number }) {
                     </p>
                     <form onSubmit={handleAccept}>
                         <Button
-                            className="w-full bg-green-700 text-white hover:bg-green-700/70"
+                            className="w-full" //provisorio, a discutir
+                            // className="w-full bg-green-700 text-white hover:bg-green-700/70"
                             disabled={fetcherAccept.state !== "idle"}
                         >
                             <CheckIcon />
