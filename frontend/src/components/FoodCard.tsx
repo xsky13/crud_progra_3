@@ -86,8 +86,9 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
         // hacer que las estrellas esten blancas
         if (starsParentRef.current) {
             console.log(starsParentRef.current.children)
-            Array.from(starsParentRef.current.children).forEach((child: HTMLDivElement) => {
-                (child.children[0] as SVGElement).style.fill = "transparent";
+            Array.from(starsParentRef.current.children).forEach((child) => {
+                const icon = child.children[0] as SVGElement | undefined;
+                if (icon) icon.style.fill = "transparent";
             })
         }
     }
@@ -156,6 +157,7 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
                                             size={20}
                                             fill={
                                                 comida.usuario_califica &&
+                                                    comida.calificacion_usuario != null &&
                                                     i < comida.calificacion_usuario
                                                     ? "#ffba00"
                                                     : "transparent"

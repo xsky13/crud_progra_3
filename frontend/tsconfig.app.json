@@ -24,13 +24,13 @@
         "noUnusedParameters": true,
         "erasableSyntaxOnly": false,
         "noFallthroughCasesInSwitch": true,
-        "ignoreDeprecations": "5.0",
+        "ignoreDeprecations": "6.0",
         "baseUrl": ".",
         "paths": {
             "@/*": [
                 "./src/*"
-            ],
-        },
+            ]
+        }
     },
     "include": [
         "src"
