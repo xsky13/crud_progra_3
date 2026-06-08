@@ -21,8 +21,10 @@ import unrateFood from "./services/food/unrateFood.ts";
 import ErrorBoundary from "./components/Helpers/ErrorBoundary.tsx";
 import createProposal from "./services/proposals/createProposal.ts";
 import Propuestas from "./routes/Propuestas.tsx";
-import loadProposals from "./services/proposals/loadProposals.ts";
+import loadProposalsLoader from "./services/proposals/loadProposalsLoader.ts";
 import editProposal from "./services/proposals/editProposal.ts";
+import acceptProposal from "./services/proposals/acceptProposal.ts";
+import deleteProposal from "./services/proposals/deleteProposal.ts";
 
 const router = createBrowserRouter([
     {
@@ -47,7 +49,7 @@ const router = createBrowserRouter([
             {
                 path: "/propuestas",
                 Component: Propuestas,
-                loader: loadProposals,
+                loader: loadProposalsLoader,
             },
             {
                 path: "registro",
@@ -93,6 +95,16 @@ const router = createBrowserRouter([
     {
         path: "/editProposal/:id",
         action: editProposal,
+    },
+
+    {
+        path: "/acceptProposal",
+        action: acceptProposal,
+    },
+
+    {
+        path: "/deleteProposal",
+        action: deleteProposal,
     },
 
     {
