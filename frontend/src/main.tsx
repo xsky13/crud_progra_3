@@ -29,6 +29,8 @@ import Configuraciones from "./routes/Configuraciones.tsx";
 import authProtectedLoader from "./services/auth/authProtectedLoader.ts";
 import updateAccount from "./services/auth/updateAccount.ts";
 import deleteAccount from "./services/auth/deleteAccount.ts";
+import Podio from "./routes/Podio.tsx";
+import loadPodio from "./services/food/loadPodio.ts";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +56,11 @@ const router = createBrowserRouter([
                 path: "/propuestas",
                 Component: Propuestas,
                 loader: loadProposalsLoader,
+            },
+            {
+                path: "/podio",
+                Component: Podio,
+                loader: loadPodio,
             },
             {
                 path: "configuraciones",
