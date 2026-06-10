@@ -13,6 +13,8 @@ import UserHomeView from "@/components/Views/Home/UserHomeView";
 export default function Home() {
     const user = useUser();
 
+    console.log(user)
+
     const data = useLoaderData() as { comidas: ComidaView[] };
 
     return user ? (

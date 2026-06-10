@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Form } from "react-router";
 import { Button } from "./ui/button";
 import { CogIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import { AppLink } from "./Helpers/AppLink";
@@ -19,15 +19,20 @@ export default function Header() {
                     <img src="/favicon.png" width={30} />
                     <h3><AppLink to={"/"}>Comidas</AppLink></h3>
                 </div>
-                <AppLink to="/propuestas" className="hidden md:block">
-                    <Button variant="ghost">{userRole == UserRole.Usuario ? "Mis propuestas" : "Revisar propuestas"}</Button>
-                </AppLink>
-                <AppLink to="/podio" className="hidden md:block">
-                    <Button variant="ghost">Podio</Button>
-                </AppLink>
+                {
+                    user &&
+                    <>
+                        <AppLink to="/propuestas" className="hidden md:block">
+                            <Button variant="ghost">{userRole == UserRole.Usuario ? "Mis propuestas" : "Revisar propuestas"}</Button>
+                        </AppLink>
+                        <AppLink to="/podio" className="hidden md:block">
+                            <Button variant="ghost">Podio</Button>
+                        </AppLink>
+                    </>
+                }
             </div>
 
-            <div className="items-center gap-6 hidden md:flex">
+            {user && <div className="items-center gap-6 hidden md:flex">
                 <AppLink to="/configuraciones">
                     <Button variant="ghost">
                         <CogIcon />Cuenta</Button>
@@ -39,11 +44,11 @@ export default function Header() {
                         Log out
                     </Button>
                 </Form>
-            </div>
+            </div>}
 
             <div className="flex gap-1 md:hidden">
                 <ModeToggle />
-                <NavigationMenu >
+                {user && <NavigationMenu >
                     <NavigationMenuList >
                         <NavigationMenuItem >
                             <NavigationMenuTrigger className="[&>svg:last-child]:hidden"><MenuIcon /></NavigationMenuTrigger>
@@ -85,7 +90,7 @@ export default function Header() {
                             </NavigationMenuContent>
                         </NavigationMenuItem>
                     </NavigationMenuList>
-                </NavigationMenu>
+                </NavigationMenu>}
             </div>
 
         </div >

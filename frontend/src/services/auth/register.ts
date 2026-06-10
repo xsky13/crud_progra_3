@@ -1,4 +1,5 @@
-import { UserRole } from "@/types/User";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
 import type { ActionFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 
@@ -37,19 +38,25 @@ export default async function register({
             },
         };
     } else {
+        try {
+            await api.post("/User/register", data);
+            return redirect("/");
+        } catch (error) {
+            return manageRequestError(error);
+        }
         // hacer post request a backend
-        await fetch("https://jsonplaceholder.typicode.com/todos/1");
+        // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-        // usar el usuario retornado para setear la data (token en realidad)
-        sessionStorage.setItem("user", JSON.stringify({
-            id: 1,
-            nombre: data.nombre,
-            email: data.email,
-            contrasena: data.contrasena,
-            rol: UserRole.Usuario,
-            loggedIn: true,
-        }));
+        // // usar el usuario retornado para setear la data (token en realidad)
+        // sessionStorage.setItem("user", JSON.stringify({
+        //     id: 1,
+        //     nombre: data.nombre,
+        //     email: data.email,
+        //     contrasena: data.contrasena,
+        //     rol: UserRole.Usuario,
+        //     loggedIn: true,
+        // }));
 
-        return redirect("/");
+        // return redirect("/");
     }
 }
