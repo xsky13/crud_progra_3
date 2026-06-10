@@ -2,42 +2,62 @@ import Header from "@/components/Header";
 import PodioMainItem from "@/components/Podio/PodioMainItem";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Spinner } from "@/components/ui/spinner";
 import type { ComidaView } from "@/types/Comida";
-import { useState } from "react";
+import { useSearchParams } from "react-router";
+import { useNavigation } from "react-router";
 import { useLoaderData } from "react-router";
 
 export default function Podio() {
-    const [order, setOrder] = useState("desc");
     const data = useLoaderData() as ComidaView[];
+    const navigation = useNavigation();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const order = searchParams.get("order") ?? "desc";
+
+    const changeOrder = (newOrder: string) => {
+        setSearchParams({ order: newOrder });
+    };
+
     return (
         <>
             <Header />
-            <div className="py-28 flex gap-10 items-center flex-col">
-                <div className="flex items-end w-96 justify-between">
+            <div className="py-28 flex gap-10 items-center flex-col px-7">
+                <div className="flex items-end w-full sm:w-96 justify-between">
                     <div>
                         <h3 className="subtitle">Podio</h3>
                         <div className="w-6 border border-primary"></div>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost">Ordenar por {order == "desc" ? "mas popular" : "menos popular"}</Button>
+                            <Button type="button" variant="ghost">{navigation.state != "idle" && <Spinner />} Ordenar por {order == "desc" ? "mas popular" : "menos popular"}</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuGroup>
-                                <DropdownMenuItem onClick={() => setOrder("desc")} className={`${order == "desc" && "font-bold"} cursor-pointer`}>Mas popular</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOrder("asc")} className={`${order == "asc" && "font-bold"} cursor-pointer`}>Menos popular</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => changeOrder("desc")} className={`${order == "desc" && "font-bold"} cursor-pointer`}>
+                                    Mas popular
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => changeOrder("asc")} className={`${order == "asc" && "font-bold"} cursor-pointer`}>
+                                    Menos popular
+                                </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
                 <PodioMainItem comida={data[0]} />
-                <div className="mt-5 flex flex-col gap-y-3">
+                <div className="mt-5 flex flex-col justify-center items-center gap-y-3 w-full">
                     {
                         data.map((item, i) => {
                             if (i == 0) return;
                             else
                                 return (
-                                    <div className="w-lg border-b border-muted/90 px-4 py-2">
+                                    <div className="w-full sm:w-lg border-b border-muted/90 px-4 py-2 relative">
+                                        {
+                                            i == 1 ?
+                                                <img src="/second.png" className="absolute top-[40%] right-0" alt="segundo lugar" width={40} />
+                                                :
+                                                <img src="/third.png" className="absolute top-[40%] right-0" alt="tercer lugar" width={40} />
+
+                                        }
                                         <span className="font-semibold">{item.titulo}</span>
                                         <div className="mt-3">
                                             <div className="flex gap-1 items-center font-bold text-black dark:text-white">
