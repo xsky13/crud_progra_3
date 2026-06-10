@@ -12,8 +12,8 @@ export default function PodioMainItem({ comida }: { comida: ComidaView }) {
                 alt="Event cover"
                 className="aspect-video w-full object-cover"
             />
-            <CardHeader className="text-center relative">
-                <div className="absolute top-0 left-0">
+            <CardHeader className="text-center relative z-0">
+                <div className="absolute top-0 left-0 z-0">
                     <img src="/first.png" alt="primer lugar" width={40} />
                 </div>
                 <CardTitle className="tracking-wide font-semibold">{comida.titulo}</CardTitle>

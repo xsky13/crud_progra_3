@@ -46,7 +46,7 @@ export default function Configuraciones() {
         <>
             <Header />
             <div className="min-h-screen py-28 px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto  max-w-3xl rounded-3xl border border-border p-8">
+                <div className="mx-auto max-w-3xl rounded-3xl sm:border border-border p-2 sm:p-8">
                     <div className="flex flex-col gap-4 md:flex-row md:justify-between">
                         <div>
                             <h1 className="text-3xl font-semibold">Configuración de cuenta</h1>

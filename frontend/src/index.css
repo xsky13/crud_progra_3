@@ -35,7 +35,8 @@ p {
 }
 
 ul {
-    @apply list-disc [&>li]:mt-2;
+    /*@apply list-disc [&>li]:mt-2;*/
+    @apply list-none;
 }
 
 .subtitle {

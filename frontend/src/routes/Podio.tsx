@@ -50,7 +50,7 @@ export default function Podio() {
                             if (i == 0) return;
                             else
                                 return (
-                                    <div className="w-full sm:w-lg border-b border-muted/90 px-4 py-2 relative">
+                                    <div className="w-full sm:w-lg border-b border-muted/90 pl-0 pr-4 py-2 relative">
                                         {
                                             i == 1 ?
                                                 <img src="/second.png" className="absolute top-[40%] right-0" alt="segundo lugar" width={40} />
