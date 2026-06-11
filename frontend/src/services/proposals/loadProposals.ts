@@ -6,6 +6,6 @@ export default function loadProposals() {
     if (!storedUser) return { proposals: [] };
 
     const user = JSON.parse(storedUser) as User;
-    const userProposals = foods.filter(food => !food.confirmada && food.usuario_id == user.id);
+    const userProposals = foods.filter(food => !food.confirmada && food.userId == user.id);
     return { proposals: userProposals };
 }

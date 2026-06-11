@@ -3,12 +3,12 @@ import { StarIcon } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "../ui/card";
 
 export default function PodioMainItem({ comida }: { comida: ComidaView }) {
-    const promedio = Math.round(((comida.promedio_estrellas + Number.EPSILON) * 10)) / 10;
+    const promedio = Math.round(((comida.promedioEstrellas + Number.EPSILON) * 10)) / 10;
 
     return (
         <Card className="w-full max-w-sm pt-0">
             <img
-                src={comida.img_url}
+                src={comida.imgUrl}
                 alt="Event cover"
                 className="aspect-video w-full object-cover"
             />
@@ -82,7 +82,7 @@ export default function PodioMainItem({ comida }: { comida: ComidaView }) {
                     </span>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                    {comida.cantidad_calificaciones} calificaciones
+                    {comida.cantidadCalificaciones} calificaciones
                 </div>
             </CardDescription>
             {/*<CardFooter>

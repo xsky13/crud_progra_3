@@ -14,12 +14,12 @@ export default async function rateFood({ request, params }: ActionFunctionArgs):
 
     // La formula anterior no funciono por el retraso mental que manejo. Ahora sacamos la sumatoria de calificaciones despejando,
     // y despues le agregamos la nueva calificacion, dividimos por la cantidad de calificaciones mas 1, y obtenemos el nuevo promedio.
-    const sumatoriaCalificacionesAnterior = comida.promedio_estrellas * comida.cantidad_calificaciones;
+    const sumatoriaCalificacionesAnterior = comida.promedioEstrellas * comida.cantidadCalificaciones;
 
-    comida.usuario_califica = true;
-    comida.promedio_estrellas = (sumatoriaCalificacionesAnterior + data.rating) / (comida.cantidad_calificaciones + 1);
-    comida.cantidad_calificaciones += 1;
-    comida.calificacion_usuario = data.rating;
+    comida.usuarioCalifica = true;
+    comida.promedioEstrellas = (sumatoriaCalificacionesAnterior + data.rating) / (comida.cantidadCalificaciones + 1);
+    comida.cantidadCalificaciones += 1;
+    comida.calificacionUsuario = data.rating;
 
     return { comida }
 }

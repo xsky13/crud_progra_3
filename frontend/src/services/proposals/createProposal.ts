@@ -34,12 +34,12 @@ export default async function createProposal({
     foods.push({
         id: biggestId + 1,
         titulo: data.titulo,
-        img_url: URL.createObjectURL(data.imagen),
+        imgUrl: URL.createObjectURL(data.imagen),
         confirmada: false,
-        usuario_id: 1,
-        cantidad_calificaciones: 0,
-        promedio_estrellas: 0,
-        usuario_califica: false,
+        userId: 1,
+        cantidadCalificaciones: 0,
+        promedioEstrellas: 0,
+        usuarioCalifica: false,
     });
 
     return { ok: true };

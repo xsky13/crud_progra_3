@@ -1,6 +1,7 @@
 export type FormError = {
-    error: {
+    error?: {
         msg: string,
         field: string
-    }
+    },
+    ok?: boolean
 }

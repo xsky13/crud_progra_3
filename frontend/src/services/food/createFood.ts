@@ -1,5 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "./loadFood";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
 
 type FormData = {
     titulo: string;
@@ -8,10 +10,7 @@ type FormData = {
 
 export default async function createFood({
     request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string; field: string };
-    ok: boolean;
-}> {
+}: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
@@ -25,22 +24,11 @@ export default async function createFood({
         };
     }
 
-    // temporary: get food with last id:
-    const biggestId = foods.reduce(
-        (acc, item) => (item.id > acc ? item.id : acc),
-        1,
-    );
 
-    foods.push({
-        id: biggestId + 1,
-        titulo: data.titulo,
-        img_url: URL.createObjectURL(data.imagen),
-        confirmada: true,
-        usuario_id: 1,
-        cantidad_calificaciones: 0,
-        promedio_estrellas: 0,
-        usuario_califica: false,
-    });
-
-    return { ok: true };
+    try {
+        await api.post("/Comida", formData);
+        return { ok: true }
+    } catch (error) {
+        return manageRequestError(error);
+    }
 }

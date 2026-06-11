@@ -11,24 +11,24 @@ export default async function unrateFood({ params }: ActionFunctionArgs): Promis
     if (!comida) return { error: "La comida no existe." };
 
     // Si el usuario no ha calificado, retornar error
-    if (!comida.usuario_califica) return { error: "No has calificado esta comida." };
+    if (!comida.usuarioCalifica) return { error: "No has calificado esta comida." };
 
     // Calcular la sumatoria anterior sin la calificación del usuario
-    const sumatoriaCalificacionesAnterior = comida.promedio_estrellas * comida.cantidad_calificaciones;
-    const sumatoriaCalificacionesSinUsuario = sumatoriaCalificacionesAnterior - (comida.calificacion_usuario || 0);
+    const sumatoriaCalificacionesAnterior = comida.promedioEstrellas * comida.cantidadCalificaciones;
+    const sumatoriaCalificacionesSinUsuario = sumatoriaCalificacionesAnterior - (comida.calificacionUsuario || 0);
 
     // Actualizar los datos
-    comida.usuario_califica = false;
-    comida.cantidad_calificaciones -= 1;
+    comida.usuarioCalifica = false;
+    comida.cantidadCalificaciones -= 1;
 
     // Calcular el nuevo promedio
-    if (comida.cantidad_calificaciones > 0) {
-        comida.promedio_estrellas = sumatoriaCalificacionesSinUsuario / comida.cantidad_calificaciones;
+    if (comida.cantidadCalificaciones > 0) {
+        comida.promedioEstrellas = sumatoriaCalificacionesSinUsuario / comida.cantidadCalificaciones;
     } else {
-        comida.promedio_estrellas = 0;
+        comida.promedioEstrellas = 0;
     }
 
-    comida.calificacion_usuario = undefined;
+    comida.calificacionUsuario = undefined;
 
     return { comida };
 }

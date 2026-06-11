@@ -15,7 +15,7 @@ export default function AdminPropuestaView({ propuestas }: { propuestas: ComidaV
                         propuestas.map((propuesta, i) => (
                             <Card key={i} className="w-full max-w-sm pt-0">
                                 <img
-                                    src={propuesta.img_url}
+                                    src={propuesta.imgUrl}
                                     alt="Proposal cover"
                                     className="aspect-video w-full object-cover"
                                 />

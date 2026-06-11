@@ -8,9 +8,9 @@ export default async function loadPodio({ request }: LoaderFunctionArgs) {
     await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
 
-    let sorted = foods.filter(f => f.confirmada).sort((a, b) => b.promedio_estrellas - a.promedio_estrellas);
+    let sorted = foods.filter(f => f.confirmada).sort((a, b) => b.promedioEstrellas - a.promedioEstrellas);
     if (order == "asc")
-        sorted = foods.filter(f => f.confirmada).sort((a, b) => a.promedio_estrellas - b.promedio_estrellas);
+        sorted = foods.filter(f => f.confirmada).sort((a, b) => a.promedioEstrellas - b.promedioEstrellas);
 
     return sorted.slice(0, 3);
 }

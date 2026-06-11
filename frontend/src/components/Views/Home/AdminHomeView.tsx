@@ -89,7 +89,7 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
                                                 </FieldLabel>
                                                 <Input
                                                     id="imagen"
-                                                    name="imagen"
+                                                    name="file"
                                                     type="file"
                                                     aria-invalid={
                                                         fetcher.data?.error
@@ -131,7 +131,7 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
                     </div>
 
                     {comidas.length != 0 ? (
-                        <div className="flex flex-wrap justify-center mt-5 md:flex-nowrap md:justify-start gap-7">
+                        <div className="grid grid-cols-1 place-items-center mt-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
                             {comidas.map((comida, i) => (
                                 <FoodCard key={i} comida={comida} />
                             ))}

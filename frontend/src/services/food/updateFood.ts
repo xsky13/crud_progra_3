@@ -43,12 +43,12 @@ export default async function updateFood({
     // rapido solo para las pruebas:
     foods[foodIndex].titulo = data.titulo;
     if (data.imagen && data.imagen?.size != 0)
-        foods[foodIndex].img_url = URL.createObjectURL(data.imagen);
+        foods[foodIndex].imgUrl = URL.createObjectURL(data.imagen);
 
     // foods[foodIndex] = {
     //     ...foods[foodIndex],
     //     titulo: data.titulo,
-    //     img_url: data.imagen,
+    //     imgUrl: data.imagen,
     // };
 
     return { ok: true };

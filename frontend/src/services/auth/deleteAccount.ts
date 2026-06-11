@@ -5,8 +5,8 @@ export default function deleteAccount(): Response {
     sessionStorage.removeItem("user");
 
     foods.forEach((food) => {
-        food.usuario_califica = false;
-        delete food.calificacion_usuario;
+        food.usuarioCalifica = false;
+        delete food.calificacionUsuario;
     });
 
     return redirect("/login");
