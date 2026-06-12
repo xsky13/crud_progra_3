@@ -13,7 +13,7 @@ export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {
                 <div className="w-32 border border-primary"></div>
             </div>
             {comidas.length != 0 ? (
-                comidas.map((comida, i) => <FoodCard key={i} comida={comida} />)
+                comidas.map((comida, i) => <FoodCard key={i} data={comida} />)
             ) : (
                 <Alert className="w-96">
                     <InfoIcon />

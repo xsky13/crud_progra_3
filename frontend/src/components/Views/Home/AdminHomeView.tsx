@@ -133,7 +133,7 @@ export default function AdminHomeView({ comidas }: { comidas: ComidaView[] }) {
                     {comidas.length != 0 ? (
                         <div className="grid grid-cols-1 place-items-center mt-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
                             {comidas.map((comida, i) => (
-                                <FoodCard key={i} comida={comida} />
+                                <FoodCard key={i} data={comida} />
                             ))}
                         </div>
                     ) : (

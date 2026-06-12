@@ -13,7 +13,7 @@ export default function UserPropuestaView({ propuestas }: { propuestas: ComidaVi
                         <div className="grid justify-center md:grid-cols-2 xl:grid-cols-3 gap-x-4 min-[1798px]:gap-x-0 gap-y-5 min-[1798px]:gap-y-10">
                             {
                                 propuestas.map((propuesta, i) => (
-                                    <FoodCard key={i} comida={propuesta} />
+                                    <FoodCard key={i} data={propuesta} />
                                 ))
                             }
                         </div>

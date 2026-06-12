@@ -96,7 +96,8 @@ const router = createBrowserRouter([
     },
     {
         path: "/rateFood/:id",
-        action: rateFood
+        action: rateFood,
+        shouldRevalidate: () => false
     },
     {
         path: "/unrateFood/:id",

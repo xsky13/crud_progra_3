@@ -14,8 +14,9 @@ import useUser from "@/hooks/useUser";
 import EditFoodModal from "./AdminComponents/EditFoodModal";
 import DeleteFood from "./AdminComponents/DeleteFood";
 import { useFetcher } from "react-router";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditProposal from "./Proposals/EditProposal";
+import { toast } from "sonner";
 
 const PromedioEstrellas = ({
     promedioEstrellas,
@@ -43,11 +44,29 @@ const PromedioEstrellas = ({
     );
 };
 
-export default function FoodCard({ comida }: { comida: ComidaView }) {
+export default function FoodCard({ data }: { data: ComidaView }) {
     const currentUser = useUser();
     const fetcher = useFetcher();
     const starsParentRef = useRef<HTMLDivElement | null>(null);
-    if (!currentUser) return null;
+    const [comida, setComida] = useState(data);
+    const previousComida = useRef(comida);
+
+    useEffect(() => {
+        setComida(data);
+    }, [data]);
+
+    useEffect(() => {
+        if (fetcher.data?.error?.msg) {
+            toast.error("Error", {
+                description: fetcher.data.error.msg,
+                classNames: {
+                    toast: "!bg-red-200 !text-red-800 !border-none !shadow-red-500/50",
+                    description: "!text-red-800",
+                },
+            });
+            setComida(previousComida.current);
+        }
+    }, [fetcher.data]);
 
     const hoverStar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
         if (comida.calificacionUsuario) return;
@@ -69,11 +88,26 @@ export default function FoodCard({ comida }: { comida: ComidaView }) {
 
     const rateFood = (rating: number) => {
         if (comida.usuarioCalifica) return;
+
+        previousComida.current = comida;
+
         fetcher.submit({ rating }, {
             method: "POST",
             encType: "application/json",
             action: `/rateFood/${comida.id}`
-        })
+        });
+
+        // La formula anterior no funciono por el retraso mental que manejo. Ahora sacamos la sumatoria de calificaciones despejando,
+        // y despues le agregamos la nueva calificacion, dividimos por la cantidad de calificaciones mas 1, y obtenemos el nuevo promedio.
+        const sumatoriaCalificacionesAnterior = comida.promedioEstrellas * comida.cantidadCalificaciones;
+
+        setComida(prevState => ({
+            ...prevState,
+            usuarioCalifica: true,
+            promedioEstrellas: (sumatoriaCalificacionesAnterior + rating) / (comida.cantidadCalificaciones + 1),
+            cantidadCalificaciones: prevState.cantidadCalificaciones + 1,
+            calificacionUsuario: rating
+        }));
     }
 
     const unrateFood = () => {
