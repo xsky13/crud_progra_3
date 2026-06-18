@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import type { User } from "@/types/User";
-import { redirect } from "react-router";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
 
 type UpdateAccountFormData = {
     nombre: string;
@@ -8,13 +9,13 @@ type UpdateAccountFormData = {
     contrasena: string;
 };
 
-export default async function updateAccount({ request }: ActionFunctionArgs): Promise<{ error?: { msg: string; field: string }; success?: true } | Response> {
+export default async function updateAccount({ request }: ActionFunctionArgs): Promise<FormError | { success: true }> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as UpdateAccountFormData;
 
     if (data.nombre.trim().length === 0) {
         return {
-            error: { msg: "El nombre no puede estar vacío", field: "nombre" },
+            error: { msg: "Su nombre no puede estar vacío", field: "nombre" },
         };
     }
 
@@ -22,36 +23,25 @@ export default async function updateAccount({ request }: ActionFunctionArgs): Pr
         !data.email
             .toLowerCase()
             .match(
-                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|.(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.\(".+"\))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 
             )
     ) {
-        return {
-            error: { msg: "El correo no es válido", field: "email" },
-        };
+        return { error: { msg: "Su correo electrónico no es válido", field: "email" } };
     }
-
-    const storedUser = sessionStorage.getItem("user");
-    if (!storedUser) return redirect("/login");
-
-    const user = JSON.parse(storedUser) as User;
 
     if (data.contrasena.length > 0 && data.contrasena.length < 6) {
         return {
             error: {
-                msg: "La contraseña debe tener al menos 6 caracteres",
+                msg: "Su contraseña debe tener por lo menos 6 caracteres",
                 field: "contrasena",
             },
         };
     }
 
-    const updatedUser: User = {
-        ...user,
-        nombre: data.nombre.trim(),
-        email: data.email.trim(),
-        contrasena: data.contrasena.length > 0 ? data.contrasena : user.contrasena,
-    };
-
-    sessionStorage.setItem("user", JSON.stringify(updatedUser));
-
-    return { success: true };
+    try {
+        await api.put("/User/update", data);
+        return { success: true };
+    } catch (error) {
+        return manageRequestError(error);
+    }
 }
