@@ -36,10 +36,10 @@ export default function DeleteProposal({ proposalId }: { proposalId: number }) {
 
         toast.dismiss(toastIdDelete.current);
         fetcherDelete.submit(
-            { id: proposalId },
+            {},
             {
-                method: "POST",
-                action: "/deleteProposal",
+                method: "DELETE",
+                action: "/deleteProposal/" + proposalId,
             },
         );
     };
@@ -59,6 +59,7 @@ export default function DeleteProposal({ proposalId }: { proposalId: number }) {
                     </p>
                     <form onSubmit={handleDelete}>
                         <Button
+                            type="submit"
                             variant="destructive"
                             className="w-full bg-red-700 text-white hover:bg-red-700/70"
                             disabled={fetcherDelete.state !== "idle"}

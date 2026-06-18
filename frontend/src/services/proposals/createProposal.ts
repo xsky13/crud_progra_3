@@ -26,7 +26,7 @@ export default async function createProposal({
 
 
     try {
-        await api.post("/Comida/fromProposal", formData);
+        await api.post("/Propuesta", formData);
         return { ok: true }
     } catch (error) {
         return manageRequestError(error);

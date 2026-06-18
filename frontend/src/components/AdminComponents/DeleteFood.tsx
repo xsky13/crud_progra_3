@@ -12,11 +12,14 @@ import {
     DialogHeader,
     DialogTitle,
 } from "../ui/dialog";
+import useUser from "@/hooks/useUser";
+import { UserRole } from "@/types/User";
 
 export default function DeleteFood({ comidaId }: { comidaId: number }) {
     const [open, setOpen] = useState(false);
     const fetcherDelete = useFetcher<typeof deleteFood>();
     const toastIdDelete = useRef<string | number>(0);
+    const user = useUser();
 
     // Cerrar diálogo después de eliminacion exitosa
     useEffect(() => {
@@ -35,13 +38,23 @@ export default function DeleteFood({ comidaId }: { comidaId: number }) {
         e.preventDefault();
 
         toast.dismiss(toastIdDelete.current);
-        fetcherDelete.submit(
-            { id: comidaId },
-            {
-                method: "POST",
-                action: "/deleteFood",
-            },
-        );
+        if (user.rol == UserRole.Admin) {
+            fetcherDelete.submit(
+                { id: comidaId },
+                {
+                    method: "POST",
+                    action: "/deleteFood",
+                },
+            );
+        } else {
+            fetcherDelete.submit(
+                {},
+                {
+                    method: "DELETE",
+                    action: "/deleteProposal/" + comidaId,
+                },
+            );
+        }
     };
 
     return (

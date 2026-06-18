@@ -25,7 +25,7 @@ export default function EditProposal({ comidaId, comidaTitle }: { comidaId: numb
         if (!fetcherUpdate.data?.ok && fetcherUpdate.data?.error) {
             toastId.current = errorToast(fetcherUpdate.data.error.msg)
         }
-    }, [fetcherUpdate]);
+    }, [fetcherUpdate.data]);
 
 
     useEffect(() => {

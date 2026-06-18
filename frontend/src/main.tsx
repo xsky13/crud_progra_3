@@ -121,7 +121,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: "/deleteProposal",
+        path: "/deleteProposal/:id",
         action: deleteProposal,
     },
 

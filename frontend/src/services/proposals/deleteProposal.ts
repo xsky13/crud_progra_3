@@ -1,31 +1,18 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "../food/loadFood";
-
-type FormData = {
-    id: string;
-};
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
 
 export default async function deleteProposal({
-    request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string };
-    ok: boolean;
-}> {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData) as FormData;
+    params
+}: ActionFunctionArgs): Promise<FormError> {
+    const proposalId = Number(params.id);
 
-    const proposalId = parseInt(data.id);
-
-    const foodIndex = foods.findIndex((food) => food.id === proposalId);
-
-    if (foodIndex === -1) {
-        return {
-            ok: false,
-            error: { msg: "Propuesta no encontrada" },
-        };
+    console.log("hello")
+    try {
+        await api.delete("/Propuesta/" + proposalId);
+        return { ok: true }
+    } catch (error) {
+        return manageRequestError(error);
     }
-
-    foods.splice(foodIndex, 1);
-
-    return { ok: true };
 }
