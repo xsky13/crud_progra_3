@@ -1,5 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "../food/loadFood";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
 
 type FormData = {
     titulo: string;
@@ -8,10 +10,7 @@ type FormData = {
 
 export default async function createProposal({
     request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string; field: string };
-    ok: boolean;
-}> {
+}: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
@@ -25,22 +24,11 @@ export default async function createProposal({
         };
     }
 
-    // temporary: get food with last id:
-    const biggestId = foods.reduce(
-        (acc, item) => (item.id > acc ? item.id : acc),
-        1,
-    );
 
-    foods.push({
-        id: biggestId + 1,
-        titulo: data.titulo,
-        imgUrl: URL.createObjectURL(data.imagen),
-        confirmada: false,
-        userId: 1,
-        cantidadCalificaciones: 0,
-        promedioEstrellas: 0,
-        usuarioCalifica: false,
-    });
-
-    return { ok: true };
+    try {
+        await api.post("/Comida/fromProposal", formData);
+        return { ok: true }
+    } catch (error) {
+        return manageRequestError(error);
+    }
 }

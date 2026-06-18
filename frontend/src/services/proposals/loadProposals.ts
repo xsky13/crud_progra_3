@@ -1,11 +1,10 @@
-import type { User } from "@/types/User";
-import { foods } from "../food/loadFood";
+import api from "@/api";
 
-export default function loadProposals() {
-    const storedUser = sessionStorage.getItem("user");
-    if (!storedUser) return { proposals: [] };
+export default async function loadProposals() {
+    const comidas = await api.get("/Comida/proposals")
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    console.log(comidas);
 
-    const user = JSON.parse(storedUser) as User;
-    const userProposals = foods.filter(food => !food.confirmada && food.userId == user.id);
-    return { proposals: userProposals };
+    return { proposals: comidas };
 }
