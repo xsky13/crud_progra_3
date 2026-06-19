@@ -31,6 +31,7 @@ import updateAccount from "./services/auth/updateAccount.ts";
 import deleteAccount from "./services/auth/deleteAccount.ts";
 import Podio from "./routes/Podio.tsx";
 import loadPodio from "./services/food/loadPodio.ts";
+import changePassword from "./services/auth/changePassword.ts";
 
 const router = createBrowserRouter([
     {
@@ -103,6 +104,13 @@ const router = createBrowserRouter([
         path: "/unrateFood/:id",
         action: unrateFood
     },
+
+
+    {
+        path: "/changePassword",
+        action: changePassword
+    },
+
 
     /* ROUTING DE PROPUESTAS */
     {
