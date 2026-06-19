@@ -12,20 +12,32 @@ import { Form, useFetcher } from "react-router";
 import { toast } from "sonner";
 import useUser from "@/hooks/useUser";
 import Header from "@/components/Header";
+import changePassword from "@/services/auth/changePassword";
 
 export default function Configuraciones() {
     const user = useUser();
     const fetcher = useFetcher<typeof updateAccount>();
+    const changePasswordFetcher = useFetcher<typeof changePassword>();
     const toastId = useRef<string | number>(0);
 
     useEffect(() => {
-        if (fetcher.data && "error" in fetcher.data && fetcher.data.error?.msg) {
+        toast.dismiss(toastId.current);
+        if (fetcher.data?.error?.msg) {
             toastId.current = errorToast(fetcher.data.error.msg);
-        } else if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
-            toast.dismiss(toastId.current);
+        } else if (fetcher.data?.ok) {
             toast.success("Datos actualizados correctamente");
         }
     }, [fetcher.data]);
+
+    useEffect(() => {
+        toast.dismiss(toastId.current);
+        if (changePasswordFetcher.data?.error?.msg) {
+            toastId.current = errorToast(changePasswordFetcher.data.error.msg);
+        } else if (changePasswordFetcher.data?.ok) {
+            toast.dismiss(toastId.current);
+            toast.success("Datos actualizados correctamente");
+        }
+    }, [changePasswordFetcher.data]);
 
     if (!user) {
         return (
@@ -42,6 +54,14 @@ export default function Configuraciones() {
         );
     }
 
+    const handlePasswordChange = (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        changePasswordFetcher.submit(e.currentTarget, {
+            method: "PUT",
+            action: "/changePassword"
+        });
+    }
     return (
         <>
             <Header />
@@ -127,6 +147,53 @@ export default function Configuraciones() {
                                     </SubmitButton>
                                 </div>
                             </fetcher.Form>
+
+                            <div className="mt-10">
+                                <h2 className="text-xl font-semibold">Cambiar contraseña</h2>
+
+                                <changePasswordFetcher.Form onSubmit={handlePasswordChange} action="/changePassword" className="mt-7">
+                                    <FieldGroup>
+                                        <Field data-invalid={changePasswordFetcher.data?.error?.field == "oldPassword"}>
+                                            <FieldLabel htmlFor="oldPassword">Contraseña antigua</FieldLabel>
+                                            <Input
+                                                id="oldPassword"
+                                                type="password"
+                                                name="oldPassword"
+                                                className=" bg-white dark:bg-input/30"
+                                                aria-invalid={changePasswordFetcher.data?.error?.field == "oldPassword"}
+                                                />
+                                        </Field>
+                                        <Field data-invalid={changePasswordFetcher.data?.error?.field == "newPassword"}>
+                                            <FieldLabel htmlFor="newPassword">Nueva contraseña</FieldLabel>
+                                            <Input
+                                                id="newPassword"
+                                                type="password"
+                                                name="newPassword"
+                                                className=" bg-white dark:bg-input/30"
+                                                aria-invalid={changePasswordFetcher.data?.error?.field == "newPassword"}
+                                                />
+                                        </Field>
+                                        <Field data-invalid={changePasswordFetcher.data?.error?.field == "newPasswordRepeat"}>
+                                            <FieldLabel htmlFor="newPasswordRepeat">Repetir nueva contraseña</FieldLabel>
+                                            <Input
+                                                id="newPasswordRepeat"
+                                                type="password"
+                                                name="newPasswordRepeat"
+                                                className=" bg-white dark:bg-input/30"
+                                                aria-invalid={changePasswordFetcher.data?.error?.field == "newPasswordRepeat"}
+                                                />
+                                        </Field>
+                                    </FieldGroup>
+                                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <SubmitButton
+                                            className="w-full sm:w-auto"
+                                            isSubmitting={changePasswordFetcher.state == "submitting"}
+                                        >
+                                            Guardar cambios
+                                        </SubmitButton>
+                                    </div>
+                                </changePasswordFetcher.Form>
+                            </div>
                         </div>
 
                         <div className="rounded-3xl flex flex-col justify-between bg-destructive/5 p-6">

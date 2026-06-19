@@ -160,11 +160,12 @@ export default function FoodCard({ data }: { data: ComidaView }) {
                                     cantidadCalificaciones={comida.cantidadCalificaciones}
                                     promedioEstrellas={comida.promedioEstrellas}
                                 />
-                                :
-                                <>
-                                    <EditProposal comidaId={comida.id} comidaTitle={comida.titulo} />
-                                    <DeleteFood comidaId={comida.id} />
-                                </>
+                                    :
+                                    comida.userId == currentUser.id &&
+                                        <>
+                                            <EditProposal comidaId={comida.id} comidaTitle={comida.titulo} />
+                                            <DeleteFood comidaId={comida.id} />
+                                        </>
                         }
                     </CardAction>
                 )}

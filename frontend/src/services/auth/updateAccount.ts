@@ -9,7 +9,7 @@ type UpdateAccountFormData = {
     contrasena: string;
 };
 
-export default async function updateAccount({ request }: ActionFunctionArgs): Promise<FormError | { success: true }> {
+export default async function updateAccount({ request }: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as UpdateAccountFormData;
 
@@ -23,7 +23,7 @@ export default async function updateAccount({ request }: ActionFunctionArgs): Pr
         !data.email
             .toLowerCase()
             .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.\(".+"\))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.\(".+"\))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             )
     ) {
         return { error: { msg: "Su correo electrónico no es válido", field: "email" } };
@@ -39,8 +39,8 @@ export default async function updateAccount({ request }: ActionFunctionArgs): Pr
     }
 
     try {
-        await api.put("/User/update", data);
-        return { success: true };
+        await api.put("/User", data);
+        return { ok: true };
     } catch (error) {
         return manageRequestError(error);
     }

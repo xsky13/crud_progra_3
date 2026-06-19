@@ -63,19 +63,19 @@ export default function CreateProposal() {
                             <Field
                                 data-invalid={
                                     fetcher.data?.error
-                                        ?.field == "imagen"
+                                        ?.field == "file"
                                 }
                             >
-                                <FieldLabel htmlFor="imagen">
+                                <FieldLabel htmlFor="file">
                                     Imagen
                                 </FieldLabel>
                                 <Input
-                                    id="imagen"
-                                    name="imagen"
+                                    id="file"
+                                    name="file"
                                     type="file"
                                     aria-invalid={
                                         fetcher.data?.error
-                                            ?.field == "imagen"
+                                            ?.field == "file"
                                     }
                                 />
                             </Field>

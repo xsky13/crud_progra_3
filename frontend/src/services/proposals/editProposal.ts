@@ -1,8 +1,10 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "../food/loadFood";
+import manageRequestError from "@/lib/manageRequestError";
+import api from "@/api";
+import type { FormError } from "@/types/FormError";
 
 
-export default async function editProposal({ request, params }: ActionFunctionArgs): Promise<{ ok: boolean, error?: { msg: string, field: string } }> {
+export default async function editProposal({ request, params }: ActionFunctionArgs): Promise<FormError> {
     const proposalId = Number(params.id);
 
     const formData = await request.formData();
@@ -17,8 +19,10 @@ export default async function editProposal({ request, params }: ActionFunctionAr
         };
     }
 
-    const foodIdx = foods.findIndex(food => food.id == proposalId);
-    foods[foodIdx].titulo = data.titulo;
-
-    return { ok: true };
+    try {
+        await api.put("/Propuesta/" + proposalId, formData);
+        return { ok: true }
+    } catch (error) {
+        return manageRequestError(error);
+    }
 }
