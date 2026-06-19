@@ -19,9 +19,9 @@ export default function Configuraciones() {
     const toastId = useRef<string | number>(0);
 
     useEffect(() => {
-        if (fetcher.data?.error?.msg) {
+        if (fetcher.data && "error" in fetcher.data && fetcher.data.error?.msg) {
             toastId.current = errorToast(fetcher.data.error.msg);
-        } else if (fetcher.data?.success) {
+        } else if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
             toast.dismiss(toastId.current);
             toast.success("Datos actualizados correctamente");
         }
@@ -73,17 +73,23 @@ export default function Configuraciones() {
                                 className="mt-6 space-y-5"
                             >
                                 <FieldGroup>
-                                    <Field data-invalid={fetcher.data?.error?.field == "nombre"}>
+                                    <Field data-invalid={
+                                    fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "nombre"
+                                }>
                                         <FieldLabel htmlFor="nombre">Nombre completo</FieldLabel>
                                         <Input
                                             id="nombre"
                                             name="nombre"
                                             className=" bg-white dark:bg-input/30"
                                             defaultValue={user.nombre}
-                                            aria-invalid={fetcher.data?.error?.field == "nombre"}
+                                            aria-invalid={
+                                                fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "nombre"
+                                            }
                                         />
                                     </Field>
-                                    <Field data-invalid={fetcher.data?.error?.field == "email"}>
+                                    <Field data-invalid={
+                                        fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "email"
+                                    }>
                                         <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
                                         <Input
                                             id="email"
@@ -91,17 +97,23 @@ export default function Configuraciones() {
                                             name="email"
                                             className=" bg-white dark:bg-input/30"
                                             defaultValue={user.email}
-                                            aria-invalid={fetcher.data?.error?.field == "email"}
+                                            aria-invalid={
+                                                fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "email"
+                                            }
                                         />
                                     </Field>
-                                    <Field data-invalid={fetcher.data?.error?.field == "contrasena"}>
+                                    <Field data-invalid={
+                                        fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "contrasena"
+                                    }>
                                         <FieldLabel htmlFor="contrasena">Nueva contraseña</FieldLabel>
                                         <Input
                                             id="contrasena"
                                             type="password"
                                             name="contrasena"
                                             className=" bg-white dark:bg-input/30"
-                                            aria-invalid={fetcher.data?.error?.field == "contrasena"}
+                                            aria-invalid={
+                                                fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "contrasena"
+                                            }
                                         />
                                     </Field>
                                 </FieldGroup>
