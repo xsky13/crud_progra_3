@@ -24,7 +24,8 @@ export default function DeleteFood({ comidaId }: { comidaId: number }) {
     // Cerrar diálogo después de eliminacion exitosa
     useEffect(() => {
         if (fetcherDelete.state === "idle" && fetcherDelete.data?.ok) {
-            setOpen(false);
+            setTimeout(() => setOpen(false), 0);
+            toast.success("Se elimino la comida")
         }
     }, [fetcherDelete.state, fetcherDelete.data]);
 

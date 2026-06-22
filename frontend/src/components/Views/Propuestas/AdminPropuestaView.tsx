@@ -2,8 +2,8 @@ import { Card, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { ComidaView } from "@/types/Comida";
 import { InfoIcon } from "lucide-react";
-import AcceptProposal from "../../AdminComponents/AcceptProposal";
-import DeleteProposal from "../../AdminComponents/DeleteProposal";
+import AcceptProposal from "../../Proposals/AcceptProposal";
+import DeleteProposal from "../../Proposals/DeleteProposal";
 
 export default function AdminPropuestaView({ propuestas }: { propuestas: ComidaView[] }) {
     return (

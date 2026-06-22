@@ -31,6 +31,7 @@ export default function EditFoodModal({ comida }: { comida: Comida }) {
     useEffect(() => {
         if (fetcherUpdate.state === "idle" && fetcherUpdate.data?.ok) {
             setTimeout(() => setOpenEdit(false), 0); // de alguna forma suprime el error de react
+            toast.success("Se actualizo la comida")
         }
     }, [fetcherUpdate.state, fetcherUpdate.data]);
 

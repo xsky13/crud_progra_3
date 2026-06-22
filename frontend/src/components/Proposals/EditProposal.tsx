@@ -31,6 +31,7 @@ export default function EditProposal({ comidaId, comidaTitle }: { comidaId: numb
     useEffect(() => {
         if (fetcherUpdate.state == "idle" && fetcherUpdate.data?.ok) {
             setTimeout(() => setOpenEdit(false), 0);
+            toast.success("Se actualizo la propuesta");
         }
     }, [fetcherUpdate])
 

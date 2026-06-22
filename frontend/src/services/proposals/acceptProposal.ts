@@ -1,31 +1,20 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "../food/loadFood";
-
-type FormData = {
-    id: string;
-};
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
+import api from "@/api";
 
 export default async function acceptProposal({
     request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string };
-    ok: boolean;
-}> {
+}: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
-    const data = Object.fromEntries(formData) as FormData;
+    const data = Object.fromEntries(formData) as { id: string };
 
     const proposalId = parseInt(data.id);
 
-    const foodIndex = foods.findIndex((food) => food.id === proposalId);
-
-    if (foodIndex === -1) {
-        return {
-            ok: false,
-            error: { msg: "Propuesta no encontrada" },
-        };
+    try {
+        await api.post(`/Propuesta/${proposalId}/accept`);
+        return { ok: true };
+    } catch (error) {
+        return manageRequestError(error)
     }
-
-    foods[foodIndex].confirmada = true;
-
-    return { ok: true };
 }

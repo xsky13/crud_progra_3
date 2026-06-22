@@ -21,7 +21,6 @@ import unrateFood from "./services/food/unrateFood.ts";
 import ErrorBoundary from "./components/Helpers/ErrorBoundary.tsx";
 import createProposal from "./services/proposals/createProposal.ts";
 import Propuestas from "./routes/Propuestas.tsx";
-import loadProposalsLoader from "./services/proposals/loadProposalsLoader.ts";
 import editProposal from "./services/proposals/editProposal.ts";
 import acceptProposal from "./services/proposals/acceptProposal.ts";
 import deleteProposal from "./services/proposals/deleteProposal.ts";
@@ -32,6 +31,7 @@ import deleteAccount from "./services/auth/deleteAccount.ts";
 import Podio from "./routes/Podio.tsx";
 import loadPodio from "./services/food/loadPodio.ts";
 import changePassword from "./services/auth/changePassword.ts";
+import loadProposals from "./services/proposals/loadProposals.ts";
 
 const router = createBrowserRouter([
     {
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
             {
                 path: "/propuestas",
                 Component: Propuestas,
-                loader: loadProposalsLoader,
+                loader: loadProposals,
             },
             {
                 path: "/podio",
