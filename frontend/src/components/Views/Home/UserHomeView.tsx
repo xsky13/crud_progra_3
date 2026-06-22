@@ -1,5 +1,5 @@
 import type { ComidaView } from "@/types/Comida";
-import FoodCard from "../../FoodCard";
+import FoodCard from "../../Food/FoodCard";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription, AlertAction } from "../../ui/alert";
 import { Button } from "../../ui/button";

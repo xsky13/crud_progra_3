@@ -1,4 +1,4 @@
-import FoodCard from "@/components/FoodCard";
+import FoodCard from "@/components/Food/FoodCard";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { ComidaView } from "@/types/Comida";
 import { InfoIcon } from "lucide-react";

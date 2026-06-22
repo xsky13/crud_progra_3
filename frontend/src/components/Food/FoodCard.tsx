@@ -11,11 +11,11 @@ import type { ComidaView } from "@/types/Comida";
 import { UserRole } from "@/types/User";
 import { MessageSquareText, StarIcon } from "lucide-react";
 import useUser from "@/hooks/useUser";
-import EditFoodModal from "./AdminComponents/EditFoodModal";
-import DeleteFood from "./AdminComponents/DeleteFood";
+import EditFoodModal from "../AdminComponents/EditFoodModal";
+import DeleteFood from "../AdminComponents/DeleteFood";
 import { useFetcher } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import EditProposal from "./Proposals/EditProposal";
+import EditProposal from "../Proposals/EditProposal";
 import { toast } from "sonner";
 
 const PromedioEstrellas = ({
