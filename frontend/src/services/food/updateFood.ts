@@ -1,5 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "./loadFood";
+import type { FormError } from "@/types/FormError";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
 
 type FormData = {
     id: string;
@@ -9,24 +11,11 @@ type FormData = {
 
 export default async function updateFood({
     request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string; field: string };
-    ok: boolean;
-}> {
+}: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
     const foodId = parseInt(data.id);
-
-    if (isNaN(foodId)) {
-        return {
-            ok: false,
-            error: {
-                msg: "ID de comida inválido",
-                field: "id",
-            },
-        };
-    }
 
     if (data.titulo.trim() == "") {
         return {
@@ -38,18 +27,10 @@ export default async function updateFood({
         };
     }
 
-    const foodIndex = foods.findIndex((food) => food.id === foodId);
-
-    // rapido solo para las pruebas:
-    foods[foodIndex].titulo = data.titulo;
-    if (data.imagen && data.imagen?.size != 0)
-        foods[foodIndex].imgUrl = URL.createObjectURL(data.imagen);
-
-    // foods[foodIndex] = {
-    //     ...foods[foodIndex],
-    //     titulo: data.titulo,
-    //     imgUrl: data.imagen,
-    // };
-
-    return { ok: true };
+    try {
+        await api.put("/Comida/" + foodId, formData);
+        return { ok: true };
+    } catch (err) {
+        return manageRequestError(err);
+    }
 }

@@ -1,5 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import { foods } from "./loadFood";
+import type { FormError } from "@/types/FormError";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
 
 type FormData = {
     id: string;
@@ -7,18 +9,16 @@ type FormData = {
 
 export default async function deleteFood({
     request,
-}: ActionFunctionArgs): Promise<{
-    error?: { msg: string };
-    ok: boolean;
-}> {
+}: ActionFunctionArgs): Promise<FormError> {
     const formData = await request.formData();
     const data = Object.fromEntries(formData) as FormData;
 
     const foodId = parseInt(data.id);
 
-    const foodIndex = foods.findIndex((food) => food.id === foodId);
-
-    foods.splice(foodIndex, 1);
-
-    return { ok: true };
+    try {
+        await api.delete("/Comida/" + foodId);
+        return { ok: true };
+    } catch (err) {
+        return manageRequestError(err);
+    }
 }

@@ -125,6 +125,21 @@ export default function FoodCard({ data }: { data: ComidaView }) {
                 if (icon) icon.style.fill = "transparent";
             })
         }
+
+        const sumatoriaCalificacionesAnterior = comida.promedioEstrellas * comida.cantidadCalificaciones;
+        const sumatoriaCalificacionesSinUsuario = sumatoriaCalificacionesAnterior - (comida.calificacionUsuario || 0);
+
+        const promedioNuevo = comida.cantidadCalificaciones > 0 ?
+            sumatoriaCalificacionesSinUsuario / comida.cantidadCalificaciones
+            : 0;
+
+        setComida(prevState => ({
+            ...prevState,
+            usuarioCalifica: false,
+            promedioEstrellas: promedioNuevo,
+            cantidadCalificaciones: prevState.cantidadCalificaciones - 1,
+            calificacionUsuario: 0
+        }));
     }
 
     return (
