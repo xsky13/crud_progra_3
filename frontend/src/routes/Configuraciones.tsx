@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import errorToast from "@/lib/errorToast";
 import type updateAccount from "@/services/auth/updateAccount";
+import type deleteAccount from "@/services/auth/deleteAccount";
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { Form, useFetcher } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { useFetcher } from "react-router";
 import { toast } from "sonner";
 import useUser from "@/hooks/useUser";
 import Header from "@/components/Header";
@@ -18,6 +19,8 @@ export default function Configuraciones() {
     const user = useUser();
     const fetcher = useFetcher<typeof updateAccount>();
     const changePasswordFetcher = useFetcher<typeof changePassword>();
+    const deleteFetcher = useFetcher<typeof deleteAccount>();
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const toastId = useRef<string | number>(0);
 
     useEffect(() => {
@@ -37,6 +40,13 @@ export default function Configuraciones() {
             toast.success("Datos actualizados correctamente");
         }
     }, [changePasswordFetcher.data]);
+
+    useEffect(() => {
+        if (deleteFetcher.data && "error" in deleteFetcher.data && deleteFetcher.data.error?.msg) {
+            toast.dismiss(toastId.current);
+            toastId.current = errorToast(deleteFetcher.data.error.msg);
+        }
+    }, [deleteFetcher.data]);
 
     if (!user) {
         return (
@@ -203,7 +213,7 @@ export default function Configuraciones() {
                                 </p>
                             </div>
 
-                            <Dialog>
+                            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                                 <DialogTrigger asChild>
                                     <Button variant="destructive" className="mt-6 w-full">
                                         <Trash2 /> Eliminar cuenta
@@ -215,11 +225,16 @@ export default function Configuraciones() {
                                         <p className="mt-2 text-sm text-muted-foreground">
                                             ¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.
                                         </p>
-                                        <Form action="/deleteAccount" method="post" className="mt-6">
-                                            <Button type="submit" variant="destructive" className="w-full">
+                                        <deleteFetcher.Form action="/deleteAccount" method="post" className="mt-6">
+                                            <SubmitButton 
+                                                type="submit" 
+                                                variant="destructive" 
+                                                className="w-full"
+                                                isSubmitting={deleteFetcher.state === "submitting"}
+                                            >
                                                 <Trash2 /> Sí, eliminar cuenta
-                                            </Button>
-                                        </Form>
+                                            </SubmitButton>
+                                        </deleteFetcher.Form>
                                     </DialogHeader>
                                 </DialogContent>
                             </Dialog>

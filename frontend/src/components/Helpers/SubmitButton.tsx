@@ -15,15 +15,9 @@ export default function SubmitButton({
     ...props
 }: SubmitButtonType) {
     return (
-        <>
-            {isSubmitting ? (
-                <Button disabled {...props}>
-                    <Spinner />
-                    {children}
-                </Button>
-            ) : (
-                <Button {...props}>{children}</Button>
-            )}
-        </>
+        <Button disabled={isSubmitting} {...props}>
+            {isSubmitting && <Spinner />}
+            {children}
+        </Button>
     );
 }
