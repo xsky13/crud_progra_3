@@ -1,13 +1,16 @@
+import type { ActionFunctionArgs } from "react-router";
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { FormError } from "@/types/FormError";
 import { redirect } from "react-router";
 import { foods } from "../food/loadFood";
 
-export default function deleteAccount(): Response {
-    sessionStorage.removeItem("user");
+export default async function deleteAccount({request}: ActionFunctionArgs): Promise<FormError | Response> {
+    try{
+        await api.post("/User/logout").then( async () => await api.delete("/User"));
 
-    foods.forEach((food) => {
-        food.usuarioCalifica = false;
-        delete food.calificacionUsuario;
-    });
-
-    return redirect("/login");
+        return redirect("/login");    
+    } catch (error) {
+        return manageRequestError(error);
+    }
 }

@@ -34,7 +34,6 @@ export default function Configuraciones() {
         if (changePasswordFetcher.data?.error?.msg) {
             toastId.current = errorToast(changePasswordFetcher.data.error.msg);
         } else if (changePasswordFetcher.data?.ok) {
-            toast.dismiss(toastId.current);
             toast.success("Datos actualizados correctamente");
         }
     }, [changePasswordFetcher.data]);
