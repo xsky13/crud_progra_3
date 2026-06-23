@@ -1,15 +1,17 @@
 import Header from "@/components/Header";
 import PodioMainItem from "@/components/Podio/PodioMainItem";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import type { ComidaView } from "@/types/Comida";
+import { InfoIcon } from "lucide-react";
 import { useSearchParams } from "react-router";
 import { useNavigation } from "react-router";
 import { useLoaderData } from "react-router";
 
 export default function Podio() {
-    const data = useLoaderData() as ComidaView[];
+    const data = (useLoaderData() as ComidaView[]) ?? [];
     const navigation = useNavigation();
     const [searchParams, setSearchParams] = useSearchParams();
     const order = searchParams.get("order") ?? "desc";
@@ -17,6 +19,7 @@ export default function Podio() {
     const changeOrder = (newOrder: string) => {
         setSearchParams({ order: newOrder });
     };
+    console.log(data);
 
     return (
         <>
@@ -43,9 +46,10 @@ export default function Podio() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <PodioMainItem comida={data[0]} />
+                {data.length > 0 && <PodioMainItem comida={data[0]} />}
                 <div className="mt-5 flex flex-col justify-center items-center gap-y-3 w-full">
                     {
+                        data && data.length != 0 ?
                         data.map((item, i) => {
                             if (i == 0) return;
                             else
@@ -73,6 +77,11 @@ export default function Podio() {
                                     </div>
                                 )
                         })
+                        :
+                        <Alert className="w-96">
+                            <InfoIcon />
+                            <AlertTitle>Todavía no hay comidas en el podio</AlertTitle>
+                        </Alert>
                     }
                 </div>
             </div>
