@@ -29,15 +29,6 @@ export default async function updateAccount({ request }: ActionFunctionArgs): Pr
         return { error: { msg: "Su correo electrónico no es válido", field: "email" } };
     }
 
-    if (data.contrasena.length > 0 && data.contrasena.length < 6) {
-        return {
-            error: {
-                msg: "Su contraseña debe tener por lo menos 6 caracteres",
-                field: "contrasena",
-            },
-        };
-    }
-
     try {
         await api.put("/User", data);
         return { ok: true };

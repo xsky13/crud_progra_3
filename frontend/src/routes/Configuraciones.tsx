@@ -131,20 +131,6 @@ export default function Configuraciones() {
                                             }
                                         />
                                     </Field>
-                                    <Field data-invalid={
-                                        fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "contrasena"
-                                    }>
-                                        <FieldLabel htmlFor="contrasena">Nueva contraseña</FieldLabel>
-                                        <Input
-                                            id="contrasena"
-                                            type="password"
-                                            name="contrasena"
-                                            className=" bg-white dark:bg-input/30"
-                                            aria-invalid={
-                                                fetcher.data && "error" in fetcher.data && fetcher.data.error?.field == "contrasena"
-                                            }
-                                        />
-                                    </Field>
                                 </FieldGroup>
 
                                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

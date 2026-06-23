@@ -11,11 +11,11 @@ import type { ComidaView } from "@/types/Comida";
 import { UserRole } from "@/types/User";
 import { MessageSquareText, StarIcon } from "lucide-react";
 import useUser from "@/hooks/useUser";
-import EditFoodModal from "./AdminComponents/EditFoodModal";
-import DeleteFood from "./AdminComponents/DeleteFood";
+import EditFoodModal from "./EditFoodModal";
+import DeleteFood from "./DeleteFood";
 import { useFetcher } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import EditProposal from "./Proposals/EditProposal";
+import EditProposal from "../Proposals/EditProposal";
 import { toast } from "sonner";
 
 const PromedioEstrellas = ({
@@ -125,6 +125,21 @@ export default function FoodCard({ data }: { data: ComidaView }) {
                 if (icon) icon.style.fill = "transparent";
             })
         }
+
+        const sumatoriaCalificacionesAnterior = comida.promedioEstrellas * comida.cantidadCalificaciones;
+        const sumatoriaCalificacionesSinUsuario = sumatoriaCalificacionesAnterior - (comida.calificacionUsuario || 0);
+
+        const promedioNuevo = comida.cantidadCalificaciones > 0 ?
+            sumatoriaCalificacionesSinUsuario / comida.cantidadCalificaciones
+            : 0;
+
+        setComida(prevState => ({
+            ...prevState,
+            usuarioCalifica: false,
+            promedioEstrellas: promedioNuevo,
+            cantidadCalificaciones: prevState.cantidadCalificaciones - 1,
+            calificacionUsuario: 0
+        }));
     }
 
     return (

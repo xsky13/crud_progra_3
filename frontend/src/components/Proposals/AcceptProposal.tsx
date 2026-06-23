@@ -22,6 +22,7 @@ export default function AcceptProposal({ proposalId }: { proposalId: number }) {
     useEffect(() => {
         if (fetcherAccept.state === "idle" && fetcherAccept.data?.ok) {
             setTimeout(() => setOpen(false), 0); // cambiar estado en ultimo render? elimina error de mi editor de codigo
+            toast.success("La propuesta se agrego como comida en la pagina principal.");
         }
     }, [fetcherAccept.state, fetcherAccept.data]);
 

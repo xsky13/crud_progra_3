@@ -21,7 +21,8 @@ export default function DeleteProposal({ proposalId }: { proposalId: number }) {
     // Cerrar diálogo después de eliminación exitosa
     useEffect(() => {
         if (fetcherDelete.state === "idle" && fetcherDelete.data?.ok) {
-            setOpen(false);
+            setTimeout(() => setOpen(false), 0);
+            toast.success("Se elimino la propuesta");
         }
     }, [fetcherDelete.state, fetcherDelete.data]);
 
