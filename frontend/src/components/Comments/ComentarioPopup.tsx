@@ -14,12 +14,16 @@ import CommentItem from "./CommentItem";
 import { useState } from "react";
 import type { Comment } from "@/types/Comment";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import useUser from "@/hooks/useUser";
 
 type CommentPopupTypes = {
+	foodId: number;
 	foodTitle: string;
 }
 
 export function ComentarioPopup(props: CommentPopupTypes) {
+	const user = useUser();
+	const [commentText, setCommentText] = useState("");
 	const [comentarios, setComentarios] = useState<Comment[]>([
 		{
 			id: 1,
@@ -34,20 +38,35 @@ export function ComentarioPopup(props: CommentPopupTypes) {
 		}
 	]);
 
-	const upvote = (comidaId: number) => {
+	const upvote = (commentId: number) => {
 		setComentarios(prev => prev.map(c =>
-			c.comidaId == comidaId ?
+			c.id == commentId ?
 				{ ...c, votos: c.votos + 1 }
 				: c
 		))
 	}
 
-	const downvote = (comidaId: number) => {
+	const downvote = (commentId: number) => {
 		setComentarios(prev => prev.map(c =>
-			c.comidaId == comidaId ?
+			c.id == commentId ?
 				{ ...c, votos: c.votos - 1 }
 				: c
 		))
+	}
+
+	const addComment = () => {
+		setComentarios(prev => [...prev, {
+			id: comentarios[comentarios.length - 1].id + 1,
+			texto: commentText,
+			votos: 0,
+			comidaId: props.foodId,
+			user: {
+				nombre: user.nombre
+			},
+			userId: user.id,
+			fecha: "ahora"
+		}]);
+		setCommentText("");
 	}
 
 	return (
@@ -79,7 +98,7 @@ export function ComentarioPopup(props: CommentPopupTypes) {
 									key={i}
 									texto={comentario.texto}
 									votos={comentario.votos}
-									comidaId={comentario.comidaId}
+									commentId={comentario.id}
 									nombreUsuario={comentario.user.nombre}
 									fecha={comentario.fecha}
 									upvote={upvote}
@@ -89,12 +108,16 @@ export function ComentarioPopup(props: CommentPopupTypes) {
 					}
 				</div>
 				<DrawerFooter>
-					<Textarea placeholder="Tu comentario..." />
+					<Textarea
+						placeholder="Tu comentario..."
+						value={commentText}
+						onChange={e => setCommentText(e.target.value)}
+					/>
 					<div className="flex gap-2 w-full mt-3">
 						<DrawerClose asChild className="flex-1">
 							<Button variant="outline">Cerrar</Button>
 						</DrawerClose>
-						<Button className="flex-1">Comentar</Button>
+						<Button className="flex-1" onClick={addComment}>Comentar</Button>
 					</div>
 				</DrawerFooter>
 			</DrawerContent>

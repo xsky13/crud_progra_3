@@ -3,11 +3,11 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 export default function CommentItem(props: {
 	texto: string,
 	votos: number,
-	comidaId: number,
+	commentId: number,
 	nombreUsuario: string,
 	fecha: string,
-	upvote: (comidaId: number) => void,
-	downvote: (comidaId: number) => void,
+	upvote: (commentId: number) => void,
+	downvote: (commentId: number) => void,
 }) {
 	return (
 		<div>
@@ -16,13 +16,13 @@ export default function CommentItem(props: {
 					<ChevronUpIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.upvote(props.comidaId)}
+						onClick={() => props.upvote(props.commentId)}
 					/>
 					<span className="text-xs">{props.votos}</span>
 					<ChevronDownIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.downvote(props.comidaId)}
+						onClick={() => props.downvote(props.commentId)}
 					/>
 				</div>
 				{props.texto}
