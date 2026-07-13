@@ -17,6 +17,7 @@ import { useFetcher } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import EditProposal from "../Proposals/EditProposal";
 import { toast } from "sonner";
+import { ComentarioPopup } from "../Comments/ComentarioPopup";
 
 const PromedioEstrellas = ({
     promedioEstrellas,
@@ -216,7 +217,7 @@ export default function FoodCard({ data }: { data: ComidaView }) {
                                     </div>
                                 ))}
                             </div>
-                            {comida.calificacionUsuario && (
+                            {comida.calificacionUsuario != null && (
                                 <span
                                     className="cursor-pointer mt-3 text-red-700 tracking-wide hover:text-red-800"
                                     onClick={unrateFood}
@@ -227,13 +228,7 @@ export default function FoodCard({ data }: { data: ComidaView }) {
                         </div>
                     </CardDescription>
                     <CardFooter>
-                        <Button
-                            className="w-full font-medium"
-                            variant="secondary"
-                        >
-                            <MessageSquareText />
-                            Ver comentarios
-                        </Button>
+                        <ComentarioPopup foodTitle={comida.titulo} />
                     </CardFooter>
                 </>
             )}

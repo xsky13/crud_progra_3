@@ -27,6 +27,7 @@ export default function AdminPropuestaView({ propuestas }: { propuestas: ComidaV
                                             <DeleteProposal proposalId={propuesta.id} />
                                         </div>
                                     </CardAction>
+                                    <span className="text-sm font-medium text-muted-foreground">Propuesta de: {propuesta.nombre}</span>
                                 </CardHeader>
                             </Card>
                         ))
