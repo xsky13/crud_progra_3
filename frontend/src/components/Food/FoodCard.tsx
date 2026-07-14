@@ -17,7 +17,6 @@ import { useFetcher } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import EditProposal from "../Proposals/EditProposal";
 import { toast } from "sonner";
-import { ComentarioPopup } from "../Comments/ComentarioPopup";
 
 const PromedioEstrellas = ({
 	promedioEstrellas,
@@ -45,7 +44,7 @@ const PromedioEstrellas = ({
 	);
 };
 
-export default function FoodCard({ data }: { data: ComidaView }) {
+export default function FoodCard({ data, openDrawer }: { data: ComidaView, openDrawer: (id: number, title: string) => void }) {
 	const currentUser = useUser();
 	const fetcher = useFetcher();
 	const starsParentRef = useRef<HTMLDivElement | null>(null);
@@ -228,10 +227,14 @@ export default function FoodCard({ data }: { data: ComidaView }) {
 						</div>
 					</CardDescription>
 					<CardFooter>
-						<ComentarioPopup
-							foodId={comida.id}
-							foodTitle={comida.titulo}
-						/>
+						<Button
+							className="w-full font-medium"
+							variant="secondary"
+							onClick={() => openDrawer(data.id, data.titulo)}
+						>
+							<MessageSquareText />
+							Ver comentarios
+						</Button>
 					</CardFooter>
 				</>
 			)}
