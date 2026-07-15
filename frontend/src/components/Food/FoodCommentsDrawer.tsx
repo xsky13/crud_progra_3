@@ -5,6 +5,10 @@ import { DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose, Dr
 import { Textarea } from "../ui/textarea";
 import { ComentarioPopup } from "../Comments/ComentarioPopup";
 import type { Comment } from "@/types/Comment";
+import api from "@/api";
+import { Spinner } from "../ui/spinner";
+import { useFetcher } from "react-router";
+import createComment from "@/services/comment/createComment";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -17,27 +21,22 @@ type CommentPopupTypes = {
 export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	const user = useUser();
 	const [commentText, setCommentText] = useState("");
-	const [comentarios, setComentarios] = useState<Comment[]>([
-		{
-			id: 1,
-			texto: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt",
-			votos: 3,
-			comidaId: 13,
-			userId: 1,
-			user: {
-				nombre: "Jared"
-			},
-			fecha: "Hace 5 dias"
-		}
-	]);
+	const [comentarios, setComentarios] = useState<Comment[]>([]);
+	const [loading, setLoading] = useState(false);
+	const createCommentFetcher = useFetcher<typeof createComment>();
+
 
 	useEffect(() => {
-		setTimeout(() => setComentarios(comentarios.filter(c => c.comidaId == props.openFoodDrawerId)), 0)
-	}, [props.openFoodDrawerId])
+		(async () => {
+			setLoading(true)
+			const comments = await api.get("/comment/" + props.foodId)
+				.then(res => res.data)
+				.catch(err => console.log(err))
+				.finally(() => setLoading(false));
+			setComentarios(comments);
+		})()
 
-	useEffect(() => {
 		if (props.openFoodDrawerId != null) {
-			console.log("working")
 			setTimeout(() => {
 				document.body.style.pointerEvents = "auto";
 			}, 0);
@@ -62,19 +61,21 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 
 
 	const addComment = () => {
-		setComentarios(prev => [...prev, {
-			id: comentarios[comentarios.length - 1].id + 1,
-			texto: commentText,
-			votos: 0,
+		createCommentFetcher.submit({
 			comidaId: props.foodId,
-			user: {
-				nombre: user.nombre
-			},
-			userId: user.id,
-			fecha: "ahora"
-		}]);
-		setCommentText("");
+			commentText
+		}, {
+			method: "POST",
+			encType: "application/json",
+			action: `/comment`
+		});
 	}
+
+	useEffect(() => {
+		if (createCommentFetcher.data && 'comments' in createCommentFetcher.data) {
+			setComentarios(createCommentFetcher.data.comments);
+		}
+	}, [createCommentFetcher.data])
 
 	return (
 		<Drawer
@@ -90,24 +91,36 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 					<DrawerTitle>Comentarios de {props.foodTitle}</DrawerTitle>
 				</DrawerHeader>
 				<div className="no-scrollbar overflow-y-auto mt-3 px-4 flex flex-col gap-5">
-					<ComentarioPopup
-						comentarios={comentarios}
-						upvote={upvote}
-						downvote={downvote}
-					/>
+					{
+						loading ?
+							<div className="block m-auto">
+								<Spinner />
+							</div>
+							:
+							<ComentarioPopup
+								comentarios={comentarios}
+								upvote={upvote}
+								downvote={downvote}
+							/>
+					}
 				</div>
 				<DrawerFooter>
-					<Textarea
-						placeholder="Tu comentario..."
-						value={commentText}
-						onChange={e => setCommentText(e.target.value)}
-					/>
-					<div className="flex gap-2 w-full mt-3">
-						<DrawerClose asChild className="flex-1">
-							<Button variant="secondary">Cerrar</Button>
-						</DrawerClose>
-						<Button className="flex-1" onClick={addComment}>Comentar</Button>
-					</div>
+					{
+						!loading &&
+						<>
+							<Textarea
+								placeholder="Tu comentario..."
+								value={commentText}
+								onChange={e => setCommentText(e.target.value)}
+							/>
+							<div className="flex gap-2 w-full mt-3">
+								<DrawerClose asChild className="flex-1">
+									<Button variant="secondary">Cerrar</Button>
+								</DrawerClose>
+								<Button className="flex-1" onClick={addComment}>Comentar</Button>
+							</div>
+						</>
+					}
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>

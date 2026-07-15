@@ -58,7 +58,7 @@ export default async function loadFood(): Promise<{ comidas: ComidaView[] }> {
     const comidas = await api.get("/Comida")
         .then(res => res.data)
         .catch(err => console.log(err));
-    console.log(comidas);
+    // console.log(comidas);
 
     return { comidas };
 }

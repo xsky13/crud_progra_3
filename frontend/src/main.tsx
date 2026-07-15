@@ -32,6 +32,7 @@ import Podio from "./routes/Podio.tsx";
 import loadPodio from "./services/food/loadPodio.ts";
 import changePassword from "./services/auth/changePassword.ts";
 import loadProposals from "./services/proposals/loadProposals.ts";
+import createComment from "./services/comment/createComment.ts";
 
 const router = createBrowserRouter([
     {
@@ -104,10 +105,16 @@ const router = createBrowserRouter([
         path: "/unrateFood/:id",
         action: unrateFood,
         shouldRevalidate: () => false
+	},
+
+ {
+        path: "/comment",
+        action: createComment,
+        shouldRevalidate: () => false
     },
 
 
-    {
+	{
         path: "/changePassword",
         action: changePassword
     },
