@@ -1,16 +1,14 @@
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, Trash2Icon } from "lucide-react";
 import React from "react";
+import useUser from "@/hooks/useUser";
+import type { Comment } from "@/types/Comment";
 
 const CommentItem = React.memo((props: {
-	texto: string,
-	votos: number,
-	commentId: number,
-	nombreUsuario: string,
-	fecha: string,
+	comment: Comment,
 	upvote: (commentId: number) => void,
 	downvote: (commentId: number) => void,
 }) => {
-
+	const user = useUser();
 	function timeAgo(date: string | Date): string {
 		const now = Date.now();
 		const then = new Date(date).getTime();
@@ -48,25 +46,38 @@ const CommentItem = React.memo((props: {
 	}
 
 	return (
-		<div>
+		<div className="bg-muted p-3 rounded-md">
 			<div className="flex items-start gap-3">
 				<div className="flex items-center flex-col">
 					<ChevronUpIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.upvote(props.commentId)}
+						onClick={() => props.upvote(props.comment.id)}
 					/>
-					<span className="text-xs">{props.votos}</span>
+					<span className="text-xs">{props.comment.votos}</span>
 					<ChevronDownIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.downvote(props.commentId)}
+						onClick={() => props.downvote(props.comment.id)}
 					/>
 				</div>
-				{props.texto}
+				{props.comment.texto}
 			</div>
-			<div className="float-right text-xs">
-				{props.nombreUsuario} &nbsp; • &nbsp; {timeAgo(props.fecha)}
+			<div className="flex justify-between">
+				{
+					!(user.id == props.comment.userId) &&
+					<div className="invisible">hack</div>
+				}
+				{
+					user.id == props.comment.userId &&
+					<Trash2Icon
+						className="ml-[.0935rem]"
+						size={17}
+					/>
+				}
+				<div className="float-right text-xs">
+					{props.comment.user.nombre} &nbsp; • &nbsp; {timeAgo(props.comment.fecha)}
+				</div>
 			</div>
 		</div>
 	);

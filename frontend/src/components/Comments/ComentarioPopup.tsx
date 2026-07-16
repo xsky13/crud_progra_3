@@ -20,11 +20,7 @@ export function ComentarioPopup({ comentarios, upvote, downvote }: {
 			comentarios.map((comentario, i) => (
 				<CommentItem
 					key={i}
-					texto={comentario.texto}
-					votos={comentario.votos}
-					commentId={comentario.id}
-					nombreUsuario={comentario.user.nombre}
-					fecha={comentario.fecha}
+					comment={comentario}
 					upvote={upvote}
 					downvote={downvote}
 				/>
