@@ -9,6 +9,7 @@ import api from "@/api";
 import { Spinner } from "../ui/spinner";
 import { useFetcher } from "react-router";
 import createComment from "@/services/comment/createComment";
+import SubmitButton from "../Helpers/SubmitButton";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -19,7 +20,6 @@ type CommentPopupTypes = {
 
 
 export default function FoodCommentsDrawer(props: CommentPopupTypes) {
-	const user = useUser();
 	const [commentText, setCommentText] = useState("");
 	const [comentarios, setComentarios] = useState<Comment[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -69,11 +69,12 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 			encType: "application/json",
 			action: `/comment`
 		});
+		setCommentText("")
 	}
 
 	useEffect(() => {
-		if (createCommentFetcher.data && 'comments' in createCommentFetcher.data) {
-			setComentarios(createCommentFetcher.data.comments);
+		if (createCommentFetcher.data && createCommentFetcher.data.newComment) {
+			setComentarios(prev => [createCommentFetcher.data!.newComment!, ...prev]);
 		}
 	}, [createCommentFetcher.data])
 
@@ -83,9 +84,10 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 			direction="right"
 			modal={false}
 			open={props.openFoodDrawerId != null}
-			onOpenChange={open =>
+			onOpenChange={open => {
 				props.setOpenFoodDrawerId(open ? props.foodId : null)
-			}>
+				setCommentText("")
+			}}>
 			<DrawerContent>
 				<DrawerHeader>
 					<DrawerTitle>Comentarios de {props.foodTitle}</DrawerTitle>
@@ -117,7 +119,13 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 								<DrawerClose asChild className="flex-1">
 									<Button variant="secondary">Cerrar</Button>
 								</DrawerClose>
-								<Button className="flex-1" onClick={addComment}>Comentar</Button>
+								<SubmitButton
+									isSubmitting={createCommentFetcher.state == "submitting"}
+									className="flex-1"
+									onClick={addComment}
+								>
+									Comentar
+								</SubmitButton>
 							</div>
 						</>
 					}

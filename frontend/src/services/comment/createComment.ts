@@ -8,7 +8,7 @@ type FormData = {
 	commentText: string;
 }
 
-export default async function createComment({ request }: ActionFunctionArgs): Promise<FormError | { comments: Comment[] }> {
+export default async function createComment({ request }: ActionFunctionArgs): Promise<FormError & { newComment?: never } | { newComment: Comment }> {
 	const data = await request.json() as FormData;
 
 	if (data.commentText.trim() == "") {
@@ -22,11 +22,9 @@ export default async function createComment({ request }: ActionFunctionArgs): Pr
 	}
 
 	try {
-		await api.post(`comment/${data.comidaId}`, { textoComentario: data.commentText });
+		const result = await api.post(`comment/${data.comidaId}`, { textoComentario: data.commentText });
 
-		const comments = await api.get("/comment/" + data.comidaId).then(res => res.data);
-
-		return { comments }
+		return { newComment: result.data }
 	} catch (err) {
 		console.log(err);
 		return {
