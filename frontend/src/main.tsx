@@ -33,124 +33,130 @@ import loadPodio from "./services/food/loadPodio.ts";
 import changePassword from "./services/auth/changePassword.ts";
 import loadProposals from "./services/proposals/loadProposals.ts";
 import createComment from "./services/comment/createComment.ts";
+import deleteComment from "./services/comment/deleteComment.ts";
 
 const router = createBrowserRouter([
-    {
-        id: "root",
-        path: "/",
-        Component: Layout,
-        loader: loadUser,
-        ErrorBoundary: ErrorBoundary,
-        HydrateFallback: () => {
-            return (
-                <div className="h-screen flex items-center justify-center">
-                    <img src="/loading.svg" width={150} />
-                </div>
-            );
-        },
-        children: [
-            {
-                index: true,
-                Component: Home,
-                loader: loadFood,
-            },
-            {
-                path: "/propuestas",
-                Component: Propuestas,
-                loader: loadProposals,
-            },
-            {
-                path: "/podio",
-                Component: Podio,
-                loader: loadPodio,
-            },
-            {
-                path: "configuraciones",
-                Component: Configuraciones,
-                loader: authProtectedLoader,
-                action: updateAccount,
-            },
-            {
-                path: "registro",
-                Component: Registro,
-                action: register,
-                loader: authCheckLoader,
-            },
-            {
-                path: "login",
-                Component: Login,
-                action: login,
-                loader: authCheckLoader,
-            },
-        ],
-    },
-    {
-        path: "/createFood",
-        action: createFood,
-    },
-    {
-        path: "/deleteFood",
-        action: deleteFood,
-    },
-    {
-        path: "/updateFood",
-        action: updateFood,
-    },
-    {
-        path: "/rateFood/:id",
-        action: rateFood,
-        shouldRevalidate: () => false
-    },
-    {
-        path: "/unrateFood/:id",
-        action: unrateFood,
-        shouldRevalidate: () => false
+	{
+		id: "root",
+		path: "/",
+		Component: Layout,
+		loader: loadUser,
+		ErrorBoundary: ErrorBoundary,
+		HydrateFallback: () => {
+			return (
+				<div className="h-screen flex items-center justify-center">
+					<img src="/loading.svg" width={150} />
+				</div>
+			);
+		},
+		children: [
+			{
+				index: true,
+				Component: Home,
+				loader: loadFood,
+			},
+			{
+				path: "/propuestas",
+				Component: Propuestas,
+				loader: loadProposals,
+			},
+			{
+				path: "/podio",
+				Component: Podio,
+				loader: loadPodio,
+			},
+			{
+				path: "configuraciones",
+				Component: Configuraciones,
+				loader: authProtectedLoader,
+				action: updateAccount,
+			},
+			{
+				path: "registro",
+				Component: Registro,
+				action: register,
+				loader: authCheckLoader,
+			},
+			{
+				path: "login",
+				Component: Login,
+				action: login,
+				loader: authCheckLoader,
+			},
+		],
+	},
+	{
+		path: "/createFood",
+		action: createFood,
+	},
+	{
+		path: "/deleteFood",
+		action: deleteFood,
+	},
+	{
+		path: "/updateFood",
+		action: updateFood,
+	},
+	{
+		path: "/rateFood/:id",
+		action: rateFood,
+		shouldRevalidate: () => false
+	},
+	{
+		path: "/unrateFood/:id",
+		action: unrateFood,
+		shouldRevalidate: () => false
 	},
 
- {
-        path: "/comment",
-        action: createComment,
-        shouldRevalidate: () => false
-    },
+	{
+		path: "/comment",
+		action: createComment,
+		shouldRevalidate: () => false
+	},
+	{
+		path: "/deleteComment/:id",
+		action: deleteComment,
+		shouldRevalidate: () => false
+	},
 
 
 	{
-        path: "/changePassword",
-        action: changePassword
-    },
+		path: "/changePassword",
+		action: changePassword
+	},
 
 
-    /* ROUTING DE PROPUESTAS */
-    {
-        path: "/createProposal",
-        action: createProposal,
-    },
+	/* ROUTING DE PROPUESTAS */
+	{
+		path: "/createProposal",
+		action: createProposal,
+	},
 
-    {
-        path: "/editProposal/:id",
-        action: editProposal,
-    },
+	{
+		path: "/editProposal/:id",
+		action: editProposal,
+	},
 
-    {
-        path: "/acceptProposal",
-        action: acceptProposal,
-    },
+	{
+		path: "/acceptProposal",
+		action: acceptProposal,
+	},
 
-    {
-        path: "/deleteProposal/:id",
-        action: deleteProposal,
-    },
+	{
+		path: "/deleteProposal/:id",
+		action: deleteProposal,
+	},
 
-    {
-        path: "logout",
-        action: logout,
-    },
-    {
-        path: "/deleteAccount",
-        action: deleteAccount,
-    },
+	{
+		path: "logout",
+		action: logout,
+	},
+	{
+		path: "/deleteAccount",
+		action: deleteAccount,
+	},
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <RouterProvider router={router} />,
+	<RouterProvider router={router} />,
 );
