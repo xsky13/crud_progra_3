@@ -11,6 +11,7 @@ import createComment from "@/services/comment/createComment";
 import SubmitButton from "../Helpers/SubmitButton";
 import { CommentContext } from "@/context/commentContext";
 import type deleteComment from "@/services/comment/deleteComment";
+import { toast } from "sonner";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -76,7 +77,9 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 
 	useEffect(() => {
 		if (createCommentFetcher.data && createCommentFetcher.data.newComment) {
-			setComentarios(prev => [createCommentFetcher.data!.newComment!, ...prev]);
+			setTimeout(() => setComentarios(prev => [createCommentFetcher.data!.newComment!, ...prev]), 0);
+		} else if (createCommentFetcher.data?.error) {
+			toast.error(createCommentFetcher.data.error.msg);
 		}
 	}, [createCommentFetcher.data]);
 
@@ -85,7 +88,9 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 			method: 'DELETE',
 			action: `/deleteComment/${commentId}`
 		});
-		setComentarios(prev => prev.filter(c => c.id != commentId));
+		if (deleteCommentFetcher.data?.error) {
+			toast.error(deleteCommentFetcher.data.error.msg)
+		} else setComentarios(prev => prev.filter(c => c.id != commentId));
 	}
 
 	return (
