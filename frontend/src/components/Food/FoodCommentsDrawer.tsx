@@ -9,6 +9,8 @@ import { Spinner } from "../ui/spinner";
 import { useFetcher } from "react-router";
 import createComment from "@/services/comment/createComment";
 import SubmitButton from "../Helpers/SubmitButton";
+import { CommentContext } from "@/context/commentContext";
+import type deleteComment from "@/services/comment/deleteComment";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -23,6 +25,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	const [comentarios, setComentarios] = useState<Comment[]>([]);
 	const [loading, setLoading] = useState(false);
 	const createCommentFetcher = useFetcher<typeof createComment>();
+	const deleteCommentFetcher = useFetcher<typeof deleteComment>();
 
 
 	useEffect(() => {
@@ -75,61 +78,71 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 		if (createCommentFetcher.data && createCommentFetcher.data.newComment) {
 			setComentarios(prev => [createCommentFetcher.data!.newComment!, ...prev]);
 		}
-	}, [createCommentFetcher.data])
+	}, [createCommentFetcher.data]);
+
+	const removeComment = (commentId: number) => {
+		deleteCommentFetcher.submit({}, {
+			method: 'DELETE',
+			action: `/deleteComment/${commentId}`
+		});
+		setComentarios(prev => prev.filter(c => c.id != commentId));
+	}
 
 	return (
-		<Drawer
-			// key={props.openFoodDrawerId}
-			direction="right"
-			modal={false}
-			open={props.openFoodDrawerId != null}
-			onOpenChange={open => {
-				props.setOpenFoodDrawerId(open ? props.foodId : null)
-				setCommentText("")
-			}}>
-			<DrawerContent>
-				<DrawerHeader>
-					<DrawerTitle>Comentarios de {props.foodTitle}</DrawerTitle>
-				</DrawerHeader>
-				<div className="no-scrollbar overflow-y-auto mt-3 px-4 flex flex-col gap-5">
-					{
-						loading ?
-							<div className="block m-auto">
-								<Spinner />
-							</div>
-							:
-							<ComentarioPopup
-								comentarios={comentarios}
-								upvote={upvote}
-								downvote={downvote}
-							/>
-					}
-				</div>
-				<DrawerFooter>
-					{
-						!loading &&
-						<>
-							<Textarea
-								placeholder="Tu comentario..."
-								value={commentText}
-								onChange={e => setCommentText(e.target.value)}
-							/>
-							<div className="flex gap-2 w-full mt-3">
-								<DrawerClose asChild className="flex-1">
-									<Button variant="secondary">Cerrar</Button>
-								</DrawerClose>
-								<SubmitButton
-									isSubmitting={createCommentFetcher.state == "submitting"}
-									className="flex-1"
-									onClick={addComment}
-								>
-									Comentar
-								</SubmitButton>
-							</div>
-						</>
-					}
-				</DrawerFooter>
-			</DrawerContent>
-		</Drawer>
+		<CommentContext.Provider value={{ deleteComment: removeComment }}>
+			<Drawer
+				// key={props.openFoodDrawerId}
+				direction="right"
+				modal={false}
+				open={props.openFoodDrawerId != null}
+				onOpenChange={open => {
+					props.setOpenFoodDrawerId(open ? props.foodId : null)
+					setCommentText("")
+				}}>
+				<DrawerContent>
+					<DrawerHeader>
+						<DrawerTitle>Comentarios de {props.foodTitle}</DrawerTitle>
+					</DrawerHeader>
+					<div className="no-scrollbar overflow-y-auto mt-3 px-4 flex flex-col gap-5">
+						{
+							loading ?
+								<div className="block m-auto">
+									<Spinner />
+								</div>
+								:
+								<ComentarioPopup
+									comentarios={comentarios}
+									upvote={upvote}
+									downvote={downvote}
+								/>
+						}
+					</div>
+					<DrawerFooter>
+						{
+							!loading &&
+							<>
+								<Textarea
+									placeholder="Tu comentario..."
+									value={commentText}
+									onChange={e => setCommentText(e.target.value)}
+								/>
+								<div className="flex gap-2 w-full mt-3">
+									<DrawerClose asChild className="flex-1">
+										<Button variant="secondary">Cerrar</Button>
+									</DrawerClose>
+									<SubmitButton
+										isSubmitting={createCommentFetcher.state == "submitting"}
+										className="flex-1"
+										onClick={addComment}
+									>
+										Comentar
+									</SubmitButton>
+								</div>
+							</>
+						}
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
+		</CommentContext.Provider>
 	);
 }

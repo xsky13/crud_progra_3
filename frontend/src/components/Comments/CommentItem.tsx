@@ -1,7 +1,9 @@
 import { ChevronDownIcon, ChevronUpIcon, Trash2Icon } from "lucide-react";
-import React from "react";
+import React, { useContext, useState } from "react";
 import useUser from "@/hooks/useUser";
 import type { Comment } from "@/types/Comment";
+import { Spinner } from "../ui/spinner";
+import { CommentContext } from "@/context/commentContext";
 
 const CommentItem = React.memo((props: {
 	comment: Comment,
@@ -9,6 +11,15 @@ const CommentItem = React.memo((props: {
 	downvote: (commentId: number) => void,
 }) => {
 	const user = useUser();
+	const [loading, setLoading] = useState(false);
+	const commentContext = useContext(CommentContext);
+
+	const deleteComment = () => {
+		setLoading(true);
+		commentContext?.deleteComment(props.comment.id);
+		setLoading(false);
+	}
+
 	function timeAgo(date: string | Date): string {
 		const now = Date.now();
 		const then = new Date(date).getTime();
@@ -70,10 +81,18 @@ const CommentItem = React.memo((props: {
 				}
 				{
 					user.id == props.comment.userId &&
-					<Trash2Icon
-						className="ml-[.0935rem]"
-						size={17}
-					/>
+					<div className="ml-[.0935rem] mt-1">
+						{
+							!loading ?
+								<Trash2Icon
+									onClick={deleteComment}
+									className="cursor-pointer"
+									size={17}
+								/>
+								:
+								<Spinner />
+						}
+					</div>
 				}
 				<div className="float-right text-xs">
 					{props.comment.user.nombre} &nbsp; • &nbsp; {timeAgo(props.comment.fecha)}
