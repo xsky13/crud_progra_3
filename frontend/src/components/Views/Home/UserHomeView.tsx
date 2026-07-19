@@ -4,7 +4,7 @@ import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription, AlertAction } from "../../ui/alert";
 import { Button } from "../../ui/button";
 import CreateProposal from "../../Proposals/CreateProposal";
-import FoodCommentsDrawer from "@/components/Food/FoodCommentsDrawer";
+import FoodCommentsDrawer from "@/components/Comments/FoodCommentsDrawer";
 import { useState } from "react";
 
 export default function UserHomeView({ comidas }: { comidas: ComidaView[] }) {

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose, Drawer } from "../ui/drawer";
 import { Textarea } from "../ui/textarea";
-import { ComentarioPopup } from "../Comments/ComentarioPopup";
 import type { Comment } from "@/types/Comment";
 import api from "@/api";
 import { Spinner } from "../ui/spinner";
@@ -12,6 +11,9 @@ import SubmitButton from "../Helpers/SubmitButton";
 import { CommentContext } from "@/context/commentContext";
 import type deleteComment from "@/services/comment/deleteComment";
 import { toast } from "sonner";
+import { InfoIcon } from "lucide-react";
+import CommentItem from "./CommentItem";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -94,7 +96,10 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	}
 
 	return (
-		<CommentContext.Provider value={{ deleteComment: removeComment }}>
+		<CommentContext.Provider value={{
+			deleteComment: removeComment,
+			upvote, downvote
+		}}>
 			<Drawer
 				// key={props.openFoodDrawerId}
 				direction="right"
@@ -115,11 +120,19 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 									<Spinner />
 								</div>
 								:
-								<ComentarioPopup
-									comentarios={comentarios}
-									upvote={upvote}
-									downvote={downvote}
-								/>
+								!comentarios || comentarios.length == 0 ?
+									<Alert>
+										<InfoIcon />
+										<AlertTitle>Todavía no hay comentarios</AlertTitle>
+										<AlertDescription>Se el primero en comentar!</AlertDescription>
+									</Alert>
+									:
+									comentarios.map((comentario, i) => (
+										<CommentItem
+											key={i}
+											comment={comentario}
+										/>
+									))
 						}
 					</div>
 					<DrawerFooter>

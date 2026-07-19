@@ -7,8 +7,6 @@ import { CommentContext } from "@/context/commentContext";
 
 const CommentItem = React.memo((props: {
 	comment: Comment,
-	upvote: (commentId: number) => void,
-	downvote: (commentId: number) => void,
 }) => {
 	const user = useUser();
 	const [loading, setLoading] = useState(false);
@@ -63,13 +61,13 @@ const CommentItem = React.memo((props: {
 					<ChevronUpIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.upvote(props.comment.id)}
+						onClick={() => commentContext?.upvote(props.comment.id)}
 					/>
 					<span className="text-xs">{props.comment.votos}</span>
 					<ChevronDownIcon
 						className="cursor-pointer"
 						size={20}
-						onClick={() => props.downvote(props.comment.id)}
+						onClick={() => commentContext?.downvote(props.comment.id)}
 					/>
 				</div>
 				{props.comment.texto}
