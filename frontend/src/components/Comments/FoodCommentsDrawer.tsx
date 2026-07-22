@@ -164,17 +164,19 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 		}
 	}, [createCommentFetcher.data]);
 
+	const deletedCommentRef = useRef<number>(0);
 	const removeComment = (commentId: number) => {
 		deleteCommentFetcher.submit({}, {
 			method: 'DELETE',
 			action: `/deleteComment/${commentId}`
 		});
+		deletedCommentRef.current = commentId;
 	}
 
 	useEffect(() => {
 		if (deleteCommentFetcher.data?.error) {
 			toast.error(deleteCommentFetcher.data.error.msg)
-		} else setComentarios(prev => prev.filter(c => c.id != Number(deleteCommentFetcher.data?.error?.field))); // getting the commentid from field check manageRequestError fn
+		} else setComentarios(prev => prev.filter(c => c.id != deletedCommentRef.current))
 	}, [deleteCommentFetcher.data])
 
 	return (

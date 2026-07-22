@@ -59,13 +59,13 @@ const CommentItem = React.memo((props: {
 			<div className="flex items-start gap-3">
 				<div className="flex items-center flex-col">
 					<ChevronUpIcon
-						className="cursor-pointer"
+						className={`cursor-pointer ${props.comment.userVote == 1 && "bg-primary text-white rounded-full"}`}
 						size={20}
 						onClick={() => commentContext?.upvote(props.comment.id)}
 					/>
 					<span className="text-xs">{props.comment.votos}</span>
 					<ChevronDownIcon
-						className="cursor-pointer"
+						className={`cursor-pointer ${props.comment.userVote == -1 && "bg-blue-700 text-white rounded-full"}`}
 						size={20}
 						onClick={() => commentContext?.downvote(props.comment.id)}
 					/>

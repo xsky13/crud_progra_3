@@ -10,6 +10,6 @@ export default async function upvoteComment({ params }: ActionFunctionArgs): Pro
         await api.post("/Comment/" + commentId + "/upvote");
         return { ok: true };
     } catch (err) {
-        return manageRequestError(err, Number(commentId));
+        return manageRequestError(err);
     }
 }
