@@ -1,12 +1,12 @@
 import { ChevronDownIcon, ChevronUpIcon, Trash2Icon } from "lucide-react";
 import React, { useContext, useState } from "react";
 import useUser from "@/hooks/useUser";
-import type { Comment } from "@/types/Comment";
+import type { CommentView } from "@/types/Comment";
 import { Spinner } from "../ui/spinner";
 import { CommentContext } from "@/context/commentContext";
 
 const CommentItem = React.memo((props: {
-	comment: Comment,
+	comment: CommentView,
 }) => {
 	const user = useUser();
 	const [loading, setLoading] = useState(false);

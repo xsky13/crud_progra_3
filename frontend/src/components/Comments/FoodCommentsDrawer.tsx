@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose, Drawer } from "../ui/drawer";
 import { Textarea } from "../ui/textarea";
-import type { Comment } from "@/types/Comment";
+import type { CommentView } from "@/types/Comment";
 import api from "@/api";
 import { Spinner } from "../ui/spinner";
-import { useFetcher } from "react-router";
+import { useFetcher, useSubmit } from "react-router";
 import createComment from "@/services/comment/createComment";
 import SubmitButton from "../Helpers/SubmitButton";
 import { CommentContext } from "@/context/commentContext";
@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { InfoIcon } from "lucide-react";
 import CommentItem from "./CommentItem";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import upvoteComment from "@/services/comment/upvoteComment";
+import type downvoteComment from "@/services/comment/downvoteComment";
 
 type CommentPopupTypes = {
 	foodId: number;
@@ -25,10 +27,14 @@ type CommentPopupTypes = {
 
 export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	const [commentText, setCommentText] = useState("");
-	const [comentarios, setComentarios] = useState<Comment[]>([]);
+	const [comentarios, setComentarios] = useState<CommentView[]>([]);
 	const [loading, setLoading] = useState(false);
 	const createCommentFetcher = useFetcher<typeof createComment>();
 	const deleteCommentFetcher = useFetcher<typeof deleteComment>();
+	const upvoteFetcher = useFetcher<typeof upvoteComment>();
+	const downvoteFetcher = useFetcher<typeof downvoteComment>();
+
+	const cacheCommentsRef = useRef<CommentView[]>([]);
 
 
 	useEffect(() => {
@@ -49,20 +55,93 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	}, [props.openFoodDrawerId]);
 
 	const upvote = (commentId: number) => {
-		setComentarios(prev => prev.map(c =>
-			c.id == commentId ?
-				{ ...c, votos: c.votos + 1 }
-				: c
-		))
+		const comment = comentarios.filter(c => c.id == commentId)[0];
+		if (!comment) return;
+
+		cacheCommentsRef.current = comentarios;
+
+		if (comment.userVote) {
+			if (comment.userVote == 1) {
+				// previous vote was upvote, so upvote is removed
+				setComentarios(prev => prev.map(c =>
+					c.id == commentId ?
+						{ ...c, userVote: 0, votos: c.votos - 1 }
+						: c
+				))
+			} else {
+				// previous vote was downvote (-1), so we add upvote and compensate for previous downvote
+				setComentarios(prev => prev.map(c =>
+					c.id == commentId ?
+						{ ...c, userVote: 1, votos: c.votos + 2 }
+						: c
+				))
+			}
+		} else {
+			// completely new upvote
+			setComentarios(prev => prev.map(c =>
+				c.id == commentId ?
+					{ ...c, userVote: 1, votos: c.votos + 1 }
+					: c
+			))
+		}
+
+		upvoteFetcher.submit({}, {
+			action: "/upvoteComment/" + commentId,
+			method: "POST"
+		});
 	}
 
+	useEffect(() => {
+		if (upvoteFetcher.data?.error) {
+			toast.error("Ocurrio un error.");
+			setComentarios(cacheCommentsRef.current);
+		}
+	}, [upvoteFetcher.data])
+
 	const downvote = (commentId: number) => {
-		setComentarios(prev => prev.map(c =>
-			c.id == commentId ?
-				{ ...c, votos: c.votos - 1 }
-				: c
-		))
+		const comment = comentarios.filter(c => c.id == commentId)[0];
+		if (!comment) return;
+
+		cacheCommentsRef.current = comentarios;
+
+		if (comment.userVote) {
+			if (comment.userVote == 1) {
+				// previous vote was upvote, so add downvote and compensate
+				setComentarios(prev => prev.map(c =>
+					c.id == commentId ?
+						{ ...c, userVote: 0, votos: c.votos - 2 }
+						: c
+				))
+			} else {
+				// previous vote was downvote (-1), just remove
+				setComentarios(prev => prev.map(c =>
+					c.id == commentId ?
+						{ ...c, userVote: 1, votos: c.votos + 1 }
+						: c
+				))
+			}
+		} else {
+			// completely new downvote
+			setComentarios(prev => prev.map(c =>
+				c.id == commentId ?
+					{ ...c, userVote: 1, votos: c.votos - 1 }
+					: c
+			))
+		}
+
+
+		downvoteFetcher.submit({}, {
+			action: "/downvoteComment/" + commentId,
+			method: "POST"
+		});
 	}
+
+	useEffect(() => {
+		if (downvoteFetcher.data?.error) {
+			toast.error("Ocurrio un error.");
+			setComentarios(cacheCommentsRef.current);
+		}
+	}, [downvoteFetcher.data])
 
 
 	const addComment = () => {

@@ -34,6 +34,8 @@ import changePassword from "./services/auth/changePassword.ts";
 import loadProposals from "./services/proposals/loadProposals.ts";
 import createComment from "./services/comment/createComment.ts";
 import deleteComment from "./services/comment/deleteComment.ts";
+import upvoteComment from "./services/comment/upvoteComment.ts";
+import downvoteComment from "./services/comment/downvoteComment.ts";
 
 const router = createBrowserRouter([
 	{
@@ -116,6 +118,16 @@ const router = createBrowserRouter([
 	{
 		path: "/deleteComment/:id",
 		action: deleteComment,
+		shouldRevalidate: () => false
+	},
+	{
+		path: "/upvoteComment/:id",
+		action: upvoteComment,
+		shouldRevalidate: () => false
+	},
+	{
+		path: "/downvoteComment/:id",
+		action: downvoteComment,
 		shouldRevalidate: () => false
 	},
 

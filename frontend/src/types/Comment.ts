@@ -9,3 +9,7 @@ export type Comment = {
 		nombre: string
 	}
 }
+
+export type CommentView = Comment & {
+	userVote: number;
+}

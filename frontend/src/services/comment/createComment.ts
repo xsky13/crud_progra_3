@@ -1,5 +1,5 @@
 import api from "@/api";
-import type { Comment } from "@/types/Comment";
+import type { CommentView } from "@/types/Comment";
 import type { FormError } from "@/types/FormError";
 import type { ActionFunctionArgs } from "react-router";
 
@@ -8,7 +8,7 @@ type FormData = {
 	commentText: string;
 }
 
-export default async function createComment({ request }: ActionFunctionArgs): Promise<FormError & { newComment?: never } | { newComment: Comment }> {
+export default async function createComment({ request }: ActionFunctionArgs): Promise<FormError & { newComment?: never } | { newComment: CommentView }> {
 	const data = await request.json() as FormData;
 
 	if (data.commentText.trim() == "") {
