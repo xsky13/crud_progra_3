@@ -9,7 +9,7 @@ import { useFetcher, useSubmit } from "react-router";
 import createComment from "@/services/comment/createComment";
 import SubmitButton from "../Helpers/SubmitButton";
 import { CommentContext } from "@/context/commentContext";
-import type deleteComment from "@/services/comment/deleteComment";
+import deleteComment from "@/services/comment/deleteComment";
 import { toast } from "sonner";
 import { InfoIcon } from "lucide-react";
 import CommentItem from "./CommentItem";
@@ -34,7 +34,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	const upvoteFetcher = useFetcher<typeof upvoteComment>();
 	const downvoteFetcher = useFetcher<typeof downvoteComment>();
 
-	const cacheCommentsRef = useRef<CommentView[]>([]);
+	const cacheCommentRef = useRef<CommentView>([]);
 
 
 	useEffect(() => {
@@ -58,7 +58,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 		const comment = comentarios.filter(c => c.id == commentId)[0];
 		if (!comment) return;
 
-		cacheCommentsRef.current = comentarios;
+		cacheCommentRef.current = comment;
 
 		if (comment.userVote) {
 			if (comment.userVote == 1) {
@@ -94,7 +94,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	useEffect(() => {
 		if (upvoteFetcher.data?.error) {
 			toast.error("Ocurrio un error.");
-			setComentarios(cacheCommentsRef.current);
+			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current.id ? cacheCommentRef.current : c));
 		}
 	}, [upvoteFetcher.data])
 
@@ -102,21 +102,21 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 		const comment = comentarios.filter(c => c.id == commentId)[0];
 		if (!comment) return;
 
-		cacheCommentsRef.current = comentarios;
+		cacheCommentRef.current = comment;
 
 		if (comment.userVote) {
 			if (comment.userVote == 1) {
 				// previous vote was upvote, so add downvote and compensate
 				setComentarios(prev => prev.map(c =>
 					c.id == commentId ?
-						{ ...c, userVote: 0, votos: c.votos - 2 }
+						{ ...c, userVote: -1, votos: c.votos - 2 }
 						: c
 				))
 			} else {
 				// previous vote was downvote (-1), just remove
 				setComentarios(prev => prev.map(c =>
 					c.id == commentId ?
-						{ ...c, userVote: 1, votos: c.votos + 1 }
+						{ ...c, userVote: 0, votos: c.votos + 1 }
 						: c
 				))
 			}
@@ -124,7 +124,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 			// completely new downvote
 			setComentarios(prev => prev.map(c =>
 				c.id == commentId ?
-					{ ...c, userVote: 1, votos: c.votos - 1 }
+					{ ...c, userVote: -1, votos: c.votos - 1 }
 					: c
 			))
 		}
@@ -139,7 +139,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	useEffect(() => {
 		if (downvoteFetcher.data?.error) {
 			toast.error("Ocurrio un error.");
-			setComentarios(cacheCommentsRef.current);
+			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current.id ? cacheCommentRef.current : c));
 		}
 	}, [downvoteFetcher.data])
 
@@ -169,10 +169,13 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 			method: 'DELETE',
 			action: `/deleteComment/${commentId}`
 		});
+	}
+
+	useEffect(() => {
 		if (deleteCommentFetcher.data?.error) {
 			toast.error(deleteCommentFetcher.data.error.msg)
-		} else setComentarios(prev => prev.filter(c => c.id != commentId));
-	}
+		} else setComentarios(prev => prev.filter(c => c.id != Number(deleteCommentFetcher.data?.error?.field))); // getting the commentid from field check manageRequestError fn
+	}, [deleteCommentFetcher.data])
 
 	return (
 		<CommentContext.Provider value={{
@@ -206,9 +209,9 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 										<AlertDescription>Se el primero en comentar!</AlertDescription>
 									</Alert>
 									:
-									comentarios.map((comentario, i) => (
+									comentarios.map(comentario => (
 										<CommentItem
-											key={i}
+											key={comentario.id}
 											comment={comentario}
 										/>
 									))

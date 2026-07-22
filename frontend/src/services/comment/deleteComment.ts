@@ -10,6 +10,6 @@ export default async function deleteComment({ params }: ActionFunctionArgs): Pro
         await api.delete("/Comment/" + commentId);
         return { ok: true };
     } catch (err) {
-        return manageRequestError(err);
+        return manageRequestError(err, Number(commentId)); // commentId will be returned in field prop
     }
 }
