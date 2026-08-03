@@ -5,7 +5,7 @@ import { Textarea } from "../ui/textarea";
 import type { CommentView } from "@/types/Comment";
 import api from "@/api";
 import { Spinner } from "../ui/spinner";
-import { useFetcher, useSubmit } from "react-router";
+import { useFetcher } from "react-router";
 import createComment from "@/services/comment/createComment";
 import SubmitButton from "../Helpers/SubmitButton";
 import { CommentContext } from "@/context/commentContext";
@@ -34,7 +34,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	const upvoteFetcher = useFetcher<typeof upvoteComment>();
 	const downvoteFetcher = useFetcher<typeof downvoteComment>();
 
-	const cacheCommentRef = useRef<CommentView>([]);
+	const cacheCommentRef = useRef<CommentView>(null);
 
 
 	useEffect(() => {
@@ -94,7 +94,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	useEffect(() => {
 		if (upvoteFetcher.data?.error) {
 			toast.error("Ocurrio un error.");
-			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current.id ? cacheCommentRef.current : c));
+			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current?.id ? cacheCommentRef.current : c));
 		}
 	}, [upvoteFetcher.data])
 
@@ -139,7 +139,7 @@ export default function FoodCommentsDrawer(props: CommentPopupTypes) {
 	useEffect(() => {
 		if (downvoteFetcher.data?.error) {
 			toast.error("Ocurrio un error.");
-			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current.id ? cacheCommentRef.current : c));
+			setComentarios(prev => prev.map(c => c.id == cacheCommentRef.current?.id ? cacheCommentRef.current : c));
 		}
 	}, [downvoteFetcher.data])
 

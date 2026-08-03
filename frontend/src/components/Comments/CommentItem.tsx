@@ -19,6 +19,7 @@ const CommentItem = React.memo((props: {
 	}
 
 	function timeAgo(date: string | Date): string {
+		// eslint-disable-next-line react-hooks/purity
 		const now = Date.now();
 		const then = new Date(date).getTime();
 
