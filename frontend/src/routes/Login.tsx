@@ -4,15 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import errorToast from "@/lib/errorToast";
-import type register from "@/services/auth/register";
+import type login from "@/services/auth/login";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router";
 import { toast } from "sonner";
 
-export default function Registro() {
-    const fetcher = useFetcher<typeof register>();
+export default function Login() {
+    const fetcher = useFetcher<typeof login>();
     const toastId = useRef<string | number>(0);
+
+    // eliminar cada toast al desmontar el componente
+    useEffect(() => {
+        return () => {
+            toast.dismiss(toastId.current);
+        };
+    }, []);
 
     useEffect(() => {
         if (fetcher.data?.error?.msg) {
@@ -33,24 +40,12 @@ export default function Registro() {
                 <div className="my-4">
                     <div className="flex gap-x-4 items-center">
                         <img src="/favicon.png" width={40} />
-                        <h1>Registrarse</h1>
+                        <h1>Iniciar sesión</h1>
                     </div>
                     <div className="mt-3.5 w-32 border border-primary"></div>
                 </div>
                 <fetcher.Form onSubmit={onSubmit} className="my-5">
                     <FieldGroup>
-                        <Field
-                            data-invalid={
-                                fetcher.data?.error?.field == "nombre"
-                            }
-                        >
-                            <FieldLabel htmlFor="nombre">Nombre completo</FieldLabel>
-                            <Input
-                                id="nombre"
-                                name="nombre"
-                                aria-invalid={fetcher.data?.error?.field == "nombre"}
-                            />
-                        </Field>
                         <Field
                             data-invalid={fetcher.data?.error?.field == "email"}
                         >
@@ -61,7 +56,9 @@ export default function Registro() {
                                 id="email"
                                 type="email"
                                 name="email"
-                                aria-invalid={fetcher.data?.error?.field == "email"}
+                                aria-invalid={
+                                    fetcher.data?.error?.field == "email"
+                                }
                             />
                         </Field>
                         <Field
@@ -85,7 +82,7 @@ export default function Registro() {
                             className="w-full"
                             isSubmitting={fetcher.state == "submitting"}
                         >
-                            Crear cuenta
+                            Ingresar
                         </SubmitButton>
                     </FieldGroup>
                 </fetcher.Form>
@@ -96,7 +93,7 @@ export default function Registro() {
                         </AppLink>
                     </Button>
                     <Button type="submit" variant="link" className="mx-0!">
-                        <AppLink to="/login">Ya tengo una cuenta</AppLink>
+                        <AppLink to="/registro">Crear una cuenta</AppLink>
                     </Button>
                 </div>
             </div>

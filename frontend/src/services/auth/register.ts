@@ -1,0 +1,62 @@
+import api from "@/api";
+import manageRequestError from "@/lib/manageRequestError";
+import type { ActionFunctionArgs } from "react-router";
+import { redirect } from "react-router";
+
+type RegisterFormData = {
+    nombre: string;
+    apellido: string;
+    email: string;
+    contrasena: string;
+};
+
+export default async function register({
+    request,
+}: ActionFunctionArgs): Promise<
+    { error?: { msg: string; field: string } } | Response
+> {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData) as RegisterFormData;
+
+    if (data.nombre.length == 0) {
+        return {
+            error: { msg: "Su nombre no puede estar vacio", field: "nombre" },
+        };
+    } else if (
+        !data.email
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            )
+    ) {
+        return { error: { msg: "Su email no es valido", field: "email" } };
+    } else if (data.contrasena.length < 6) {
+        return {
+            error: {
+                msg: "Su contrasena debe tener por lo menos 6 caracteres",
+                field: "contrasena",
+            },
+        };
+    } else {
+        try {
+            await api.post("/User/register", data);
+            return redirect("/");
+        } catch (error) {
+            return manageRequestError(error);
+        }
+        // hacer post request a backend
+        // await fetch("https://jsonplaceholder.typicode.com/todos/1");
+
+        // // usar el usuario retornado para setear la data (token en realidad)
+        // sessionStorage.setItem("user", JSON.stringify({
+        //     id: 1,
+        //     nombre: data.nombre,
+        //     email: data.email,
+        //     contrasena: data.contrasena,
+        //     rol: UserRole.Usuario,
+        //     loggedIn: true,
+        // }));
+
+        // return redirect("/");
+    }
+}
